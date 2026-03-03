@@ -1,3 +1,7 @@
+---
+draft: true
+---
+
 # 7주차: MCP와 LangGraph 기초
 
 ---

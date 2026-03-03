@@ -1,3 +1,7 @@
+---
+draft: true
+---
+
 # 8주차: Agentic AI 심화
 
 ---

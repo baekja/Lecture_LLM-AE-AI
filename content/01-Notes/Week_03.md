@@ -1,3 +1,7 @@
+---
+draft: true
+---
+
 # 3주차: Python API 통신 기초
 
 ---

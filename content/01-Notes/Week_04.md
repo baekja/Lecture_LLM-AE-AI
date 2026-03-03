@@ -1,3 +1,7 @@
+---
+draft: true
+---
+
 # 4주차: LLM API 심화 - Tool Use & 멀티모달
 
 ---
