@@ -1,3 +1,7 @@
+---
+draft: true
+---
+
 # 대형언어모델활용건축공학인공지능구현
 ## Implementation of Artificial Intelligence in Architectural Engineering Using Large Language Models
 
