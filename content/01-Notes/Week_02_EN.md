@@ -182,7 +182,7 @@ sequenceDiagram
 
 #### Step 1: Request to Server — Client → Server
 
-![](./assets/skilljar-s1/skilljar-s1-L03-step1-request-to-server.png)
+![](01-Notes/assets/skilljar-s1/skilljar-s1-L03-step1-request-to-server.png)
 *Step 1: User message is sent from the web/mobile app to the server*
 
 When a user clicks "Send" in the chat interface, the message is sent **first to the developer's server**.
@@ -197,7 +197,7 @@ When a user clicks "Send" in the chat interface, the message is sent **first to 
 
 #### Step 2: Request to Anthropic API — Server → API
 
-![](./assets/skilljar-s1/skilljar-s1-L03-step2-request-to-api.png)
+![](01-Notes/assets/skilljar-s1/skilljar-s1-L03-step2-request-to-api.png)
 *Step 2: The server sends a request to the API via the Anthropic SDK. Four required fields must be included.*
 
 The server calls the API using the Anthropic SDK (Python, TypeScript, etc.) or HTTP requests. Every request must include 4 required fields:
@@ -217,7 +217,7 @@ When the Anthropic API receives the request, the Claude model generates a respon
 
 **3-1. Tokenization + Embedding**
 
-![](./assets/skilljar-s1/skilljar-s1-L03-step3-embedding.png)
+![](01-Notes/assets/skilljar-s1/skilljar-s1-L03-step3-embedding.png)
 *Step 3a: Input text is split into tokens, and each token is converted into a high-dimensional embedding vector*
 
 | Stage | Process | Description |
@@ -228,7 +228,7 @@ When the Anthropic API receives the request, the Claude model generates a respon
 
 **3-2. Generation**
 
-![](./assets/skilljar-s1/skilljar-s1-L03-step3-generation.png)
+![](01-Notes/assets/skilljar-s1/skilljar-s1-L03-step3-generation.png)
 *Step 3b: Contextualized embeddings pass through the output layer to produce a probability distribution over next tokens*
 
 In the generation stage, Claude:
@@ -239,7 +239,7 @@ In the generation stage, Claude:
 
 **3-3. Generation Stop Conditions**
 
-![](./assets/skilljar-s1/skilljar-s1-L03-step3-stop-conditions.png)
+![](01-Notes/assets/skilljar-s1/skilljar-s1-L03-step3-stop-conditions.png)
 *Step 3c: After each token generation, 3 stop conditions are checked*
 
 After generating each token, Claude checks the following 3 conditions to decide whether to continue:
@@ -257,7 +257,7 @@ After generating each token, Claude checks the following 3 conditions to decide 
 
 #### Step 4: Response to Server — API → Server
 
-![](./assets/skilljar-s1/skilljar-s1-L03-step4-response-to-server.png)
+![](01-Notes/assets/skilljar-s1/skilljar-s1-L03-step4-response-to-server.png)
 *Step 4: The Anthropic API returns the generation result to the server. The response includes Message, Usage, and Stop Reason.*
 
 Once generation is complete, the API returns the following data to the server:
@@ -272,7 +272,7 @@ Once generation is complete, the API returns the following data to the server:
 
 #### Step 5: Response to Client — Server → Client
 
-![](./assets/skilljar-s1/skilljar-s1-L03-step5-response-to-client.png)
+![](01-Notes/assets/skilljar-s1/skilljar-s1-L03-step5-response-to-client.png)
 *Step 5: The server delivers the generated text to the client app for display to the user*
 
 The server processes Claude's response (storage, filtering, etc.) and then delivers it to the client app. The user sees the AI's response in the chat interface.
@@ -930,7 +930,7 @@ print(f"Output tokens: {final_message.usage.output_tokens}")
 
 Prefilling is a technique where the developer pre-provides the beginning of an `assistant` message, guiding Claude to **continue writing from that point**.
 
-![](./assets/skilljar-s1/skilljar-s1-02-02.webp)
+![](01-Notes/assets/skilljar-s1/skilljar-s1-02-02.webp)
 *Prefilling concept: Pre-providing an assistant message to guide the response direction*
 
 > [!finding] Core Operating Principle

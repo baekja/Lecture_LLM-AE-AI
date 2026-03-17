@@ -182,7 +182,7 @@ sequenceDiagram
 
 #### Step 1: Request to Server — 클라이언트 → 서버
 
-![](./assets/skilljar-s1/skilljar-s1-L03-step1-request-to-server.png)
+![](01-Notes/assets/skilljar-s1/skilljar-s1-L03-step1-request-to-server.png)
 *Step 1: 웹/모바일 앱에서 사용자 메시지가 서버로 전송된다*
 
 사용자가 채팅 인터페이스에서 "Send"를 클릭하면, 메시지는 **먼저 개발자의 서버로** 전송된다.
@@ -197,7 +197,7 @@ sequenceDiagram
 
 #### Step 2: Request to Anthropic API — 서버 → API
 
-![](./assets/skilljar-s1/skilljar-s1-L03-step2-request-to-api.png)
+![](01-Notes/assets/skilljar-s1/skilljar-s1-L03-step2-request-to-api.png)
 *Step 2: 서버가 Anthropic SDK를 통해 API에 요청을 전송한다. 4가지 필수 필드를 포함해야 한다.*
 
 서버는 Anthropic SDK (Python, TypeScript 등) 또는 HTTP 요청으로 API를 호출한다. 모든 요청에는 4가지 필수 필드가 포함되어야 한다:
@@ -217,7 +217,7 @@ Anthropic API가 요청을 수신하면, Claude 모델은 4단계 파이프라�
 
 **3-1. 토큰화 (Tokenization) + 임베딩 (Embedding)**
 
-![](./assets/skilljar-s1/skilljar-s1-L03-step3-embedding.png)
+![](01-Notes/assets/skilljar-s1/skilljar-s1-L03-step3-embedding.png)
 *Step 3a: 입력 텍스트를 토큰으로 분할하고, 각 토큰을 고차원 임베딩 벡터로 변환한다*
 
 | 단계 | 처리 | 설명 |
@@ -228,7 +228,7 @@ Anthropic API가 요청을 수신하면, Claude 모델은 4단계 파이프라�
 
 **3-2. 생성 (Generation)**
 
-![](./assets/skilljar-s1/skilljar-s1-L03-step3-generation.png)
+![](01-Notes/assets/skilljar-s1/skilljar-s1-L03-step3-generation.png)
 *Step 3b: 컨텍스트화된 임베딩이 출력 레이어를 거쳐 다음 토큰의 확률 분포를 생성한다*
 
 생성 단계에서 Claude는:
@@ -239,7 +239,7 @@ Anthropic API가 요청을 수신하면, Claude 모델은 4단계 파이프라�
 
 **3-3. 생성 중단 조건**
 
-![](./assets/skilljar-s1/skilljar-s1-L03-step3-stop-conditions.png)
+![](01-Notes/assets/skilljar-s1/skilljar-s1-L03-step3-stop-conditions.png)
 *Step 3c: 매 토큰 생성 후 3가지 중단 조건을 확인한다*
 
 각 토큰을 생성한 후, Claude는 다음 3가지 조건을 확인하여 계속 생성할지 결정한다:
@@ -257,7 +257,7 @@ Anthropic API가 요청을 수신하면, Claude 모델은 4단계 파이프라�
 
 #### Step 4: Response to Server — API → 서버
 
-![](./assets/skilljar-s1/skilljar-s1-L03-step4-response-to-server.png)
+![](01-Notes/assets/skilljar-s1/skilljar-s1-L03-step4-response-to-server.png)
 *Step 4: Anthropic API가 생성 결과를 서버로 반환한다. 응답에는 Message, Usage, Stop Reason이 포함된다.*
 
 생성이 완료되면 API는 다음 데이터를 포함한 응답을 서버로 반환한다:
@@ -272,7 +272,7 @@ Anthropic API가 요청을 수신하면, Claude 모델은 4단계 파이프라�
 
 #### Step 5: Response to Client — 서버 → 클라이언트
 
-![](./assets/skilljar-s1/skilljar-s1-L03-step5-response-to-client.png)
+![](01-Notes/assets/skilljar-s1/skilljar-s1-L03-step5-response-to-client.png)
 *Step 5: 서버가 생성된 텍스트를 클라이언트 앱으로 전달하여 사용자에게 표시한다*
 
 서버는 Claude의 응답을 처리 (저장, 필터링 등)한 후 클라이언트 앱으로 전달한다. 사용자는 채팅 인터페이스에서 AI의 응답을 확인한다.
@@ -930,7 +930,7 @@ print(f"출력 토큰: {final_message.usage.output_tokens}")
 
 프리필링은 `assistant` 메시지의 시작 부분을 개발자가 미리 제공하여, Claude가 **그 지점부터 이어서 작성**하도록 유도하는 기법이다.
 
-![](./assets/skilljar-s1/skilljar-s1-02-02.webp)
+![](01-Notes/assets/skilljar-s1/skilljar-s1-02-02.webp)
 *프리필링 개념: assistant 메시지를 미리 제공하여 응답 방향 유도*
 
 > [!finding] 핵심 동작 원리
