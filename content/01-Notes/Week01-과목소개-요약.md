@@ -69,11 +69,11 @@ created: 2026-03-03
 
 ### 기초 기술 (1~7주)
 
-![[200-Lecture/LLM-AE-AI/01-Notes/assets/diagram-01-foundation-stack.png]]
+![[assets/diagram-01-foundation-stack.png]]
 
 ### 응용 기술 (9~13주)
 
-![[200-Lecture/LLM-AE-AI/01-Notes/assets/diagram-02-applied-systems.png]]
+![[assets/diagram-02-applied-systems.png]]
 
 ### 활용 LLM 플랫폼
 
@@ -89,7 +89,7 @@ created: 2026-03-03
 
 ### 이론 + 실습 + 프로젝트 3단 구조
 
-![[200-Lecture/LLM-AE-AI/01-Notes/assets/diagram-03-weekly-structure.png]]
+![[assets/diagram-03-weekly-structure.png]]
 
 ### 기초 → 응용 연계
 
@@ -146,13 +146,13 @@ created: 2026-03-03
 
 ### 장기적 커리어 역량
 
-![[200-Lecture/LLM-AE-AI/01-Notes/assets/diagram-04-career-capabilities.png]]
+![[assets/diagram-04-career-capabilities.png]]
 
 ---
 
 ## 요약: 15주 여정 한눈에 보기
 
-![[200-Lecture/LLM-AE-AI/01-Notes/assets/diagram-05-15week-journey.png]]
+![[assets/diagram-05-15week-journey.png]]
 
 > [!finding] 이 과목의 차별점
 > - 일반 AI/ML 수업이 아닌 **건축공학 도메인 특화** 커리큘럼

@@ -40,7 +40,7 @@ AI를 단순한 도구가 아닌 **문제 해결 파트너**로 접근한다. �
 
 ### 1.2 4D Framework
 
-![[ai-fluency/thumb-L02B-4d-framework.jpg]]
+![[assets/ai-fluency/thumb-L02B-4d-framework.jpg]]
 *The 4D Framework: Delegation, Description, Discernment, Diligence*
 
 | 역량                   | 핵심 질문                 | 초점                    | 건축공학 예시                                   | 일반 예시 |
@@ -105,7 +105,7 @@ graph TD
 
 ### 1.3 AI 상호작용 3가지 모드
 
-![[ai-fluency/slide-01-01.webp]]
+![[assets/ai-fluency/slide-01-01.webp]]
 *Three ways to interact with AI: Automation, Augmentation, Agency*
 
 | 방식                    | 설명                  | 건축공학 예시                  | 일반 예시                   |
@@ -159,7 +159,7 @@ graph TD
 
 ### 2.2 LLM을 가능하게 한 3가지 요소
 
-![[ai-fluency/slide-01-03.webp]]
+![[assets/ai-fluency/slide-01-03.webp]]
 *Three pillars that made AI possible: Algorithms, Data, Computation*
 
 ```mermaid
@@ -282,7 +282,7 @@ graph LR
 
 > **관통 문제**: 지상 10층 업무시설 RC 기둥 — 설계 축력 3,000kN, 설계 모멘트 200kN·m, 층고 4.0m, fck=27MPa, fy=400MPa
 
-![[ai-fluency/slide-02-02.webp]]
+![[assets/ai-fluency/slide-02-02.webp]]
 *Foundational prompting tips: 6가지 핵심 프롬프팅 기법*
 
 ### 3.1 맥락 제공 (Give Context)
