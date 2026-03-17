@@ -1,5 +1,4 @@
 ---
-draft: true
 tags:
   - lecture/LLM
   - 2026-1

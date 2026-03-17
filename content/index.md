@@ -13,7 +13,7 @@ Implementation of AI in Architectural Engineering Using Large Language Models
 | 주차 | 주제 | 상태 |
 |------|------|:----:|
 | 1주차 | [[Week_01|AI 활용 전략과 프롬프트 엔지니어링]] | ✅ |
-| 2주차 | 개발환경 + Python API 첫 호출 | 준비 중 |
+| 2주차 | [[Week_02|Claude API 기초 — Building with the Claude API]] | ✅ |
 | 3주차 | 프롬프트 전략 + Streamlit UI | 준비 중 |
 | 4주차 | Tool Use + Streaming + 비용 관리 | 준비 중 |
 | 5주차 | RAG 기초 + 하이브리드 검색 | 준비 중 |

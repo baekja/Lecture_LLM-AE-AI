@@ -1,5 +1,4 @@
 ---
-draft: true
 tags:
   - lecture/LLM
   - status/active
