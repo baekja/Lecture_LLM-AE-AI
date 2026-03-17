@@ -40,7 +40,7 @@ Approach AI not as a simple tool, but as a **problem-solving partner**. Rather t
 
 ### 1.2 4D Framework
 
-![[assets/ai-fluency/thumb-L02B-4d-framework.jpg]]
+![](./assets/ai-fluency/thumb-L02B-4d-framework.jpg)
 *The 4D Framework: Delegation, Description, Discernment, Diligence*
 
 | Competency | Key Question | Focus | Architectural Engineering Example | General Example |
@@ -105,7 +105,7 @@ graph TD
 
 ### 1.3 Three Modes of AI Interaction
 
-![[assets/ai-fluency/slide-01-01.webp]]
+![](./assets/ai-fluency/slide-01-01.webp)
 *Three ways to interact with AI: Automation, Augmentation, Agency*
 
 | Mode | Description | Architectural Engineering Example | General Example |
@@ -159,7 +159,7 @@ Generative AI doesn't retrieve answers from a database—it **generates new text
 
 ### 2.2 Three Pillars That Made LLMs Possible
 
-![[assets/ai-fluency/slide-01-03.webp]]
+![](./assets/ai-fluency/slide-01-03.webp)
 *Three pillars that made AI possible: Algorithms, Data, Computation*
 
 ```mermaid
@@ -282,7 +282,7 @@ graph LR
 
 > **Running Problem**: 10-story office building RC column — Design axial force 3,000kN, Design moment 200kN·m, Story height 4.0m, fck=27MPa, fy=400MPa
 
-![[assets/ai-fluency/slide-02-02.webp]]
+![](./assets/ai-fluency/slide-02-02.webp)
 *Foundational prompting tips: 6 Core Prompting Techniques*
 
 ### 3.1 Give Context
