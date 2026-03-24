@@ -220,10 +220,10 @@ Anthropic API가 요청을 수신하면, Claude 모델은 4단계 파이프라�
 ![](01-Notes/assets/skilljar-s1/skilljar-s1-L03-step3-embedding.png)
 *Step 3a: 입력 텍스트를 토큰으로 분할하고, 각 토큰을 고차원 임베딩 벡터로 변환한다*
 
-| 단계 | 처리 | 설명 |
-|---|---|---|
-| **토큰화** (Tokenization) | 텍스트 → 토큰 | "건축공학" → ["건축", "공학"] (서브워드 분할) |
-| **임베딩** (Embedding) | 토큰 → 벡터 | 각 토큰을 고차원 숫자 벡터로 변환 — 의미의 수치적 표현 |
+| 단계                            | 처리         | 설명                                        |
+| ----------------------------- | ---------- | ----------------------------------------- |
+| **토큰화** (Tokenization)        | 텍스트 → 토큰   | "건축공학" → ["건축", "공학"] (서브워드 분할)           |
+| **임베딩** (Embedding)           | 토큰 → 벡터    | 각 토큰을 고차원 숫자 벡터로 변환 — 의미의 수치적 표현          |
 | **컨텍스트화** (Contextualization) | 벡터 간 관계 계산 | Self-Attention으로 주변 토큰과의 관련성을 반영하여 임베딩 정제 |
 
 **3-2. 생성 (Generation)**
@@ -249,6 +249,7 @@ Anthropic API가 요청을 수신하면, Claude 모델은 4단계 파이프라�
 | `max_tokens` 도달    | 설정한 최대 토큰 수에 도달       | `"max_tokens"`    |
 | 자연 종료 (EOS)        | End of Sequence 토큰 생성 | `"end_turn"`      |
 | `stop_sequence` 매칭 | 지정한 정지 문자열이 출력에 등장    | `"stop_sequence"` |
+|                    |                       |                   |
 
 > [!finding] `max_tokens`는 안전 한도
 > `max_tokens`는 "이만큼 생성하라"는 목표가 아니라, "이 이상은 절대 생성하지 마라"는 **안전 한도 (Safety Limit)**이다. Claude는 자연스러운 종료 지점에서 스스로 멈추며, `max_tokens`는 무한 생성을 방지하는 상한선이다.
@@ -735,12 +736,12 @@ graph LR
 
 Temperature는 확률 분포의 **뾰족함(sharpness)**을 조절한다:
 
-| Temperature | 효과 | 건축공학 비유 |
-|-------------|------|--------------|
-| **0.0** | 최고 확률 토큰을 항상 선택 (결정적) | 설계기준서 — 정해진 답만 |
-| **0.0 ~ 0.3** | 상위 소수 토큰에 집중 | 구조계산 — 검증된 방법만 |
-| **0.4 ~ 0.7** | 적당한 다양성 | 설계 대안 검토 — 합리적 범위 내 |
-| **0.8 ~ 1.0** | 확률이 고르게 분산 → 다양한 선택 | 초기 아이디어 스케치 — 자유롭게 |
+| Temperature   | 효과                    | 건축공학 비유             |
+| ------------- | --------------------- | ------------------- |
+| **0.0**       | 최고 확률 토큰을 항상 선택 (결정적) | 설계기준서 — 정해진 답만      |
+| **0.0 ~ 0.3** | 상위 소수 토큰에 집중          | 구조계산 — 검증된 방법만      |
+| **0.4 ~ 0.7** | 적당한 다양성               | 설계 대안 검토 — 합리적 범위 내 |
+| **0.8 ~ 1.0** | 확률이 고르게 분산 → 다양한 선택   | 초기 아이디어 스케치 — 자유롭게  |
 
 ```mermaid
 ---
@@ -966,11 +967,11 @@ print("커피가 더 나은데, 그 이유는" + answer)
 
 정지 시퀀스는 Claude가 응답 생성 중 특정 문자열을 만나면 **즉시 생성을 중단**하게 한다.
 
-| 종료 조건 | `stop_reason` 값 | 설명 |
-|-----------|------------------|------|
-| 자연 종료 | `"end_turn"` | Claude가 응답을 자연스럽게 완료 |
-| 토큰 한도 | `"max_tokens"` | `max_tokens`에 도달하여 잘림 |
-| **정지 시퀀스** | `"stop_sequence"` | 지정한 문자열이 생성되어 중단 |
+| 종료 조건      | `stop_reason` 값   | 설명                    |
+| ---------- | ----------------- | --------------------- |
+| 자연 종료      | `"end_turn"`      | Claude가 응답을 자연스럽게 완료  |
+| 토큰 한도      | `"max_tokens"`    | `max_tokens`에 도달하여 잘림 |
+| **정지 시퀀스** | `"stop_sequence"` | 지정한 문자열이 생성되어 중단      |
 
 ```python
 def chat(messages, system=None, temperature=1.0, stop_sequences=[]):
@@ -1199,29 +1200,35 @@ while True:
 
 ### 5.3 자가진단 퀴즈 — Section 1 핵심 점검
 
-> [!question] Q1. `client.messages.create()`의 필수 파라미터 3가지는?
+> [!ref] 소스
+> - Skilljar L15: Section 1 Quiz
+> - 온라인 퀴즈: [Building with the Claude API — Section 1 Quiz](https://anthropic.skilljar.com/claude-with-the-anthropic-api)
+
+> [!question]- Q1. `client.messages.create()`의 필수 파라미터 3가지는?
 > **답**: `model`, `max_tokens`, `messages`
 
-> [!question] Q2. `system` 프롬프트는 `messages` 리스트 안에 포함되는가?
+> [!question]- Q2. `system` 프롬프트는 `messages` 리스트 안에 포함되는가?
 > **답**: 아니다. `system`은 `messages.create()`의 **별도 파라미터**로 전달된다.
 
-> [!question] Q3. `temperature=0.0`과 `temperature=1.0`의 차이를 설명하라.
+> [!question]- Q3. `temperature=0.0`과 `temperature=1.0`의 차이를 설명하라.
 > **답**: `0.0`은 항상 최고 확률 토큰을 선택하여 결정적(deterministic) 출력을 생성. `1.0`은 확률 분포를 그대로 사용하여 다양한 출력을 생성.
 
-> [!question] Q4. Claude는 이전 대화를 자동으로 기억하는가?
+> [!question]- Q4. Claude는 이전 대화를 자동으로 기억하는가?
 > **답**: 아니다. Claude API는 무상태(stateless). 매 호출 시 `messages` 리스트에 이전 대화 전체를 포함해야 한다.
 
-> [!question] Q5. `stop_reason`의 3가지 값과 의미는?
+> [!question]- Q5. `stop_reason`의 3가지 값과 의미는?
 > **답**: `"end_turn"` (자연 종료), `"max_tokens"` (한도 도달), `"stop_sequence"` (정지 시퀀스 매칭)
 
-> [!question] Q6. 프리필링 (Prefilling)의 원리를 설명하라.
+> [!question]- Q6. 프리필링 (Prefilling)의 원리를 설명하라.
 > **답**: `messages` 리스트 마지막에 `assistant` 역할 메시지를 추가하면, Claude가 그 텍스트를 "이미 말한 것"으로 인식하고 이어서 생성. 프리필 텍스트는 응답에 반복되지 않음.
 
-> [!question] Q7. 구조화된 데이터 추출 시 프리필 + 정지 시퀀스를 조합하는 이유는?
+> [!question]- Q7. 구조화된 데이터 추출 시 프리필 + 정지 시퀀스를 조합하는 이유는?
 > **답**: 프리필로 코드 블록 시작(`` ```json ``)을 제공하면 Claude가 바로 JSON을 생성하고, 정지 시퀀스(`` ``` ``)로 종료 시 중단시키면 순수 JSON만 얻을 수 있다.
 
-> [!question] Q8. `stream.text_stream`과 raw 이벤트 스트림의 차이는?
+> [!question]- Q8. `stream.text_stream`과 raw 이벤트 스트림의 차이는?
 > **답**: Raw 이벤트(`stream=True`)는 모든 이벤트 객체를 반환. `text_stream`은 텍스트 조각만 추출하는 편의 인터페이스.
+
+
 
 ---
 
@@ -1231,13 +1238,13 @@ while True:
 
 아래 요구사항을 충족하는 **구조 부재 설계 검토 챗봇**을 구현하라.
 
-| 항목 | 세부 사항 |
-|------|-----------|
-| System Prompt | KDS 14 20 기준 역할 부여, 계산 과정 단계별 표시 |
-| Temperature | `0.2` (공학적 정확성 중심) |
-| 스트리밍 | 실시간 응답 표시 + 토큰 사용량 출력 |
-| JSON 출력 모드 | `/json` 명령어 입력 시 설계 결과를 JSON으로 반환 |
-| 대화 유지 | 이전 대화 맥락을 유지하여 후속 질문 처리 |
+| 항목            | 세부 사항                             |
+| ------------- | --------------------------------- |
+| System Prompt | KDS 14 20 기준 역할 부여, 계산 과정 단계별 표시  |
+| Temperature   | `0.2` (공학적 정확성 중심)                |
+| 스트리밍          | 실시간 응답 표시 + 토큰 사용량 출력             |
+| JSON 출력 모드    | `/json` 명령어 입력 시 설계 결과를 JSON으로 반환 |
+| 대화 유지         | 이전 대화 맥락을 유지하여 후속 질문 처리           |
 
 **테스트 시나리오:**
 ```
