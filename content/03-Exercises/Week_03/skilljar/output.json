@@ -1,0 +1,23 @@
+[
+  {
+    "output": "# Nutrition Plan for Marathon Training\n\n## Daily Caloric Breakdown (~3500-4000 cal)\n\n**Macros targeting carb-loading:**\n- Carbs: 55-60% (~1925-2400 cal)\n- Protein: 15-20% (~525-800 cal)\n- Fat: 20-25% (~700-1000 cal)\n\n---\n\n## Sample Day Around 2-Hour Morning Run\n\n### **Pre-Run (1-2 hours before)**\n- Oatmeal with banana and honey (300-400 cal)\n- Black coffee/tea\n\n### **During Run**\n- Sports drink or energy gels (200-300 cal)\n\n### **Post-Run Recovery (within 30 min)**\n- Smoothie: Greek yogurt, berries, oats, honey (400-500 cal)\n- Toast with nut-free spread\n\n### **Mid-Morning Snack**\n- Rice cakes with jam or hummus (200 cal)\n\n### **Lunch**\n- Pasta with lentil/chickpea bolognese (800-900 cal)\n- Side salad, olive oil dressing\n\n### **Afternoon Snack**\n- Fruit + seeds (sunflower/pumpkin) (300 cal)\n- Whole grain crackers with cheese\n\n### **Dinner**\n- Quinoa or rice-based vegetable stir-fry with tofu/paneer (700-800 cal)\n- Legumes included\n\n### **Evening**\n- Fortified plant milk, banana (150-200 cal)\n\n---\n\n## Key Foods to Prioritize\n\u2713 Pasta, rice, oats, bread, potatoes  \n\u2713 Lentils, chickpeas, beans, tofu, paneer  \n\u2713 Seeds (sunflower, pumpkin, sesame)  \n\u2713 Fruits, whole grains  \n\u2713 Low-fat dairy (if included)\n\n**Hydration:** 3-4L daily, more around training\n\nConsider consulting a sports nutritionist for personalized timing and adjustments.",
+    "test_case": {
+      "prompt_inputs": {
+        "height": "182 cm",
+        "weight": "72 kg",
+        "goal": "Marathon training with carbohydrate loading and high caloric intake (approximately 3500-4000 calories) timed around a 2-hour morning run",
+        "restrictions": "Vegetarian, no nuts"
+      },
+      "solution_criteria": [
+        "Meal plan covers exactly 1 day with 4-5 meals/snacks totaling 3500-4000 calories",
+        "Includes high carbohydrate content (55-65% of daily calories) with timing coordinated around the 2-hour morning training session",
+        "All meals respect vegetarian diet and exclude nuts",
+        "Meals are practical and concise (5-7 lines maximum for the entire plan)"
+      ],
+      "task_description": "Write a compact, concise 1 day meal plan for a single athlete",
+      "scenario": "Testing with a professional endurance athlete (marathon runner) requiring high caloric intake and carbohydrate loading, with specific timing around training sessions"
+    },
+    "score": 5,
+    "reasoning": "The solution meets all three mandatory requirements in terms of content (caloric total, macros, and meals with timing), but critically fails the secondary criterion requiring extreme conciseness (5-7 lines maximum). The plan is presented in an expanded format with detailed explanations rather than a compact layout. Additionally, while meals are listed, exact portions are often vague, and the number of eating occasions (7) exceeds the 4-5 specified. The solution is nutritionally sound and comprehensive, but does not match the 'compact, concise' directive from the original task description."
+  }
+]

@@ -1,0 +1,208 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Prompt Evaluation Report</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                margin: 0;
+                padding: 20px;
+                color: #333;
+            }
+            .header {
+                background-color: #f0f0f0;
+                padding: 20px;
+                border-radius: 5px;
+                margin-bottom: 20px;
+            }
+            .summary-stats {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .stat-box {
+                background-color: #fff;
+                border-radius: 5px;
+                padding: 15px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                flex-basis: 30%;
+                min-width: 200px;
+            }
+            .stat-value {
+                font-size: 24px;
+                font-weight: bold;
+                margin-top: 5px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+            th {
+                background-color: #4a4a4a;
+                color: white;
+                text-align: left;
+                padding: 12px;
+            }
+            td {
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+                vertical-align: top;
+            }
+            tr:nth-child(even) {
+                background-color: #f9f9f9;
+            }
+            .output-cell {
+                white-space: pre-wrap;
+            }
+            .score {
+                font-weight: bold;
+                padding: 5px 10px;
+                border-radius: 3px;
+                display: inline-block;
+            }
+            .score-high {
+                background-color: #c8e6c9;
+                color: #2e7d32;
+            }
+            .score-medium {
+                background-color: #fff9c4;
+                color: #f57f17;
+            }
+            .score-low {
+                background-color: #ffcdd2;
+                color: #c62828;
+            }
+            .output {
+                overflow: auto;
+                white-space: pre-wrap;
+            }
+
+            .output pre {
+                background-color: #f5f5f5;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                padding: 10px;
+                margin: 0;
+                font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+                font-size: 14px;
+                line-height: 1.4;
+                color: #333;
+                box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+                overflow-x: auto;
+                white-space: pre-wrap; 
+                word-wrap: break-word; 
+            }
+
+            td {
+                width: 20%;
+            }
+            .score-col {
+                width: 80px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <h1>Prompt Evaluation Report</h1>
+            <div class="summary-stats">
+                <div class="stat-box">
+                    <div>Total Test Cases</div>
+                    <div class="stat-value">1</div>
+                </div>
+                <div class="stat-box">
+                    <div>Average Score</div>
+                    <div class="stat-value">5.0 / 10</div>
+                </div>
+                <div class="stat-box">
+                    <div>Pass Rate (≥7)</div>
+                    <div class="stat-value">0.0%</div>
+                </div>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Scenario</th>
+                    <th>Prompt Inputs</th>
+                    <th>Solution Criteria</th>
+                    <th>Output</th>
+                    <th>Score</th>
+                    <th>Reasoning</th>
+                </tr>
+            </thead>
+            <tbody>
+    
+            <tr>
+                <td>Testing with a professional endurance athlete (marathon runner) requiring high caloric intake and carbohydrate loading, with specific timing around training sessions</td>
+                <td class="prompt-inputs"><strong>height:</strong> 182 cm<br><strong>weight:</strong> 72 kg<br><strong>goal:</strong> Marathon training with carbohydrate loading and high caloric intake (approximately 3500-4000 calories) timed around a 2-hour morning run<br><strong>restrictions:</strong> Vegetarian, no nuts</td>
+                <td class="criteria">• Meal plan covers exactly 1 day with 4-5 meals/snacks totaling 3500-4000 calories<br>• Includes high carbohydrate content (55-65% of daily calories) with timing coordinated around the 2-hour morning training session<br>• All meals respect vegetarian diet and exclude nuts<br>• Meals are practical and concise (5-7 lines maximum for the entire plan)</td>
+                <td class="output"><pre># Nutrition Plan for Marathon Training
+
+## Daily Caloric Breakdown (~3500-4000 cal)
+
+**Macros targeting carb-loading:**
+- Carbs: 55-60% (~1925-2400 cal)
+- Protein: 15-20% (~525-800 cal)
+- Fat: 20-25% (~700-1000 cal)
+
+---
+
+## Sample Day Around 2-Hour Morning Run
+
+### **Pre-Run (1-2 hours before)**
+- Oatmeal with banana and honey (300-400 cal)
+- Black coffee/tea
+
+### **During Run**
+- Sports drink or energy gels (200-300 cal)
+
+### **Post-Run Recovery (within 30 min)**
+- Smoothie: Greek yogurt, berries, oats, honey (400-500 cal)
+- Toast with nut-free spread
+
+### **Mid-Morning Snack**
+- Rice cakes with jam or hummus (200 cal)
+
+### **Lunch**
+- Pasta with lentil/chickpea bolognese (800-900 cal)
+- Side salad, olive oil dressing
+
+### **Afternoon Snack**
+- Fruit + seeds (sunflower/pumpkin) (300 cal)
+- Whole grain crackers with cheese
+
+### **Dinner**
+- Quinoa or rice-based vegetable stir-fry with tofu/paneer (700-800 cal)
+- Legumes included
+
+### **Evening**
+- Fortified plant milk, banana (150-200 cal)
+
+---
+
+## Key Foods to Prioritize
+✓ Pasta, rice, oats, bread, potatoes  
+✓ Lentils, chickpeas, beans, tofu, paneer  
+✓ Seeds (sunflower, pumpkin, sesame)  
+✓ Fruits, whole grains  
+✓ Low-fat dairy (if included)
+
+**Hydration:** 3-4L daily, more around training
+
+Consider consulting a sports nutritionist for personalized timing and adjustments.</pre></td>
+                <td class="score-col"><span class="score score-low">5</span></td>
+                <td class="reasoning">The solution meets all three mandatory requirements in terms of content (caloric total, macros, and meals with timing), but critically fails the secondary criterion requiring extreme conciseness (5-7 lines maximum). The plan is presented in an expanded format with detailed explanations rather than a compact layout. Additionally, while meals are listed, exact portions are often vague, and the number of eating occasions (7) exceeds the 4-5 specified. The solution is nutritionally sound and comprehensive, but does not match the 'compact, concise' directive from the original task description.</td>
+            </tr>
+        
+            </tbody>
+        </table>
+    </body>
+    </html>
+    
