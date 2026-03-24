@@ -104,7 +104,7 @@ graph TD
 
 프롬프트를 작성하는 것은 시작에 불과하다. 신뢰할 수 있는 AI 애플리케이션을 구축하려면 두 가지 핵심 개념을 이해해야 한다: **프롬프트 엔지니어링** (Prompt Engineering)과 **프롬프트 평가** (Prompt Evaluation).
 
-![[skilljar-s2/L01-PE-vs-PE.png]]
+![](01-Notes/assets/skilljar-s2/L01-PE-vs-PE.png)
 *프롬프트 엔지니어링 vs 프롬프트 평가의 두 축*
 
 #### PE vs PE: 엔지니어링 vs 평가
@@ -120,7 +120,7 @@ graph TD
 
 #### 프롬프트 작성 후 3가지 경로
 
-![[skilljar-s2/L01-three-paths.png]]
+![](01-Notes/assets/skilljar-s2/L01-three-paths.png)
 *프롬프트 작성 후 3가지 경로: 한 번 테스트 / 수동 검토 / 평가 파이프라인*
 
 프롬프트를 작성한 후 취할 수 있는 세 가지 경로가 있다:
@@ -157,7 +157,7 @@ graph LR
 
 프롬프트 평가는 5단계 워크플로우를 따른다. 다양한 오픈소스 도구와 유료 서비스가 있지만, 핵심 프로세스를 이해하면 작게 시작하여 필요에 따라 확장할 수 있다.
 
-![[skilljar-s2/L02-workflow-overview.png]]
+![](01-Notes/assets/skilljar-s2/L02-workflow-overview.png)
 *5단계 평가 워크플로우 개요*
 
 #### 5단계 워크플로우
@@ -179,7 +179,7 @@ graph LR
 
 #### Step 1: 프롬프트 작성 (Draft a Prompt)
 
-![[skilljar-s2/L02-step1-prompt.png]]
+![](01-Notes/assets/skilljar-s2/L02-step1-prompt.png)
 *Step 1: 초기 프롬프트 작성*
 
 개선하고자 하는 초기 프롬프트를 작성한다:
@@ -196,7 +196,7 @@ Please answer the user's question:
 
 #### Step 2: 테스트 데이터셋 생성 (Create an Eval Dataset)
 
-![[skilljar-s2/L02-step2-dataset.png]]
+![](01-Notes/assets/skilljar-s2/L02-step2-dataset.png)
 *Step 2: 테스트 데이터셋 생성*
 
 프롬프트가 프로덕션에서 처리할 입력 유형을 대표하는 샘플 데이터셋을 만든다:
@@ -213,7 +213,7 @@ dataset = [
 
 #### Step 3: Claude에 실행 (Feed Through Claude)
 
-![[skilljar-s2/L02-step3-claude.png]]
+![](01-Notes/assets/skilljar-s2/L02-step3-claude.png)
 *Step 3: 데이터셋과 프롬프트를 결합하여 Claude에 전송*
 
 데이터셋의 각 질문을 프롬프트 템플릿에 병합하여 Claude에 전송한다:
@@ -227,7 +227,7 @@ for question in dataset:
 
 #### Step 4: 채점기로 평가 (Feed Through a Grader)
 
-![[skilljar-s2/L02-step4-grader.png]]
+![](01-Notes/assets/skilljar-s2/L02-step4-grader.png)
 *Step 4: 채점기가 질문과 응답을 검사하여 점수를 부여*
 
 채점기가 원래 질문과 Claude의 응답을 모두 검사하여 객관적인 점수를 부여한다 (1~10점):
@@ -242,7 +242,7 @@ for question in dataset:
 
 #### Step 5: 프롬프트 수정 & 반복 (Change Prompt and Repeat)
 
-![[skilljar-s2/L02-step5-repeat.png]]
+![](01-Notes/assets/skilljar-s2/L02-step5-repeat.png)
 *Step 5: 프롬프트를 수정하고 전체 프로세스를 반복*
 
 베이스라인 점수를 확보한 후, 프롬프트를 수정하고 전체 프로세스를 다시 실행한다:
@@ -260,7 +260,7 @@ Answer the question with ample detail
 
 개선된 프롬프트의 평균 점수가 **8.7**로 상승했다면, 추가 지시가 더 나은 응답을 이끌어냈다는 객관적 증거가 된다.
 
-![[skilljar-s2/L02-scoring.png]]
+![](01-Notes/assets/skilljar-s2/L02-scoring.png)
 *프롬프트 버전별 점수 비교 — 객관적 측정으로 개선 확인*
 
 > [!method] 핵심 원칙
@@ -279,7 +279,7 @@ Answer the question with ample detail
 
 평가 워크플로우의 첫 단계는 프롬프트와 테스트 데이터를 준비하는 것이다. AWS 관련 코드 생성 프롬프트를 예로 살펴보자.
 
-![[skilljar-s2/L03-goal-setup.png]]
+![](01-Notes/assets/skilljar-s2/L03-goal-setup.png)
 *테스트 데이터셋 생성 — 평가 목표 설정*
 
 #### 평가 목표 설정
@@ -341,7 +341,7 @@ def chat(messages, system=None, temperature=1.0, stop_sequences=[]):
 
 #### Claude를 활용한 자동 데이터셋 생성
 
-![[skilljar-s2/L03-dataset-format.png]]
+![](01-Notes/assets/skilljar-s2/L03-dataset-format.png)
 *평가 데이터셋 형식 — JSON 배열로 구성된 테스트 케이스*
 
 테스트 데이터를 생성하는 것은 더 빠른 모델 (Haiku)을 사용하기 좋은 기회다:
@@ -406,7 +406,7 @@ with open('dataset.json', 'w') as f:
 
 데이터셋이 준비되었으니, 핵심 평가 파이프라인을 구축할 차례다. 각 테스트 케이스를 프롬프트에 병합하고, Claude에 전송하고, 결과를 채점한다.
 
-![[skilljar-s2/L04-eval-pipeline.png]]
+![](01-Notes/assets/skilljar-s2/L04-eval-pipeline.png)
 *평가 파이프라인 실행 흐름 — 데이터셋 → 프롬프트 → Claude → 채점*
 
 #### 3개 핵심 함수
@@ -487,7 +487,7 @@ results = run_eval(dataset)
 print(json.dumps(results, indent=2))
 ```
 
-![[skilljar-s2/L04-results-json.png]]
+![](01-Notes/assets/skilljar-s2/L04-results-json.png)
 *평가 결과 JSON — 출력, 테스트 케이스, 점수를 포함하는 구조화된 결과*
 
 각 결과에는 3가지 정보가 포함된다:
@@ -495,7 +495,7 @@ print(json.dumps(results, indent=2))
 - **test_case**: 처리된 원래 테스트 케이스
 - **score**: 평가 점수 (현재 하드코딩)
 
-![[skilljar-s2/L04-verbose-output.png]]
+![](01-Notes/assets/skilljar-s2/L04-verbose-output.png)
 *아직 형식 지시가 없어 Claude의 응답이 장황한 모습*
 
 > [!finding] 파이프라인 완성
@@ -514,7 +514,7 @@ print(json.dumps(results, indent=2))
 
 채점 시스템은 출력 품질에 대한 **객관적 신호**를 제공한다. 채점기는 모델 출력을 받아 측정 가능한 피드백 — 보통 1~10 사이의 점수 — 를 반환한다.
 
-![[skilljar-s2/L05-grader-types.png]]
+![](01-Notes/assets/skilljar-s2/L05-grader-types.png)
 *3가지 채점 유형: 코드 채점기, 모델 채점기, 사람 채점기*
 
 #### 3가지 채점 유형
@@ -527,7 +527,7 @@ print(json.dumps(results, indent=2))
 
 #### 평가 기준 정의
 
-![[skilljar-s2/L05-eval-criteria.png]]
+![](01-Notes/assets/skilljar-s2/L05-eval-criteria.png)
 *평가 기준 정의 — Format, Valid Syntax, Task Following*
 
 채점기를 구현하기 전에 **명확한 평가 기준**이 필요하다. 코드 생성 프롬프트의 경우:
@@ -538,7 +538,7 @@ print(json.dumps(results, indent=2))
 | **Valid Syntax** | 생성된 코드가 유효한 구문인지 | 코드 채점기 |
 | **Task Following** | 사용자 요청에 정확히 대응하는 코드인지 | 모델 채점기 |
 
-![[skilljar-s2/L05-criteria-mapping.png]]
+![](01-Notes/assets/skilljar-s2/L05-criteria-mapping.png)
 *기준별 적합한 채점기 매핑 — 코드 채점기 vs 모델 채점기*
 
 처음 두 기준은 코드 채점기가, 마지막 기준은 모델 채점기가 더 적합하다.
@@ -642,12 +642,12 @@ def run_eval(dataset):
 
 AI가 생성한 코드를 평가할 때는 응답이 의미 있는지 확인하는 것만으로는 부족하다. 생성된 코드가 **유효한 구문**을 갖추고 **올바른 형식**을 따르는지도 검증해야 한다.
 
-![[skilljar-s2/L06-code-grading.png]]
+![](01-Notes/assets/skilljar-s2/L06-code-grading.png)
 *코드 기반 채점 — Format, Valid Syntax, Task Following 3가지 검증 영역*
 
 #### 구문 검증 함수
 
-![[skilljar-s2/L06-syntax-validation.png]]
+![](01-Notes/assets/skilljar-s2/L06-syntax-validation.png)
 *구문 검증 함수 — JSON, Python, Regex 각각에 대한 파싱 테스트*
 
 각 출력 형식 (Python, JSON, Regex)에 대한 구문 검증기를 구현한다:
@@ -835,12 +835,12 @@ score = (model_score + syntax_score) / 2
 
 프롬프트 엔지니어링은 작성한 프롬프트를 **개선하여 더 안정적이고 고품질의 출력**을 얻는 과정이다. 기본 프롬프트에서 시작하여 성능을 평가하고, 체계적으로 엔지니어링 기법을 적용하여 개선하는 **반복적 정제 과정**이다.
 
-![[skilljar-s2/L09-prompt-engineering.png]]
+![](01-Notes/assets/skilljar-s2/L09-prompt-engineering.png)
 *프롬프트 엔지니어링 개요 — 반복적 개선 프로세스*
 
 #### 반복적 개선 사이클
 
-![[skilljar-s2/L09-improvement-cycle.png]]
+![](01-Notes/assets/skilljar-s2/L09-improvement-cycle.png)
 *반복적 개선 사이클: 목표 설정 → 작성 → 평가 → 기법 적용 → 재평가*
 
 ```mermaid
@@ -871,7 +871,7 @@ evaluator = PromptEvaluator(max_concurrent_tasks=5)
 > [!tip] 동시성 설정
 > `max_concurrent_tasks`를 낮게 (3 정도) 시작하여 API 속도 제한 오류를 방지한다. API 쿼터가 허용하면 점차 늘린다.
 
-![[skilljar-s2/L09-meal-plan-example.png]]
+![](01-Notes/assets/skilljar-s2/L09-meal-plan-example.png)
 *실제 예시: 운동선수 식단 생성기 — 평가 시스템 설정*
 
 테스트 데이터를 자동 생성한다:
@@ -925,10 +925,10 @@ The output should include:
 )
 ```
 
-![[skilljar-s2/L09-eval-report.png]]
+![](01-Notes/assets/skilljar-s2/L09-eval-report.png)
 *평가 리포트 — 각 테스트 케이스의 점수와 채점 근거를 보여주는 HTML 리포트*
 
-![[skilljar-s2/L09-detailed-report.png]]
+![](01-Notes/assets/skilljar-s2/L09-detailed-report.png)
 *상세 평가 결과 — 프롬프트가 실패하는 지점과 개선 방향을 안내*
 
 > [!finding] 베이스라인 결과
@@ -947,7 +947,7 @@ The output should include:
 
 프롬프트의 **첫 줄**이 전체 요청에서 가장 중요하다. 여기서 모든 후속 내용의 기반을 설정하고, 이것을 제대로 하면 결과가 극적으로 개선된다.
 
-![[skilljar-s2/L10-clear-direct.png]]
+![](01-Notes/assets/skilljar-s2/L10-clear-direct.png)
 *Being Clear and Direct — 명확성과 직접성의 원칙*
 
 #### 명확성 (Clear)
@@ -999,12 +999,12 @@ The output should include:
 
 Claude에게 원하는 것을 **구체적으로 명시**하면, 모델의 해석에 맡기는 것보다 훨씬 일관되고 고품질의 결과를 얻는다.
 
-![[skilljar-s2/L11-specificity.png]]
+![](01-Notes/assets/skilljar-s2/L11-specificity.png)
 *Being Specific — 구체적 가이드라인의 힘*
 
 #### 두 가지 구체화 접근법
 
-![[skilljar-s2/L11-two-approaches.png]]
+![](01-Notes/assets/skilljar-s2/L11-two-approaches.png)
 *두 가지 구체화 접근법: 출력 품질 가이드라인 vs 프로세스 단계*
 
 ```mermaid
@@ -1075,7 +1075,7 @@ Steps:
 | **의사결정 시나리오** | + 프로세스 단계 추가 |
 | **비판적 사고 과제** | + 프로세스 단계 추가 |
 
-![[skilljar-s2/L11-when-to-use.png]]
+![](01-Notes/assets/skilljar-s2/L11-when-to-use.png)
 *프로세스 단계 사용 시점 — 복잡한 문제일수록 단계적 접근이 효과적*
 
 > [!ref] 소스
@@ -1091,14 +1091,14 @@ Steps:
 
 많은 콘텐츠를 포함하는 프롬프트를 구축할 때, Claude는 어떤 텍스트가 함께 속하는지 또는 다른 섹션이 무엇을 나타내는지 파악하기 어려울 수 있다. **XML 태그**는 프롬프트에 구조와 명확성을 추가하는 간단한 방법이다.
 
-![[skilljar-s2/L12-xml-why.png]]
+![](01-Notes/assets/skilljar-s2/L12-xml-why.png)
 *XML 태그로 프롬프트 구조화 — 왜 구조가 필요한가*
 
 #### 왜 구조화가 필요한가?
 
 20페이지의 영업 기록을 분석하는 프롬프트를 생각해보자. 명확한 경계 없이는 Claude가 **지시사항과 데이터를 구분**하기 어렵다.
 
-![[skilljar-s2/L12-xml-delimiters.png]]
+![](01-Notes/assets/skilljar-s2/L12-xml-delimiters.png)
 *XML 태그로 명확한 경계를 설정하여 Claude의 이해도를 높인다*
 
 ```xml
@@ -1130,7 +1130,7 @@ API Reference: ...
 | `<athlete_information>` | 운동선수 정보 | `<input>`보다 구체적 |
 | `<my_code>` | 디버깅할 코드 | `<content>`보다 역할이 분명 |
 
-![[skilljar-s2/L12-xml-code-example.png]]
+![](01-Notes/assets/skilljar-s2/L12-xml-code-example.png)
 *코드와 문서를 구분하는 실제 예시 — Not Great vs Better*
 
 #### 실제 적용 예시
@@ -1173,7 +1173,7 @@ Generate a meal plan based on the athlete information above.
 
 프롬프트에 **예시를 제공**하는 것은 가장 효과적인 프롬프트 엔지니어링 기법 중 하나다. "One-Shot" 또는 "Multi-Shot" 프롬프팅이라고도 하며, Claude에게 **입력/출력 쌍 예시**를 제공하여 응답을 안내한다.
 
-![[skilljar-s2/L13-sentiment-analysis.png]]
+![](01-Notes/assets/skilljar-s2/L13-sentiment-analysis.png)
 *Few-Shot 프롬프팅 — 감성 분석에서 예시의 역할*
 
 #### 예시가 필요한 이유: 풍자(Sarcasm) 문제
@@ -1182,7 +1182,7 @@ Generate a meal plan based on the athlete information above.
 
 #### 예시로 코너 케이스 처리
 
-![[skilljar-s2/L13-sarcasm-examples.png]]
+![](01-Notes/assets/skilljar-s2/L13-sarcasm-examples.png)
 *풍자적 표현을 처리하는 예시 — 긍정 예시와 부정(풍자) 예시 제공*
 
 ```xml
@@ -1215,7 +1215,7 @@ should be classified as Negative.
 
 프롬프트 평가를 실행하면 **최고 점수 출력**을 예시로 활용할 수 있다:
 
-![[skilljar-s2/L13-best-scoring.png]]
+![](01-Notes/assets/skilljar-s2/L13-best-scoring.png)
 *평가 결과에서 최고 점수 출력을 찾아 예시로 활용*
 
 1. 평가 결과에서 10점 (또는 최고 점수) 응답을 찾는다
