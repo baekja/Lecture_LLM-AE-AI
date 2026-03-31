@@ -98,7 +98,7 @@ Claude는 사용자의 자연어 요청을 이해하고, 필요한 도구들을 
 
 Claude는 학습 데이터에 기반한 방대한 지식을 갖추고 있지만, 기본적으로 **외부 세계에 접근할 수 없다**. 현재 시간, 실시간 날씨, 데이터베이스 조회 등은 모델 자체로는 수행할 수 없는 작업이다. **Tool Use** (도구 사용, Function Calling이라고도 함)는 이 한계를 극복하는 핵심 메커니즘이다.
 
-![[skilljar-s3/L01-introducing-tool-use-05.png]]
+![](01-Notes/assets/skilljar-s3/L01-introducing-tool-use-05.png)
 *Tool Use 개념 — Claude가 외부 도구를 활용하여 실시간 정보에 접근*
 
 #### Tool Use란?
@@ -108,7 +108,7 @@ Tool Use는 Claude에게 **외부 함수(도구)를 호출할 수 있는 능력*
 - **Tool Use 없이**: Claude는 학습 데이터에 기반한 일반적인 날씨 정보만 제공할 수 있다
 - **Tool Use 사용**: Claude가 날씨 API 도구를 호출하여 **실시간 날씨 데이터**를 가져온 후 응답한다
 
-![[skilljar-s3/L01-introducing-tool-use-07.png]]
+![](01-Notes/assets/skilljar-s3/L01-introducing-tool-use-07.png)
 *날씨 예시 — Tool Use를 통해 실시간 데이터 접근*
 
 #### Tool Use 4단계 흐름
@@ -139,7 +139,7 @@ sequenceDiagram
 | **3. Data Retrieval** | 애플리케이션이 실제 도구 함수를 실행하여 결과 수집 | 애플리케이션 → 외부 도구 |
 | **4. Final Response** | Claude가 도구 결과를 활용하여 최종 자연어 응답 생성 | Claude → 사용자 |
 
-![[skilljar-s3/L01-introducing-tool-use-14.png]]
+![](01-Notes/assets/skilljar-s3/L01-introducing-tool-use-14.png)
 *Tool Use 4단계 흐름 요약*
 
 > [!tip] 핵심 인사이트
@@ -158,7 +158,7 @@ sequenceDiagram
 
 이 챕터 전체에서 만들어갈 프로젝트는 **리마인더 시스템** (Reminder System)이다. 사용자가 "30분 뒤에 회의 알림 설정해줘"와 같은 자연어 요청을 하면, Claude가 도구를 활용하여 현재 시간 파악 → 시간 계산 → 알림 설정까지 자동으로 처리하는 시스템을 구축한다.
 
-![[skilljar-s3/L02-project-overview-00.png]]
+![](01-Notes/assets/skilljar-s3/L02-project-overview-00.png)
 *리마인더 시스템 프로젝트 개요*
 
 #### 3가지 도전 과제
@@ -227,7 +227,7 @@ flowchart LR
     style CLAUDE fill:#f3e5f5,stroke:#9c27b0
 ```
 
-![[skilljar-s3/L02-project-overview-17.png]]
+![](01-Notes/assets/skilljar-s3/L02-project-overview-17.png)
 *3가지 도구로 구성된 리마인더 시스템 전체 흐름*
 
 > [!method] 도구 설계 원칙
@@ -356,7 +356,7 @@ def get_current_datetime(date_format: str = "%Y-%m-%d %H:%M:%S") -> str:
 
 도구 함수를 작성했다면, 이제 Claude에게 **이 도구가 무엇이고, 어떤 파라미터를 받는지** 알려주어야 한다. 이를 위해 **JSON Schema** 형식의 도구 스키마를 정의한다.
 
-![[skilljar-s3/L04-tool-schemas-01.png]]
+![](01-Notes/assets/skilljar-s3/L04-tool-schemas-01.png)
 *도구 스키마 — Claude에게 도구의 존재와 사용법을 알려주는 명세*
 
 #### 스키마의 3가지 핵심 요소
@@ -510,7 +510,7 @@ graph TD
     style TUB fill:#fff3e0,stroke:#ff9800
 ```
 
-![[skilljar-s3/L05-handling-message-blocks-07.png]]
+![](01-Notes/assets/skilljar-s3/L05-handling-message-blocks-07.png)
 *멀티블록 응답 — TextBlock과 ToolUseBlock이 함께 반환*
 
 #### 블록 순회 처리
@@ -602,7 +602,7 @@ tool_result_message = {
 }
 ```
 
-![[skilljar-s3/L06-sending-tool-results-03.png]]
+![](01-Notes/assets/skilljar-s3/L06-sending-tool-results-03.png)
 *tool_result 메시지 형식 — tool_use_id로 요청과 결과를 매칭*
 
 #### 3가지 핵심 필드
@@ -692,7 +692,7 @@ messages.append({
 
 실제 리마인더 시스템에서는 단일 요청-응답이 아니라 **여러 턴에 걸친 대화**가 이루어진다. "30분 뒤에 회의 알림 설정해줘"라는 요청 하나에도 Claude는 현재 시간 확인 → 시간 계산 → 알림 설정까지 **3번의 도구 호출**이 필요하다. 이를 위한 멀티턴 패턴을 구축한다.
 
-![[skilljar-s3/L07-multi-turn-02.png]]
+![](01-Notes/assets/skilljar-s3/L07-multi-turn-02.png)
 *멀티턴 Tool Use — 하나의 요청이 여러 도구 호출로 이어지는 흐름*
 
 #### 멀티턴 Tool Use 패턴
@@ -1049,7 +1049,7 @@ graph TD
 
 지금까지 개별 도구를 하나씩 만들었다면, 이제 3가지 도구를 **모두 tools 배열에 등록**하여 Claude가 하나의 요청에서 여러 도구를 자율적으로 조합하게 한다.
 
-![[skilljar-s3/L09-multiple-tools-00.png]]
+![](01-Notes/assets/skilljar-s3/L09-multiple-tools-00.png)
 *다중 도구 등록 — Reminder System에 3가지 도구를 모두 등록*
 
 #### Ch.1에서 만든 3가지 도구
@@ -1192,7 +1192,7 @@ sequenceDiagram
 
 Chapter 1에서 배운 **Client Tools** (사용자 정의 도구)와 달리, Claude는 **Built-in Tools** (내장 도구)도 지원한다. 내장 도구는 Anthropic이 스키마를 미리 정의해두었지만, **실행은 개발자 코드가 담당**하는 특별한 형태의 도구다.
 
-![[skilljar-s3/L10-text-edit-00.png]]
+![](01-Notes/assets/skilljar-s3/L10-text-edit-00.png)
 *텍스트 편집 도구 — Claude의 내장 도구 중 하나*
 
 #### Built-in Tools vs Client Tools
@@ -1239,7 +1239,7 @@ graph LR
 | **insert** | 줄 삽입 | 지정한 줄 번호 뒤에 새 텍스트 삽입 |
 | **undo** | 실행 취소 | 마지막 편집을 되돌림 |
 
-![[skilljar-s3/L10-text-edit-04.png]]
+![](01-Notes/assets/skilljar-s3/L10-text-edit-04.png)
 *텍스트 편집 도구의 6가지 기능*
 
 #### 도구 등록 방법
@@ -1332,7 +1332,7 @@ Claude는 자동으로:
 2. `replace` 명령으로 main 함수에 docstring 추가
 3. 변경 내용을 요약하여 사용자에게 보고
 
-![[skilljar-s3/L10-text-edit-12.png]]
+![](01-Notes/assets/skilljar-s3/L10-text-edit-12.png)
 *텍스트 편집 도구 사용 예시 — 파일 열기, 분석, 수정의 전체 과정*
 
 > [!finding] Built-in Tool의 장점
@@ -1348,7 +1348,7 @@ Claude는 자동으로:
 
 웹 검색 도구는 Built-in Tools와는 다른 **Server Tool**이다. Anthropic 서버에서 실행되므로 개발자가 함수를 구현할 필요가 **전혀 없다**.
 
-![[skilljar-s3/L11-web-search-00.png]]
+![](01-Notes/assets/skilljar-s3/L11-web-search-00.png)
 *웹 검색 도구 — Claude가 실시간 웹 정보에 접근*
 
 #### Server Tool 등록
@@ -1381,7 +1381,7 @@ response = client.messages.create(
 > [!tip] Console 설정 필수
 > 웹 검색 도구를 사용하려면 [Anthropic Console](https://console.anthropic.com/)의 **Settings**에서 웹 검색 기능을 **활성화**해야 한다. 활성화하지 않으면 API 호출 시 오류가 발생한다.
 
-![[skilljar-s3/L11-web-search-07.png]]
+![](01-Notes/assets/skilljar-s3/L11-web-search-07.png)
 *웹 검색 도구의 스키마 구성 — type, name, max_uses, allowed_domains*
 
 #### 응답 구조
@@ -1422,7 +1422,7 @@ if hasattr(final_text_block, 'citations') and final_text_block.citations:
         print(f"  Title: {citation.title}")
 ```
 
-![[skilljar-s3/L11-web-search-13.png]]
+![](01-Notes/assets/skilljar-s3/L11-web-search-13.png)
 *웹 검색 응답 구조 — ServerToolUseBlock, WebSearchToolResultBlock, Citations*
 
 #### 도메인 제한 (Domain Restriction)
@@ -1469,7 +1469,7 @@ response = client.messages.create(
 )
 ```
 
-![[skilljar-s3/L11-web-search-17.png]]
+![](01-Notes/assets/skilljar-s3/L11-web-search-17.png)
 *도메인 제한 예시 — allowed_domains로 신뢰할 수 있는 소스만 검색*
 
 #### 3가지 도구 유형 비교 정리
