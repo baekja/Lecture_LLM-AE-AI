@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(source:*)",
+      "Bash(pip install:*)",
+      "Bash(python3:*)",
+      "Read(//Users/baekjw/Library/CloudStorage/OneDrive-개인/저장공간/06. Claude Code/11. RAG System with ChatGPT/scratch/**)",
+      "Read(//Users/baekjw/Library/CloudStorage/OneDrive-개인/저장공간/06. Claude Code/11. RAG System with ChatGPT/**)",
+      "Bash(cd:*)",
+      "Bash(python:*)",
+      "Bash(./package.sh)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

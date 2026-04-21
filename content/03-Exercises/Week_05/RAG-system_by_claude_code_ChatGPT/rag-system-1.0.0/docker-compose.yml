@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  rag-system:
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile
+    image: rag-system:latest
+    container_name: rag-system
+    volumes:
+      # Mount documents directory
+      - ./docs/originals:/app/docs/originals
+      # Persist knowledge base
+      - rag-knowledge:/app/knowledge
+      # Mount scratch directory for output
+      - ./scratch:/app/scratch
+    environment:
+      - PYTHONUNBUFFERED=1
+      - TOKENIZERS_PARALLELISM=false
+    networks:
+      - rag-network
+    stdin_open: true
+    tty: true
+
+volumes:
+  rag-knowledge:
+    driver: local
+
+networks:
+  rag-network:
+    driver: bridge

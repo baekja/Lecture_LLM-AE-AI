@@ -1,0 +1,31 @@
+# Core dependencies
+openai>=1.0.0
+langchain>=0.1.0
+langchain-community>=0.0.10
+
+# Vector database
+chromadb>=0.4.0
+faiss-cpu>=1.7.4
+
+# Embeddings
+sentence-transformers>=2.2.2
+tiktoken>=0.5.0
+
+# Document processing
+PyMuPDF>=1.23.0  # PDF processing
+python-docx>=1.0.0  # Word documents
+openpyxl>=3.1.0  # Excel files
+python-pptx>=0.6.21  # PowerPoint files
+mammoth>=1.6.0  # DOCX to HTML/Markdown
+unstructured>=0.10.0  # General document processing
+pandas>=2.0.0  # Data manipulation
+
+# OCR support (optional, install separately if needed)
+# ocrmypdf>=15.0.0  # Requires system dependencies
+# pytesseract>=0.3.10  # Requires tesseract-ocr
+
+# Utilities
+python-dotenv>=1.0.0
+tqdm>=4.65.0
+pyyaml>=6.0
+tabulate>=0.9.0

@@ -1,0 +1,20 @@
+{
+  "allowedTools": [
+    "Read",
+    "Write", 
+    "Edit",
+    "MultiEdit",
+    "Bash",
+    "Bash(python3 *)",
+    "Bash(pip *)",
+    "Bash(ocrmypdf *)",
+    "Bash(git *)"
+  ],
+  "hooks": {
+    "PostToolUse": {
+      "enabled": true,
+      "pattern": "\\.(pdf|docx|xlsx|pptx)$",
+      "command": "python3 scripts/ingest.py && python3 scripts/build_index.py"
+    }
+  }
+}
