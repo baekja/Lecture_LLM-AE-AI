@@ -145,7 +145,7 @@ graph TD
 
 대형 문서를 Claude에게 넘겨 질문에 답하도록 하려면, **문서 전체를 프롬프트에 밀어넣거나** 아니면 **관련 부분만 발췌해서 전달**하는 두 가지 길이 있다. **RAG(Retrieval Augmented Generation)** 는 후자의 방법을 체계화한 기법으로, 문서를 작은 청크(chunk)로 분할해 두고 사용자의 질문과 가장 관련된 청크만 선택해 프롬프트에 주입한다.
 
-![[skilljar-s4/L01-01-problem.jpg]]
+![](01-Notes/assets/skilljar-s4/L01-01-problem.jpg)
 *대규모 문서의 문제 — 800페이지짜리 재무 문서에 대해 "이 회사가 직면한 리스크 요인은 무엇인가?"와 같은 질문을 던지고 싶지만, 프롬프트 길이에는 한계가 있다*
 
 #### 시나리오: 800페이지 재무 문서
@@ -168,7 +168,7 @@ Answer the user's question about the financial document.
 </financial_document>
 ```
 
-![[skilljar-s4/L01-05-option1.jpg]]
+![](01-Notes/assets/skilljar-s4/L01-05-option1.jpg)
 *옵션 1: 문서 전체를 프롬프트에 삽입 — 단순하지만 심각한 한계를 가진다*
 
 이 접근의 한계는 분명하다:
@@ -182,12 +182,12 @@ Answer the user's question about the financial document.
 
 RAG는 더 영리한 방식을 택한다. **전처리 단계**에서 문서를 작은 청크 여러 개로 분할해 두고, 사용자 질문이 들어오면 **질문과 가장 관련 높은 청크들만** 찾아 프롬프트에 포함한다.
 
-![[skilljar-s4/L01-08-option2.jpg]]
+![](01-Notes/assets/skilljar-s4/L01-08-option2.jpg)
 *옵션 2: 문서를 청크로 분할 — 질문과 관련된 청크만 선별적으로 프롬프트에 포함*
 
 예를 들어 "이 회사가 직면한 리스크는 무엇인가?"라는 질문이 들어오면, 청크 저장소를 검색해서 "Risk Factors" 섹션에 해당하는 청크를 찾아 해당 청크만 프롬프트에 삽입한다.
 
-![[skilljar-s4/L01-09-relevant-chunk.jpg]]
+![](01-Notes/assets/skilljar-s4/L01-09-relevant-chunk.jpg)
 *관련 청크만 선택적으로 주입 — 프롬프트 길이는 작아지고 Claude는 관련 정보에만 집중할 수 있다*
 
 #### 옵션 1 vs 옵션 2 비교
@@ -256,14 +256,14 @@ RAG는 기술적 의사결정이 많고 프롬프트에 전부 넣는 방식보�
 
 문서를 어떻게 쪼개느냐는 RAG 파이프라인에서 **가장 중요한 의사결정 중 하나**다. 잘못된 청킹 전략은 관련 없는 컨텍스트를 프롬프트에 삽입하게 만들고, 결국 Claude가 완전히 잘못된 답을 내놓게 한다.
 
-![[skilljar-s4/L02-01-pipeline.jpg]]
+![](01-Notes/assets/skilljar-s4/L02-01-pipeline.jpg)
 *RAG 파이프라인에서 청킹의 위치 — 문서 입력 후 가장 먼저 수행되는 전처리 단계*
 
 #### 나쁜 청킹의 사례: "bug" 문제
 
 다음 시나리오를 떠올려 보자. 한 문서에 **의학 연구(Medical Research)** 섹션과 **소프트웨어 엔지니어링(Software Engineering)** 섹션이 함께 들어있다. 사용자가 "올해 엔지니어들이 버그를 몇 개나 고쳤는가?"라고 묻는다. 그런데 청킹이 엉망이면, 의학 연구 섹션에서 **다른 맥락으로 쓰인 "bug"(벌레/병원체 의미)** 가 포함된 청크가 검색되어 엉뚱한 답이 나온다.
 
-![[skilljar-s4/L02-04-bad-chunk.jpg]]
+![](01-Notes/assets/skilljar-s4/L02-04-bad-chunk.jpg)
 *Bad chunking 사례 — "bug"라는 단어 때문에 의학 연구 청크가 소프트웨어 질문에 엉뚱하게 매칭되는 상황*
 
 이것이 청킹 전략이 중요한 이유다. 이제 세 가지 주요 접근을 살펴보자.
@@ -272,12 +272,12 @@ RAG는 기술적 의사결정이 많고 프롬프트에 전부 넣는 방식보�
 
 가장 단순한 방식. 텍스트를 **동일 길이의 문자열**로 잘라낸다. 325자 문서를 108자 청크 3개로 나누는 식이다.
 
-![[skilljar-s4/L02-05-size.jpg]]
+![](01-Notes/assets/skilljar-s4/L02-05-size.jpg)
 *Size-based chunking — 같은 길이로 균등 분할*
 
 문제는 문장이 중간에 잘린다는 점이다.
 
-![[skilljar-s4/L02-06-size-problem.jpg]]
+![](01-Notes/assets/skilljar-s4/L02-06-size-problem.jpg)
 *Size-based chunking의 한계 — 단어가 중간에 끊기고, 섹션 헤더가 본문과 분리되며, 주변 맥락을 잃는다*
 
 주요 단점:
@@ -286,12 +286,12 @@ RAG는 기술적 의사결정이 많고 프롬프트에 전부 넣는 방식보�
 - 주변 텍스트의 중요한 맥락을 **청크가 잃어버림**
 - **섹션 헤더가 본문과 분리**될 수 있음
 
-![[skilljar-s4/L02-07-overlap.jpg]]
+![](01-Notes/assets/skilljar-s4/L02-07-overlap.jpg)
 *Overlap 도입 — 인접 청크 사이에 일정 문자를 겹쳐서 맥락 손실을 줄인다*
 
 이를 완화하기 위해 **overlap**(청크 간 중첩)을 도입한다. 각 청크가 이웃 청크의 일부 문자를 포함해 맥락을 보존하고 단어가 깔끔하게 끊기지 않도록 한다.
 
-![[skilljar-s4/L02-08-code.jpg]]
+![](01-Notes/assets/skilljar-s4/L02-08-code.jpg)
 *Python 구현 — start_idx를 overlap만큼 뒤로 당겨 다음 청크 시작점을 잡는다*
 
 ```python
@@ -315,7 +315,7 @@ def chunk_by_char(text, chunk_size=150, chunk_overlap=20):
 
 문서의 **자연스러운 구조**(헤더, 문단, 섹션)를 기준으로 분할한다. Markdown 파일처럼 형식이 잘 정돈된 문서에서 가장 좋은 결과를 낸다.
 
-![[skilljar-s4/L02-09-structure.jpg]]
+![](01-Notes/assets/skilljar-s4/L02-09-structure.jpg)
 *Structure-based chunking — Markdown의 `##` 헤더를 경계로 섹션 단위 청크 생성*
 
 ```python
@@ -401,7 +401,7 @@ graph TD
 
 문서를 청크로 나눈 다음 단계는 **"사용자의 질문과 가장 관련 있는 청크"를 찾는 것**이다. 이는 본질적으로 검색 문제 — 모든 청크를 훑어 질문과 연결된 것을 골라내야 한다.
 
-![[skilljar-s4/L03-03-search-problem.jpg]]
+![](01-Notes/assets/skilljar-s4/L03-03-search-problem.jpg)
 *검색 문제 — 수많은 청크 중 사용자 질문과 관련 있는 것만 선택해야 한다*
 
 #### Semantic Search vs 키워드 검색
@@ -410,14 +410,14 @@ graph TD
 
 **Semantic Search**(의미 검색)는 **임베딩(embedding)** 을 사용해 질문과 청크의 **의미와 맥락**을 이해하고 비교한다.
 
-![[skilljar-s4/L03-04-semantic.jpg]]
+![](01-Notes/assets/skilljar-s4/L03-04-semantic.jpg)
 *Semantic search — 단어가 일치하지 않더라도 의미적으로 가까운 청크를 찾는다*
 
 #### 텍스트 임베딩이란?
 
 **텍스트 임베딩**은 텍스트에 담긴 의미를 **숫자 배열**로 표현한 것이다. 사람이 쓰는 언어를 컴퓨터가 수학적으로 다룰 수 있는 형태로 바꿔놓는 것이다.
 
-![[skilljar-s4/L03-07-process.jpg]]
+![](01-Notes/assets/skilljar-s4/L03-07-process.jpg)
 *임베딩 생성 프로세스 — 텍스트를 임베딩 모델에 입력 → 숫자 배열 출력*
 
 생성 과정:
@@ -431,7 +431,7 @@ graph TD
 
 각 숫자는 입력 텍스트의 어떤 "품질"에 대한 점수다. 하지만 중요한 단서 — **각 숫자가 구체적으로 무엇을 의미하는지는 우리도 모른다.**
 
-![[skilljar-s4/L03-09-numbers.jpg]]
+![](01-Notes/assets/skilljar-s4/L03-09-numbers.jpg)
 *임베딩의 각 차원 — "얼마나 행복한가", "얼마나 바다를 이야기하는가"는 개념적 예일 뿐, 실제 의미는 학습을 통해 모델 내부에 잠재된다*
 
 "첫 번째 숫자는 텍스트가 얼마나 행복한지", "두 번째 숫자는 텍스트가 얼마나 바다에 대한 이야기인지"처럼 **상상하는 것은 이해를 돕지만 실제는 아니다**. 각 차원의 실제 의미는 학습 중에 모델이 스스로 결정하며, 사람이 직접 해석할 수는 없다.
@@ -444,7 +444,7 @@ Anthropic은 현재 **임베딩 생성 API를 제공하지 않는다**. 권장�
 - API key 발급 (시작은 무료)
 - 환경변수에 키 추가
 
-![[skilljar-s4/L03-15-voyage.jpg]]
+![](01-Notes/assets/skilljar-s4/L03-15-voyage.jpg)
 *VoyageAI 설정 — Anthropic 생태계가 권장하는 임베딩 제공업체*
 
 `.env` 파일:
@@ -475,12 +475,12 @@ def generate_embedding(text, model="voyage-3-large", input_type="query"):
     return result.embeddings[0]
 ```
 
-![[skilljar-s4/L03-18-impl.jpg]]
+![](01-Notes/assets/skilljar-s4/L03-18-impl.jpg)
 *generate_embedding 구현 — model은 voyage-3-large, input_type="query"로 호출*
 
 함수를 텍스트 청크에 적용하면 **부동소수점 숫자 리스트**가 반환된다. 생성은 빠르고 간단하지만 — 진짜 과제는 **이 임베딩들을 어떻게 비교해서 RAG 파이프라인에서 효과적으로 쓰느냐**이다.
 
-![[skilljar-s4/L03-19-compare.jpg]]
+![](01-Notes/assets/skilljar-s4/L03-19-compare.jpg)
 *임베딩 비교 — 다음 단계는 어떤 임베딩이 사용자 질문과 가장 유사한지 찾는 것*
 
 #### 임베딩 생성 흐름
@@ -540,7 +540,7 @@ graph LR
 - 첫 번째 숫자 = 텍스트가 **의학 분야**에 대해 얼마나 이야기하는가
 - 두 번째 숫자 = 텍스트가 **소프트웨어 엔지니어링**에 대해 얼마나 이야기하는가
 
-![[skilljar-s4/L04-02-imaginary.jpg]]
+![](01-Notes/assets/skilljar-s4/L04-02-imaginary.jpg)
 *상상의 2차원 임베딩 모델 — 첫 차원은 의학 관련도, 두 번째 차원은 소프트웨어 관련도*
 
 - **Medical Research 청크** → `[0.97, 0.34]` (의학 성향 강함, "bug" 때문에 소프트웨어 성분도 약간)
@@ -550,7 +550,7 @@ graph LR
 
 임베딩 API는 보통 벡터의 **크기(magnitude)를 1.0으로 맞추는 normalization** 단계를 자동 수행한다.
 
-![[skilljar-s4/L04-07-normalization.jpg]]
+![](01-Notes/assets/skilljar-s4/L04-07-normalization.jpg)
 *Normalization — 각 벡터를 길이 1로 스케일링. 수식 자체는 API가 알아서 처리한다*
 
 정규화 결과:
@@ -558,14 +558,14 @@ graph LR
 - `[0.97, 0.34]` → `[0.944, 0.331]`
 - `[0.30, 0.97]` → `[0.295, 0.955]`
 
-![[skilljar-s4/L04-08-unit-circle.jpg]]
+![](01-Notes/assets/skilljar-s4/L04-08-unit-circle.jpg)
 *단위원 시각화 — 정규화된 각 청크가 반지름 1인 원 위의 점으로 표현된다*
 
 #### 단계 3: Vector Database에 저장
 
 정규화된 임베딩을 **벡터 데이터베이스(vector database)** 에 저장한다. 벡터 DB는 긴 숫자 배열들을 **저장·비교·검색**하도록 최적화된 특수 데이터베이스다.
 
-![[skilljar-s4/L04-09-vector-db.jpg]]
+![](01-Notes/assets/skilljar-s4/L04-09-vector-db.jpg)
 *Vector database — 임베딩 저장과 유사도 검색에 특화된 데이터베이스*
 
 여기서 **파이프라인은 일단 멈춘다.** 지금까지 수행한 것은 모두 **전처리(preprocessing)**, 즉 사용자가 질문하기 전에 미리 해두는 작업이다. 이제 사용자 질문을 기다린다.
@@ -574,7 +574,7 @@ graph LR
 
 사용자가 다음과 같이 질문한다: "I'm curious about the company. In particular, what did the software engineering dept do this year?"
 
-![[skilljar-s4/L04-10-query.jpg]]
+![](01-Notes/assets/skilljar-s4/L04-10-query.jpg)
 *사용자 질문을 임베딩으로 변환 — 저장된 청크에 사용한 것과 동일한 모델을 써야 한다*
 
 이 질문을 **같은 임베딩 모델**에 통과시키면 `[0.1, 0.89]` 같은 값이 나온다 — 의학 성분은 낮고 소프트웨어 성분은 높다. 정규화 후 `[0.112, 0.993]`이 된다.
@@ -583,7 +583,7 @@ graph LR
 
 질문 임베딩을 벡터 DB에 보내 **가장 유사한 저장 임베딩**을 요청한다.
 
-![[skilljar-s4/L04-12-search.jpg]]
+![](01-Notes/assets/skilljar-s4/L04-12-search.jpg)
 *유사도 검색 — 질문 벡터와 각 저장 벡터의 cosine similarity 계산*
 
 DB는 Software Engineering 섹션을 반환한다 — 사용자가 묻고 있는 주제와 가장 가깝기 때문이다.
@@ -592,7 +592,7 @@ DB는 Software Engineering 섹션을 반환한다 — 사용자가 묻고 있는
 
 벡터 DB는 두 벡터 사이의 유사도를 **코사인 유사도(cosine similarity)** 로 측정한다. 이는 **두 벡터가 이루는 각도의 코사인** 값이다.
 
-![[skilljar-s4/L04-15-cosine.jpg]]
+![](01-Notes/assets/skilljar-s4/L04-15-cosine.jpg)
 *Cosine similarity — 두 벡터 사이 각도의 cosine 값*
 
 주요 특성:
@@ -622,7 +622,7 @@ DB는 Software Engineering 섹션을 반환한다 — 사용자가 묻고 있는
 
 가장 관련 있는 청크와 사용자 질문을 합쳐 Claude에 전달한다.
 
-![[skilljar-s4/L04-19-final-prompt.jpg]]
+![](01-Notes/assets/skilljar-s4/L04-19-final-prompt.jpg)
 *최종 프롬프트 — 사용자 질문 + 검색된 관련 청크 → Claude 응답*
 
 ```
@@ -695,7 +695,7 @@ sequenceDiagram
 4. 사용자 질문 임베딩
 5. Store에서 가장 관련 있는 청크 검색
 
-![[skilljar-s4/L05-10-diagram.jpg]]
+![](01-Notes/assets/skilljar-s4/L05-10-diagram.jpg)
 *L05 RAG 구현 다이어그램 — 사용자 질문을 임베딩으로 변환해 vector DB에서 가장 관련 있는 콘텐츠를 찾는다*
 
 #### 단계 1: 청킹
@@ -753,7 +753,7 @@ for doc, distance in results:
 
 `store.search(user_embedding, 2)` — 가장 가까운 **2개** 청크를 유사도 점수(cosine distance)와 함께 반환한다.
 
-![[skilljar-s4/L05-12-results.jpg]]
+![](01-Notes/assets/skilljar-s4/L05-12-results.jpg)
 *검색 결과 — distance 값이 낮을수록 가까운 청크*
 
 #### 결과 해석
@@ -851,7 +851,7 @@ graph LR
 
 L06의 첫 예제는 매우 명확하다. 사용자가 `"What happened with INC-2023-Q4-011?"` 라고 물을 때, **의미 기반 검색만 사용한 결과는 다음과 같다**.
 
-![[skilljar-s4/L06-05-semantic-fail.jpg]]
+![](01-Notes/assets/skilljar-s4/L06-05-semantic-fail.jpg)
 
 > 의미 검색은 사이버보안 섹션 (실제로 해당 사건 ID를 포함한다) 을 반환했지만, 사건에 대해 전혀 언급하지 않은 **금융 분석 섹션**도 함께 반환했다. 이는 의미 검색이 **정확한 용어 일치 (exact term matching)** 가 아닌 **개념적 유사성 (conceptual similarity)** 에 초점을 맞추기 때문이다.
 
@@ -864,7 +864,7 @@ L06의 첫 예제는 매우 명확하다. 사용자가 `"What happened with INC-
 
 해결책은 간단하다 — **의미 검색과 어휘 검색을 동시에 돌리고, 결과를 병합한다**.
 
-![[skilljar-s4/L06-06-hybrid.jpg]]
+![](01-Notes/assets/skilljar-s4/L06-06-hybrid.jpg)
 
 - **의미 검색 (Semantic)**: 임베딩 기반. 개념적 유사 문서를 끌어온다.
 - **어휘 검색 (Lexical)**: 고전적 텍스트 검색. 정확한 용어 매칭을 보장한다.
@@ -890,7 +890,7 @@ flowchart LR
 
 BM25 (**Best Match 25**) 는 1990년대부터 IR (Information Retrieval) 분야에서 표준처럼 쓰여 온 어휘 검색 알고리즘이다. Skilljar 강의 4단계 설명을 그대로 따라가보자.
 
-![[skilljar-s4/L06-07-algorithm.jpg]]
+![](01-Notes/assets/skilljar-s4/L06-07-algorithm.jpg)
 
 > [!method] BM25 4단계 처리 흐름
 > **Step 1 — 질의 토큰화 (Tokenize the query)**
@@ -951,7 +951,7 @@ for doc, distance in results:
 
 이렇게 구현한 BM25로 같은 질의를 다시 던지면 결과가 뚜렷이 개선된다.
 
-![[skilljar-s4/L06-16-results.jpg]]
+![](01-Notes/assets/skilljar-s4/L06-16-results.jpg)
 
 
 > 결과가 이제 **Software Engineering 섹션**과 **Cybersecurity 섹션**을 올바르게 우선 반환한다. 이 두 섹션 모두 실제로 검색 대상 사건 ID를 포함하고 있다.
@@ -991,7 +991,7 @@ L05까지 우리는 **VectorIndex**를, L06에서 **BM25Index**를 만들었다.
 - `add_document(document)` — 문서를 인덱스에 추가
 - `search(query, k)` — 상위 k개 문서를 반환
 
-![[skilljar-s4/L07-00-architecture.jpg]]
+![](01-Notes/assets/skilljar-s4/L07-00-architecture.jpg)
 
 >  "두 클래스가 거의 동일한 API를 공유한다는 일관성 덕분에, 하나의 새 클래스 **Retriever**로 묶는 것이 자연스럽다. Retriever는 사용자 질의를 두 인덱스에 동시에 전달하고, 각 결과를 수집한 뒤 **reciprocal rank fusion** 으로 병합하는 **조정자 (coordinator)** 역할을 수행한다."
 
@@ -1054,7 +1054,7 @@ sequenceDiagram
 
 여러 검색 방식의 결과를 병합할 때 가장 순진한 방식은 "그냥 두 리스트를 이어붙이기"이다. 하지만 이는 작동하지 않는다. **각 방식이 완전히 다른 스코어 체계를 쓰기 때문**이다 — VectorIndex의 cosine 유사도는 [0, 1] 범위의 연속값, BM25는 이론상 0부터 양의 무한대까지 가는 가중 합. 이 두 값을 그대로 더하거나 평균내면 한쪽이 압도해버린다.
 
-![[skilljar-s4/L07-04-rrf.jpg]]
+![](01-Notes/assets/skilljar-s4/L07-04-rrf.jpg)
 
 RRF (Reciprocal Rank Fusion) 는 이 문제를 **점수가 아닌 순위 (rank) 만 사용**하여 해결한다. 각 결과에서 문서가 몇 번째에 있었는지만 보고, 그 역수를 더한다.
 
@@ -1066,7 +1066,7 @@ RRF_score(d) = Σ_i  1 / (k + rank_i(d))
 - `rank_i(d)`: i번째 인덱스에서의 문서 d의 순위 (1부터 시작).
 - `Σ`: 문서 d가 등장한 **모든 인덱스에 대해 합산**.
 
-![[skilljar-s4/L07-06-formula.jpg]]
+![](01-Notes/assets/skilljar-s4/L07-06-formula.jpg)
 
 > [!tip] RRF의 세 가지 강점
 > 1. **스케일 중립 (scale-agnostic)** — 원점수 범위가 달라도 영향 없음. rank만 본다.
@@ -1077,7 +1077,7 @@ RRF_score(d) = Σ_i  1 / (k + rank_i(d))
 
 예제를 정확한 수치를 따라 재현해보자. 질의는 `INC-2023-Q4-011` 이며, 두 인덱스의 결과는 다음과 같다.
 
-![[skilljar-s4/L07-05-table.jpg]]
+![](01-Notes/assets/skilljar-s4/L07-05-table.jpg)
 
 - **VectorIndex**: Section 2 (rank 1), Section 7 (rank 2), Section 6 (rank 3)
 - **BM25Index**: Section 6 (rank 1), Section 2 (rank 2), Section 7 (rank 3)
@@ -1090,7 +1090,7 @@ RRF_score(d) = Σ_i  1 / (k + rank_i(d))
 
 최종 정렬은 **Section 2 (0.833) → Section 6 (0.750) → Section 7 (0.583)**. 예제의 해석대로 — "Section 2 가 양쪽 인덱스에서 모두 좋은 성적을 냈기 때문에 자연스럽게 최상위로 떠오른다" — 는 직관이 숫자로 증명된다.
 
-![[skilljar-s4/L07-08-ranking.jpg]]
+![](01-Notes/assets/skilljar-s4/L07-08-ranking.jpg)
 
 > [!method] 손으로 RRF 계산해보기
 > `k=1`인 경우 — (교재 예시와 동일)
@@ -1166,9 +1166,9 @@ Chapter 1 L05에서 남긴 미해결 과제가 있었다. 벡터 검색만 썼�
 
 #### 2.2.6 SearchIndex 프로토콜 — 확장성의 진짜 가치
 
-![[skilljar-s4/L07-18-extensibility.jpg]]
+![](01-Notes/assets/skilljar-s4/L07-18-extensibility.jpg)
 
-![[skilljar-s4/L07-19-protocol.jpg]]
+![](01-Notes/assets/skilljar-s4/L07-19-protocol.jpg)
 
 >  "이 아키텍처의 아름다움은 **확장성**에 있다. 모든 인덱스가 동일한 `SearchIndex` 프로토콜 (`add_document`, `search`) 을 구현하기 때문에, 새로운 검색 방법을 손쉽게 추가할 수 있다."
 

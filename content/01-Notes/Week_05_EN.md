@@ -145,7 +145,7 @@ This week is also training in understanding RAG as a **production system**. The 
 
 When you want Claude to answer questions about a large document, there are two paths: **stuff the entire document into the prompt**, or **extract only the relevant portions and pass them along**. **RAG (Retrieval Augmented Generation)** systematizes the latter approach — it splits documents into small chunks in advance, then selects only the chunks most relevant to the user's question and injects them into the prompt.
 
-![[skilljar-s4/L01-01-problem.jpg]]
+![](01-Notes/assets/skilljar-s4/L01-01-problem.jpg)
 *The problem with large documents — you want to ask questions like "What risk factors does this company face?" about an 800-page financial document, but prompt length has limits*
 
 #### Scenario: An 800-Page Financial Document
@@ -168,7 +168,7 @@ Answer the user's question about the financial document.
 </financial_document>
 ```
 
-![[skilljar-s4/L01-05-option1.jpg]]
+![](01-Notes/assets/skilljar-s4/L01-05-option1.jpg)
 *Option 1: Insert the entire document into the prompt — simple but with serious limitations*
 
 The limits of this approach are clear:
@@ -182,12 +182,12 @@ The limits of this approach are clear:
 
 RAG takes a smarter approach. In a **preprocessing stage**, the document is split into many small chunks; when a user question arrives, **only the chunks most relevant to the question** are found and included in the prompt.
 
-![[skilljar-s4/L01-08-option2.jpg]]
+![](01-Notes/assets/skilljar-s4/L01-08-option2.jpg)
 *Option 2: Split the document into chunks — selectively include only chunks related to the question*
 
 For example, when the question "What risks does this company face?" comes in, the chunk store is searched to find chunks corresponding to the "Risk Factors" section, and only those chunks are inserted into the prompt.
 
-![[skilljar-s4/L01-09-relevant-chunk.jpg]]
+![](01-Notes/assets/skilljar-s4/L01-09-relevant-chunk.jpg)
 *Selectively injecting only relevant chunks — the prompt becomes smaller and Claude can focus solely on the relevant information*
 
 #### Option 1 vs Option 2 Comparison
@@ -256,14 +256,14 @@ RAG involves many technical decisions and more work than simply stuffing everyth
 
 How you split documents is **one of the most important decisions** in a RAG pipeline. A poor chunking strategy injects irrelevant context into the prompt and ultimately leads Claude to produce a completely wrong answer.
 
-![[skilljar-s4/L02-01-pipeline.jpg]]
+![](01-Notes/assets/skilljar-s4/L02-01-pipeline.jpg)
 *Where chunking sits in the RAG pipeline — the first preprocessing step after document input*
 
 #### Example of Bad Chunking: The "bug" Problem
 
 Imagine this scenario. A document contains both a **Medical Research** section and a **Software Engineering** section. A user asks, "How many bugs did engineers fix this year?" But if chunking is poorly done, a chunk from the medical research section containing **"bug" in a different sense (meaning a pathogen/insect)** is retrieved, producing a nonsensical answer.
 
-![[skilljar-s4/L02-04-bad-chunk.jpg]]
+![](01-Notes/assets/skilljar-s4/L02-04-bad-chunk.jpg)
 *Bad chunking example — a medical research chunk is wrongly matched to a software question because of the word "bug"*
 
 This is why chunking strategy matters. Now let's look at three main approaches.
@@ -272,12 +272,12 @@ This is why chunking strategy matters. Now let's look at three main approaches.
 
 The simplest approach. Text is cut into **equal-length character strings**. For example, a 325-character document is split into three 108-character chunks.
 
-![[skilljar-s4/L02-05-size.jpg]]
+![](01-Notes/assets/skilljar-s4/L02-05-size.jpg)
 *Size-based chunking — uniform splits at equal lengths*
 
 The problem is that sentences get cut in the middle.
 
-![[skilljar-s4/L02-06-size-problem.jpg]]
+![](01-Notes/assets/skilljar-s4/L02-06-size-problem.jpg)
 *The limits of size-based chunking — words are cut mid-word, section headers are separated from their bodies, and surrounding context is lost*
 
 Key drawbacks:
@@ -286,12 +286,12 @@ Key drawbacks:
 - **Chunks lose** important surrounding context
 - **Section headers can be separated** from their bodies
 
-![[skilljar-s4/L02-07-overlap.jpg]]
+![](01-Notes/assets/skilljar-s4/L02-07-overlap.jpg)
 *Introducing overlap — neighboring chunks share a fixed number of characters to reduce context loss*
 
 To mitigate this, we introduce **overlap** (sharing between chunks). Each chunk includes a portion of characters from its neighbor to preserve context and prevent clean word breaks.
 
-![[skilljar-s4/L02-08-code.jpg]]
+![](01-Notes/assets/skilljar-s4/L02-08-code.jpg)
 *Python implementation — pulls start_idx back by the overlap amount to set the next chunk's starting point*
 
 ```python
@@ -315,7 +315,7 @@ def chunk_by_char(text, chunk_size=150, chunk_overlap=20):
 
 Split based on the document's **natural structure** (headers, paragraphs, sections). Works best on well-formatted documents like Markdown files.
 
-![[skilljar-s4/L02-09-structure.jpg]]
+![](01-Notes/assets/skilljar-s4/L02-09-structure.jpg)
 *Structure-based chunking — uses Markdown's `##` headers as boundaries to create section-level chunks*
 
 ```python
@@ -401,7 +401,7 @@ graph TD
 
 After splitting a document into chunks, the next step is **finding "the chunks most relevant to the user's question."** This is essentially a search problem — we must scan all chunks and pick out those connected to the question.
 
-![[skilljar-s4/L03-03-search-problem.jpg]]
+![](01-Notes/assets/skilljar-s4/L03-03-search-problem.jpg)
 *The search problem — among many chunks, we must select only those relevant to the user's question*
 
 #### Semantic Search vs Keyword Search
@@ -410,14 +410,14 @@ Traditional keyword search only finds **exact word matches**. When the question 
 
 **Semantic search** uses **embeddings** to understand and compare the **meaning and context** of the question and the chunks.
 
-![[skilljar-s4/L03-04-semantic.jpg]]
+![](01-Notes/assets/skilljar-s4/L03-04-semantic.jpg)
 *Semantic search — finds semantically close chunks even when words don't match*
 
 #### What Is a Text Embedding?
 
 A **text embedding** is a representation of the meaning within text as a **numeric array**. It converts human language into a form a computer can handle mathematically.
 
-![[skilljar-s4/L03-07-process.jpg]]
+![](01-Notes/assets/skilljar-s4/L03-07-process.jpg)
 *Embedding generation process — text is fed to the embedding model → a numeric array is returned*
 
 Generation steps:
@@ -431,7 +431,7 @@ Generation steps:
 
 Each number is a score for some "quality" of the input text. But here's the important caveat — **we ourselves don't know what each number specifically represents.**
 
-![[skilljar-s4/L03-09-numbers.jpg]]
+![](01-Notes/assets/skilljar-s4/L03-09-numbers.jpg)
 *Each dimension of an embedding — "how happy," "how much it talks about the ocean" are conceptual examples only; the actual meanings are latent inside the model through training*
 
 Imagining "the first number is how happy the text is" or "the second number is how much the text is about the ocean" **helps understanding but isn't reality**. The actual meaning of each dimension is determined by the model during training and cannot be directly interpreted by humans.
@@ -444,7 +444,7 @@ Anthropic currently **does not offer an embedding generation API**. The recommen
 - Issue an API key (free to start)
 - Add the key to environment variables
 
-![[skilljar-s4/L03-15-voyage.jpg]]
+![](01-Notes/assets/skilljar-s4/L03-15-voyage.jpg)
 *VoyageAI setup — the embedding provider recommended within the Anthropic ecosystem*
 
 `.env` file:
@@ -475,12 +475,12 @@ def generate_embedding(text, model="voyage-3-large", input_type="query"):
     return result.embeddings[0]
 ```
 
-![[skilljar-s4/L03-18-impl.jpg]]
+![](01-Notes/assets/skilljar-s4/L03-18-impl.jpg)
 *generate_embedding implementation — called with model voyage-3-large and input_type="query"*
 
 Applying the function to a text chunk returns a **list of floating-point numbers**. Generation is fast and simple — but the real challenge is **how to compare these embeddings and use them effectively in the RAG pipeline.**
 
-![[skilljar-s4/L03-19-compare.jpg]]
+![](01-Notes/assets/skilljar-s4/L03-19-compare.jpg)
 *Comparing embeddings — the next step is finding which embedding is most similar to the user's question*
 
 #### Embedding Generation Flow
@@ -540,7 +540,7 @@ Each chunk is passed through the embedding model. To aid understanding, imagine 
 - First number = how much the text talks about **medicine**
 - Second number = how much the text talks about **software engineering**
 
-![[skilljar-s4/L04-02-imaginary.jpg]]
+![](01-Notes/assets/skilljar-s4/L04-02-imaginary.jpg)
 *Imaginary 2D embedding model — first dimension is medical relevance, second dimension is software relevance*
 
 - **Medical Research chunk** → `[0.97, 0.34]` (strong medical tendency; slight software component due to "bug")
@@ -550,7 +550,7 @@ Each chunk is passed through the embedding model. To aid understanding, imagine 
 
 Embedding APIs typically auto-perform a **normalization step that scales the vector's magnitude to 1.0**.
 
-![[skilljar-s4/L04-07-normalization.jpg]]
+![](01-Notes/assets/skilljar-s4/L04-07-normalization.jpg)
 *Normalization — each vector is scaled to length 1. The formula itself is handled by the API*
 
 Normalization results:
@@ -558,14 +558,14 @@ Normalization results:
 - `[0.97, 0.34]` → `[0.944, 0.331]`
 - `[0.30, 0.97]` → `[0.295, 0.955]`
 
-![[skilljar-s4/L04-08-unit-circle.jpg]]
+![](01-Notes/assets/skilljar-s4/L04-08-unit-circle.jpg)
 *Unit circle visualization — each normalized chunk is represented as a point on a circle of radius 1*
 
 #### Step 3: Store in Vector Database
 
 Normalized embeddings are stored in a **vector database**. A vector DB is a specialized database optimized for **storing, comparing, and searching** long numeric arrays.
 
-![[skilljar-s4/L04-09-vector-db.jpg]]
+![](01-Notes/assets/skilljar-s4/L04-09-vector-db.jpg)
 *Vector database — a database specialized for storing embeddings and performing similarity search*
 
 At this point **the pipeline pauses.** Everything performed so far is **preprocessing** — work done in advance, before the user asks a question. Now we wait for the user's question.
@@ -574,7 +574,7 @@ At this point **the pipeline pauses.** Everything performed so far is **preproce
 
 The user asks: "I'm curious about the company. In particular, what did the software engineering dept do this year?"
 
-![[skilljar-s4/L04-10-query.jpg]]
+![](01-Notes/assets/skilljar-s4/L04-10-query.jpg)
 *Converting the user question into an embedding — must use the same model used for stored chunks*
 
 Passing this question through the **same embedding model** yields something like `[0.1, 0.89]` — low medical component, high software component. After normalization it becomes `[0.112, 0.993]`.
@@ -583,7 +583,7 @@ Passing this question through the **same embedding model** yields something like
 
 The question embedding is sent to the vector DB to request the **most similar stored embedding**.
 
-![[skilljar-s4/L04-12-search.jpg]]
+![](01-Notes/assets/skilljar-s4/L04-12-search.jpg)
 *Similarity search — compute cosine similarity between the question vector and each stored vector*
 
 The DB returns the Software Engineering section — because it is closest to what the user is asking about.
@@ -592,7 +592,7 @@ The DB returns the Software Engineering section — because it is closest to wha
 
 The vector DB measures similarity between two vectors using **cosine similarity**. This is **the cosine of the angle** between two vectors.
 
-![[skilljar-s4/L04-15-cosine.jpg]]
+![](01-Notes/assets/skilljar-s4/L04-15-cosine.jpg)
 *Cosine similarity — the cosine value of the angle between two vectors*
 
 Key properties:
@@ -622,7 +622,7 @@ Depending on context, "distance is 0.017" can be more intuitive than "similarity
 
 Combine the most relevant chunk with the user's question and pass them to Claude.
 
-![[skilljar-s4/L04-19-final-prompt.jpg]]
+![](01-Notes/assets/skilljar-s4/L04-19-final-prompt.jpg)
 *Final prompt — user question + retrieved relevant chunk → Claude response*
 
 ```
@@ -695,7 +695,7 @@ Now let's translate the concepts so far into **actual code**. We assemble the th
 4. Embed the user's question
 5. Retrieve the most relevant chunks from the store
 
-![[skilljar-s4/L05-10-diagram.jpg]]
+![](01-Notes/assets/skilljar-s4/L05-10-diagram.jpg)
 *L05 RAG implementation diagram — the user question is converted into an embedding to find the most relevant content in the vector DB*
 
 #### Step 1: Chunking
@@ -753,7 +753,7 @@ for doc, distance in results:
 
 `store.search(user_embedding, 2)` — returns the **2** closest chunks along with their similarity scores (cosine distance).
 
-![[skilljar-s4/L05-12-results.jpg]]
+![](01-Notes/assets/skilljar-s4/L05-12-results.jpg)
 *Search results — lower distance values indicate closer chunks*
 
 #### Interpreting the Results
@@ -851,7 +851,7 @@ graph LR
 
 The first example in the L06 transcript is very clear. When the user asks `"What happened with INC-2023-Q4-011?"`, **the result using only semantic search is as follows**.
 
-![[skilljar-s4/L06-05-semantic-fail.jpg]]
+![](01-Notes/assets/skilljar-s4/L06-05-semantic-fail.jpg)
 
 Quoting the transcript directly —
 
@@ -866,7 +866,7 @@ In other words, in the semantic space, any section close to the concept vector o
 
 The solution is simple — **run semantic and lexical search at the same time and merge the results**.
 
-![[skilljar-s4/L06-06-hybrid.jpg]]
+![](01-Notes/assets/skilljar-s4/L06-06-hybrid.jpg)
 
 - **Semantic search**: Embedding-based. Pulls in conceptually similar documents.
 - **Lexical search**: Classical text search. Guarantees exact term matching.
@@ -892,7 +892,7 @@ flowchart LR
 
 BM25 (**Best Match 25**) is a lexical search algorithm that has been used as a de facto standard in IR (Information Retrieval) since the 1990s. Let's follow the 4-step explanation from the Skilljar transcript directly.
 
-![[skilljar-s4/L06-07-algorithm.jpg]]
+![](01-Notes/assets/skilljar-s4/L06-07-algorithm.jpg)
 
 > [!method] BM25 4-step processing flow
 > **Step 1 — Tokenize the query**
@@ -953,7 +953,7 @@ for doc, distance in results:
 
 When you reissue the same query against this BM25 implementation, the results improve noticeably.
 
-![[skilljar-s4/L06-16-results.jpg]]
+![](01-Notes/assets/skilljar-s4/L06-16-results.jpg)
 
 Quoting the transcript —
 
@@ -994,7 +994,7 @@ By L05 we had built **VectorIndex**, and in L06 **BM25Index**. The two classes a
 - `add_document(document)` — adds a document to the index
 - `search(query, k)` — returns the top k documents
 
-![[skilljar-s4/L07-00-architecture.jpg]]
+![](01-Notes/assets/skilljar-s4/L07-00-architecture.jpg)
 
 > Quoting the transcript — "Because the two classes share an almost identical API, it becomes natural to wrap them into a single new class, the **Retriever**. The Retriever plays the role of a **coordinator** that forwards the user's query to both indexes simultaneously, gathers each result, and merges them via **reciprocal rank fusion**."
 
@@ -1055,7 +1055,7 @@ Two things to note about this sequence. (1) Because the two index searches are *
 
 When merging results from multiple search methods, the most naive approach is "just concatenate the two lists." But this doesn't work. **Each method uses a completely different scoring scheme** — VectorIndex's cosine similarity is a continuous value in [0, 1], while BM25 is a weighted sum that theoretically ranges from 0 to positive infinity. If you simply add or average these values, one side will dominate.
 
-![[skilljar-s4/L07-04-rrf.jpg]]
+![](01-Notes/assets/skilljar-s4/L07-04-rrf.jpg)
 
 RRF (Reciprocal Rank Fusion) solves this problem by using **only rank, not score**. It looks only at what position a document held in each result and adds up the reciprocals.
 
@@ -1067,7 +1067,7 @@ RRF_score(d) = Σ_i  1 / (k + rank_i(d))
 - `rank_i(d)`: the rank of document d in the i-th index (starting from 1).
 - `Σ`: summed **over every index where document d appears**.
 
-![[skilljar-s4/L07-06-formula.jpg]]
+![](01-Notes/assets/skilljar-s4/L07-06-formula.jpg)
 
 > [!tip] Three strengths of RRF
 > 1. **Scale-agnostic** — raw score ranges don't matter. Only rank is used.
@@ -1078,7 +1078,7 @@ RRF_score(d) = Σ_i  1 / (k + rank_i(d))
 
 Let's reproduce the exact numbers from the transcript. The query is `INC-2023-Q4-011`, and the results from the two indexes are as follows.
 
-![[skilljar-s4/L07-05-table.jpg]]
+![](01-Notes/assets/skilljar-s4/L07-05-table.jpg)
 
 - **VectorIndex**: Section 2 (rank 1), Section 7 (rank 2), Section 6 (rank 3)
 - **BM25Index**: Section 6 (rank 1), Section 2 (rank 2), Section 7 (rank 3)
@@ -1091,7 +1091,7 @@ Let's reproduce the exact numbers from the transcript. The query is `INC-2023-Q4
 
 The final ordering is **Section 2 (0.833) → Section 6 (0.750) → Section 7 (0.583)**. The transcript's interpretation — "Section 2 naturally rises to the top because it scored well in both indexes" — is proven numerically.
 
-![[skilljar-s4/L07-08-ranking.jpg]]
+![](01-Notes/assets/skilljar-s4/L07-08-ranking.jpg)
 
 > [!method] Computing RRF by hand
 > When `k=1` — (same as the course example)
@@ -1167,9 +1167,9 @@ Running the same query through the hybrid Retriever, the transcript reports the 
 
 #### 2.2.6 The SearchIndex Protocol — The True Value of Extensibility
 
-![[skilljar-s4/L07-18-extensibility.jpg]]
+![](01-Notes/assets/skilljar-s4/L07-18-extensibility.jpg)
 
-![[skilljar-s4/L07-19-protocol.jpg]]
+![](01-Notes/assets/skilljar-s4/L07-19-protocol.jpg)
 
 > Transcript: "The beauty of this architecture lies in its **extensibility**. Because every index implements the same `SearchIndex` protocol (`add_document`, `search`), new retrieval methods can be added effortlessly."
 
