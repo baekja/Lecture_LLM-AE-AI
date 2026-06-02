@@ -10,6 +10,8 @@ week: 7
 
 FastMCP 서버·클라이언트·Inspector·Resources·Prompts를 Skilljar S6 코스 순서대로 실습합니다.
 
+📦 **전체 묶음 다운로드:** [skilljar.zip](../skilljar.zip) (노트북 + cli_project 포함)
+
 ## 노트북 다운로드
 
 | # | 다운로드 | 주제 | Skilljar |

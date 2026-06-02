@@ -10,6 +10,8 @@ week: 7
 
 한국 건축공학 도메인 응용 — KDS 검토, Midas 파서, Claude Code 등록까지 6단계 빌드업.
 
+📦 **전체 묶음 다운로드:** [structural.zip](../structural.zip)
+
 ## 노트북 다운로드
 
 | # | 다운로드 | 주제 | §2.7 단계 |

@@ -10,6 +10,8 @@ week: 5
 
 Claude Code를 활용해 구현한 완성형 RAG 시스템입니다.
 
+📦 **전체 묶음 다운로드:** [RAG-system.zip](../RAG-system.zip)
+
 ## 코드 및 문서
 
 → [rag-system-1.0.0 전체 코드 보기](rag-system-1.0.0/)

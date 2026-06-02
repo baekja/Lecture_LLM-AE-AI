@@ -10,6 +10,8 @@ week: 5
 
 구조적 RAG 파이프라인 전 과정을 다루는 skeleton 노트북입니다.
 
+📦 **전체 묶음 다운로드:** [structural.zip](../structural.zip)
+
 ## 노트북 다운로드
 
 | # | 다운로드 | 주제 |
