@@ -231,6 +231,9 @@ graph LR
     style OUT fill:#d1fae5,stroke:#059669
 ```
 
+![](assets/skilljar-s8/L01-evaluator-optimizer.jpg)
+*Evaluator-Optimizer pattern visualization --- the iterative Producer ↔ Grader loop*
+
 > [!finding] Why the Evaluator-Optimizer Matters
 > *"The goal of identifying different workflows is to give you a set of **repeatable recipes** for implementing your own features. The Evaluator-Optimizer is one workflow pattern that has worked well for other engineers --- consider using it in your own app!"* --- straight from the L01 transcript. **Naming a pattern** lets you instantly say "ah, this is an Evaluator-Optimizer problem" the next time you meet a new one. Accumulating **engineering recipes** is the real goal of learning workflows.
 
@@ -252,6 +255,9 @@ In other words, knowing the name "parallelization" and actually implementing par
 | Predictability | High | Low |
 | Evaluation / testing | Easy (each step independently) | Hard (many possible paths) |
 | Fits examples like | Image→STEP, translation verification | Desktop agents, dev CLIs |
+
+![](assets/skilljar-s8/L01-workflows-vs-agents.jpg)
+*Workflows vs Agents at a glance --- control owner, execution path, and predictability contrast*
 
 > [!tip] Claude Code Itself Is the Proof
 > Claude Code, which we saw in W08, is an **agent**. The developer cannot know in advance what the user will ask. In contrast, this week's L01 "image→STEP" example is a **workflow**. The same Claude model in the same Anthropic organization is **composed differently depending on the task's character**.
@@ -285,6 +291,9 @@ To compensate, you might cram every criterion into one giant prompt --- but that
 Claude ends up *"confusion and suboptimal results"* while **juggling six criteria simultaneously**. W03 already taught us that long prompts don't guarantee performance.
 
 #### The Solution --- Parallelization
+
+![](assets/skilljar-s8/L02-parallelization-concept.jpg)
+*Parallelization concept --- "split one task into specialized parallel calls"*
 
 ```
 Solution: split one request, run each material judgment as an independent Claude call in parallel,
@@ -446,6 +455,9 @@ sequenceDiagram
 
 #### The 4 Benefits of Parallelization
 
+![](assets/skilljar-s8/L02-parallelization-benefits.jpg)
+*The 4 benefits of parallelization at a glance --- Focused · Optimizable · Scalable · Reliable*
+
 The L02 transcript names the benefits clearly.
 
 - **Focused attention** --- *"Claude can concentrate on one specific aspect at a time rather than trying to balance multiple competing considerations simultaneously."*
@@ -502,6 +514,9 @@ Each step receives **the previous step's output** as its input and has **its own
 
 ![](assets/skilljar-s8/L03-01-chaining-workflows-03.jpg)
 *The motivation for chaining --- split a long task into focused sequential steps*
+
+![](assets/skilljar-s8/L03-chaining-flow.jpg)
+*Overall flow of a chaining workflow --- each step's output feeds the next step's input*
 
 #### Concrete Example --- Automated Social Media Video Production
 
@@ -705,6 +720,9 @@ If chaining solved the *"order"* problem, routing solves the *"type"* problem. S
 
 ![](assets/skilljar-s8/L04-01-routing-workflows-02.jpg)
 
+![](assets/skilljar-s8/L04-routing-concept.jpg)
+*Routing concept --- classify the input's "type" first, then branch to category-specific prompts*
+
 > [!finding] Skilljar L04 Original
 > *"Programming topics call for educational content with clear explanations and definitions. Surfing topics work better with entertainment-focused scripts that emphasize excitement and visual appeal. A single generic prompt can't handle both effectively."*
 
@@ -875,6 +893,9 @@ Skilljar L05 introduces agents as the **polar opposite** of the workflows covere
 
 ![](assets/skilljar-s8/L05-01-agents-and-tools-00.jpg)
 
+![](assets/skilljar-s8/L05-agent-tools.jpg)
+*Basic agent structure --- give it goal + tools, and the LLM decides which tool to use and when to stop*
+
 > [!finding] Skilljar L05 Original
 > *"Agents represent a shift from the structured workflows we've been working with. While workflows are perfect when you know the exact steps needed to complete a task, agents shine when you're not sure what those steps should be. Instead of defining a rigid sequence, you give Claude a goal and a set of tools, then let it figure out how to combine those tools to achieve the objective."*
 
@@ -918,6 +939,9 @@ Each tool individually is just a **first-order function call**. Yet Claude handl
 L05's second example is at a larger scale --- **Claude Code** itself, which we learned in Week 08, is a textbook agent.
 
 ![](assets/skilljar-s8/L05-04-agents-and-tools-11.jpg)
+
+![](assets/skilljar-s8/L05-cc-abstract-tools.jpg)
+*Claude Code --- composing generic, abstract tools (Read · Write · Bash · Grep ...)*
 
 The tools given to Claude Code are **all generic Unix primitives**.
 
@@ -1006,6 +1030,9 @@ def agent_loop(user_goal: str, tools: list[dict], tool_impls: dict, max_turns: i
 #### 2.3.1 Claude Works Blindfolded
 
 L06 tackles **the most commonly overlooked pitfall** of agent implementation.
+
+![](assets/skilljar-s8/L06-environment-inspection.jpg)
+*Environment inspection --- the "observe before acting" step that cures the agent's blindness*
 
 ![](assets/skilljar-s8/L06-01-environment-inspection-00.jpg)
 
@@ -1112,6 +1139,9 @@ L07 formalizes the **selection criterion** that runs through all of Ch.1 ~ §2.3
 > *"With agents, Claude gets a set of basic tools and is expected to formulate a plan to use these tools to complete a task. Unlike workflows, you don't know exactly what tasks will be provided, so the system needs to be more adaptive."*
 
 #### 2.4.2 The 4-Cell Comparison Matrix (Benefits × Downsides)
+
+![](assets/skilljar-s8/L07-workflows-vs-agents-summary.jpg)
+*Final Workflows vs Agents comparison --- one-page Benefits × Downsides summary*
 
 L07's 4-cell comparison is the **core reference for practical decision-making**.
 

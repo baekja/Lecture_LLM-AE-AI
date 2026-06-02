@@ -231,6 +231,9 @@ graph LR
     style OUT fill:#d1fae5,stroke:#059669
 ```
 
+![](assets/skilljar-s8/L01-evaluator-optimizer.jpg)
+*Evaluator-Optimizer 패턴 시각화 --- Producer(생성) ↔ Grader(채점) 의 반복 루프*
+
 > [!finding] Evaluator-Optimizer 가 중요한 이유
 > *"The goal of identifying different workflows is to give you a set of **repeatable recipes** for implementing your own features. The Evaluator-Optimizer is one workflow pattern that has worked well for other engineers --- consider using it in your own app!"* --- L01 그대로다. 패턴을 **이름 붙이면** 다음 번에 새 문제를 만났을 때 "아, 이건 Evaluator-Optimizer 로 풀면 되겠다" 고 즉시 재활용할 수 있다. **엔지니어링 레시피** 를 축적하는 것이 워크플로 학습의 진짜 목표다.
 
@@ -252,6 +255,9 @@ L01 은 다음 경고도 포함한다.
 | 예측 가능성 | 높음 | 낮음 |
 | 평가·테스트 | 쉬움 (각 step 독립 평가) | 어려움 (가능한 경로가 다수) |
 | 적합한 예 | 이미지→STEP, 번역 검증 | 데스크톱 에이전트, 개발 CLI |
+
+![](assets/skilljar-s8/L01-workflows-vs-agents.jpg)
+*Workflows vs Agents --- 한눈에 보기 (제어 주체·실행 경로·예측 가능성의 대비)*
 
 > [!tip] Claude Code 자체가 그 증거
 > W08 에서 본 Claude Code 는 **에이전트** 다. 개발자가 어떤 요청을 할지 미리 알 수 없기 때문이다. 반면 이번 주 L01 의 "이미지→STEP" 예제는 **워크플로** 다. 같은 Claude 모델을 같은 Anthropic 조직이 **작업 성격에 따라 다르게 조합** 한 셈이다.
@@ -285,6 +291,9 @@ L02 는 *"When building AI applications, you'll often encounter tasks that seem 
 Claude 가 여섯 가지 기준을 **동시에 저글링(juggle)** 하느라 *"confusion and suboptimal results"* 를 내놓는다. 긴 프롬프트가 성능을 보장하지 않는다는 것이 W03 에서 이미 본 교훈이다.
 
 #### 해법 --- Parallelization
+
+![](assets/skilljar-s8/L02-parallelization-concept.jpg)
+*병렬화 개념 --- "한 작업을 여러 전문 호출로 쪼개 동시 실행"*
 
 ```
 해법: 한 요청을 쪼개, 각 재료 판별을 독립된 Claude 호출로 병렬 실행한 뒤,
@@ -446,6 +455,9 @@ sequenceDiagram
 
 #### Parallelization 의 4 가지 이점
 
+![](assets/skilljar-s8/L02-parallelization-benefits.jpg)
+*Parallelization 의 4 가지 이점 요약 --- Focused · Optimizable · Scalable · Reliable*
+
 L02은 이점을 명확하게 명명해 준다.
 
 - **Focused attention** --- *"Claude can concentrate on one specific aspect at a time rather than trying to balance multiple competing considerations simultaneously."*
@@ -502,6 +514,9 @@ L03 는 *"Chaining workflows might seem obvious at first, but they're actually o
 
 ![](assets/skilljar-s8/L03-01-chaining-workflows-03.jpg)
 *체이닝의 동기 --- 긴 작업을 포커스된 순차 단계로 나눈다*
+
+![](assets/skilljar-s8/L03-chaining-flow.jpg)
+*체이닝 워크플로의 전체 흐름 --- 단계 출력이 다음 단계의 입력이 되는 순차 구조*
 
 #### 실전 예 --- 소셜 미디어 영상 자동 제작
 
@@ -705,6 +720,9 @@ L03의 체크리스트 그대로다.
 
 ![](assets/skilljar-s8/L04-01-routing-workflows-02.jpg)
 
+![](assets/skilljar-s8/L04-routing-concept.jpg)
+*라우팅 개념 --- 입력의 "종류" 를 먼저 판별하고, 카테고리별 전문 프롬프트로 분기*
+
 > [!finding] Skilljar L04 원문
 > *"Programming topics call for educational content with clear explanations and definitions. Surfing topics work better with entertainment-focused scripts that emphasize excitement and visual appeal. A single generic prompt can't handle both effectively."*
 
@@ -875,6 +893,9 @@ Skilljar L05 는 Ch.1~§2.1 까지 다룬 워크플로의 **대척점** 에 있�
 
 ![](assets/skilljar-s8/L05-01-agents-and-tools-00.jpg)
 
+![](assets/skilljar-s8/L05-agent-tools.jpg)
+*에이전트의 기본 구조 --- goal + tools 를 주면 LLM 이 스스로 도구 선택과 반복 횟수를 결정한다*
+
 > [!finding] Skilljar L05 원문
 > *"Agents represent a shift from the structured workflows we've been working with. While workflows are perfect when you know the exact steps needed to complete a task, agents shine when you're not sure what those steps should be. Instead of defining a rigid sequence, you give Claude a goal and a set of tools, then let it figure out how to combine those tools to achieve the objective."*
 
@@ -918,6 +939,9 @@ L05 의 첫 번째 예제는 **의도적으로 단순한** 도구 3 개다.
 L05 의 두 번째 예제는 더 큰 스케일이다 --- Week 08 에서 배운 **Claude Code** 자체가 에이전트의 교과서적 사례다.
 
 ![](assets/skilljar-s8/L05-04-agents-and-tools-11.jpg)
+
+![](assets/skilljar-s8/L05-cc-abstract-tools.jpg)
+*Claude Code --- 범용 추상 도구의 결합 (Read · Write · Bash · Grep 등)*
 
 Claude Code 에 주어진 도구는 **모두 범용(generic) 유닉스 프리미티브** 다.
 
@@ -1006,6 +1030,9 @@ def agent_loop(user_goal: str, tools: list[dict], tool_impls: dict, max_turns: i
 #### 2.3.1 Claude 는 눈이 가려진 채로 일한다
 
 L06 은 에이전트 구현의 **가장 자주 간과되는 함정** 을 다룬다.
+
+![](assets/skilljar-s8/L06-environment-inspection.jpg)
+*환경 인스펙션 --- 에이전트가 "행동 전에 관찰" 하는 단계로 맹목성을 줄인다*
 
 ![](assets/skilljar-s8/L06-01-environment-inspection-00.jpg)
 
@@ -1112,6 +1139,9 @@ L07 은 Ch.1~§2.3 전체를 관통하는 **선택 기준** 을 공식화한다.
 > *"With agents, Claude gets a set of basic tools and is expected to formulate a plan to use these tools to complete a task. Unlike workflows, you don't know exactly what tasks will be provided, so the system needs to be more adaptive."*
 
 #### 2.4.2 4-항목 비교 매트릭스 (Benefits × Downsides)
+
+![](assets/skilljar-s8/L07-workflows-vs-agents-summary.jpg)
+*Workflows vs Agents 최종 비교 --- Benefits × Downsides 한 장 요약*
 
 L07 이 제시하는 4-항목 비교는 **실무 의사결정의 핵심 레퍼런스** 다.
 
