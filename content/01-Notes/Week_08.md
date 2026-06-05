@@ -167,10 +167,10 @@ graph LR
 
 Anthropic 은 Claude 모델을 개발자의 손에 쥐여주기 위해 여러 **제품(application)** 을 동시에 제공한다. 이번 모듈에서는 그중 **두 가지 강력한 앱** — **Claude Code** 와 **Computer Use** — 를 탐구한다. 이 둘은 그 자체로 유용한 도구일 뿐 아니라, **AI 에이전트의 동작 방식** 을 실증하는 완벽한 사례다. 이 두 제품이 **내부적으로 어떻게 작동하는지**를 이해하면, 이후 직접 에이전트를 만들 때 필요한 탄탄한 기반이 된다.
 
-![](assets/skilljar-s7/L01-anthropic-apps.jpg)
+![](01-Notes/assets/skilljar-s7/L01-anthropic-apps.jpg)
 *Anthropic 의 주요 앱 라인업 --- Claude.ai · Claude Code · Computer Use 가 동일한 모델 위에서 서로 다른 표면을 제공한다*
 
-![](assets/skilljar-s7/L01-01-our-plan.jpg)
+![](01-Notes/assets/skilljar-s7/L01-01-our-plan.jpg)
 *Our Plan — Claude Code → Computer Use → Agents 의 3단계 진행*
 
 #### Our Plan — 세 단계 학습 여정
@@ -278,12 +278,12 @@ graph TD
 
 Claude Code 는 **커맨드 라인에서 바로 동작하는 터미널 기반 코딩 어시스턴트** 다. 이를 *"작업 중인 어떤 코딩 과제에든 도움을 받을 수 있도록, 터미널 안에 Claude 가 상주해 있다"* 고 생각하면 된다.
 
-![](assets/skilljar-s7/L02-01-cc-intro.jpg)
+![](01-Notes/assets/skilljar-s7/L02-01-cc-intro.jpg)
 *Claude Code — 터미널에서 자연어로 코딩 지시를 내리는 에이전트*
 
 #### Claude Code 가 할 수 있는 일
 
-![](assets/skilljar-s7/L02-cc-tools.jpg)
+![](01-Notes/assets/skilljar-s7/L02-cc-tools.jpg)
 *Claude Code 의 내장 도구 모음 --- 파일 조작 · 터미널 실행 · 웹 접근 · MCP 연동까지 한 화면에 정리*
 
 Claude Code는 개발 워크플로를 돕는 **포괄적인 도구 모음(comprehensive set of tools)** 과 함께 제공된다.
@@ -299,7 +299,7 @@ Claude Code 는 **macOS, Windows WSL2, Linux** 에서 작동하므로, 개발 �
 
 #### 설치 — 3단계
 
-![](assets/skilljar-s7/L02-02-installation.jpg)
+![](01-Notes/assets/skilljar-s7/L02-02-installation.jpg)
 *Claude Code 설치 3단계 — Node.js → npm install -g → claude*
 
 Claude Code 셋업은 **세 단계** 만 거치면 된다.
@@ -477,7 +477,7 @@ graph TD
 
 Claude Code는 단순히 **코드를 작성하기 위한 도구가 아니다** — 소프트웨어 프로젝트의 **모든 단계** 에 걸쳐 개발자와 함께 일하도록 설계되었다. 팀에 새로 합류한 또 다른 엔지니어처럼 생각하자. 초기 셋업부터 배포·지원까지 **모든 단계를 담당** 할 수 있는 동료다.
 
-![](assets/skilljar-s7/L03-01-lifecycle.jpg)
+![](01-Notes/assets/skilljar-s7/L03-01-lifecycle.jpg)
 *Claude Code 의 동반 영역 — 프로젝트 수명 전 단계(셋업 · 개발 · 테스트 · 배포 · 지원)*
 
 #### 프로젝트 수명 주기와 Claude Code
@@ -510,7 +510,7 @@ README.md 읽고 설치방향 실행.
 
 #### /init 명령 — 프로젝트 인덱싱
 
-![](assets/skilljar-s7/L03-cc-init.jpg)
+![](01-Notes/assets/skilljar-s7/L03-cc-init.jpg)
 *`/init` 명령 실행 장면 --- 코드베이스를 스캔해 CLAUDE.md 초안을 자동 생성하는 첫 단계*
 
 프로젝트에서 Claude Code 로 작업을 시작할 때 **가장 먼저 해야 할 일** 은 `/init` 명령을 실행하는 것이다. 이 명령은 Claude 에게 **코드베이스 전체를 스캔** 하도록 지시하고, 프로젝트의 **구조(structure), 의존성(dependencies), 코딩 스타일(coding style), 아키텍처(architecture)** 를 이해하게 한다.
@@ -522,7 +522,7 @@ README.md 읽고 설치방향 실행.
 Claude 는 자신이 학습한 모든 내용을 `CLAUDE.md` 라는 **특수한 파일** 에 요약해 저장한다. 이 파일은 앞으로의 **모든 대화에서 자동으로 컨텍스트에 포함** 되므로, Claude 가 우리 프로젝트의 중요한 세부 사항을 계속 기억하게 된다.
 
 #### CLAUDE.md — 세 가지 스코프
-![](assets/skilljar-s7/L03-02-claude-md.jpg)
+![](01-Notes/assets/skilljar-s7/L03-02-claude-md.jpg)
 *CLAUDE.md 의 세 가지 스코프 — Project · Local · User*
 
 CLAUDE.md 는 서로 다른 **스코프(scope)** 별로 여러 개를 둘 수 있다.
@@ -567,10 +567,10 @@ graph TD
 
 Claude 는 **효과 증폭기(effort multiplier)** 로 생각할 때 가장 잘 동작한다. **제공하는 컨텍스트와 구조가 많을수록, 결과가 더 좋아진다**. 가장 효과적인 워크플로는 다음과 같다.
 
-![](assets/skilljar-s7/L03-cc-workflow.jpg)
+![](01-Notes/assets/skilljar-s7/L03-cc-workflow.jpg)
 *Claude Code 워크플로 흐름도 --- 컨텍스트 주입부터 구현까지 이어지는 단계별 협업 패턴*
 
-![](assets/skilljar-s7/L03-03-workflow.jpg)
+![](01-Notes/assets/skilljar-s7/L03-03-workflow.jpg)
 *Common Workflow — Context → Plan → Implement 의 3단계*
 
 ##### Step 1 — Feed Context into Claude (컨텍스트 주입)
@@ -629,7 +629,7 @@ graph LR
 
 더 나은 결과를 얻으려면, **테스트 기반 접근** 을 사용할 수 있다.
 
-![](assets/skilljar-s7/L03-04-tdd.jpg)
+![](01-Notes/assets/skilljar-s7/L03-04-tdd.jpg)
 *TDD 워크플로 — 컨텍스트 → 테스트 케이스 → 테스트 구현 → 테스트 통과 코드*
 
 1. **Feed context into Claude** — 이전과 동일하게 관련 파일들을 보여준다
@@ -767,10 +767,10 @@ Claude Code 에는 **MCP 클라이언트가 이미 내장(built right into it)**
 
 #### MCP 가 Claude Code 를 어떻게 확장하는가
 
-![](assets/skilljar-s7/L04-mcp-enhancement.jpg)
+![](01-Notes/assets/skilljar-s7/L04-mcp-enhancement.jpg)
 *MCP 를 통한 Claude Code 능력 확장 --- 내장 도구만으로는 닿지 못하는 외부 시스템까지 컨텍스트를 넓혀준다*
 
-![](assets/skilljar-s7/L04-01-mcp-extends.jpg)
+![](01-Notes/assets/skilljar-s7/L04-01-mcp-extends.jpg)
 *MCP extends Claude Code — 내장 능력 + 외부 서버의 Tools · Prompts · Resources*
 
 Model Context Protocol(MCP)은 Claude Code 가 **외부 서비스와 도구** 에 연결할 수 있도록 해준다. 이를 **MCP 서버** 를 통해 구현한다. Claude 의 **내장 능력에만 제한** 되지 않고, **특정 도구(Tools) · 리소스(Resources) · 통합(integrations)** 을 제공하는 서버를 연결해서 **커스텀 기능** 을 추가할 수 있다.
@@ -801,14 +801,14 @@ claude mcp add documents uv run main.py
 
 #### 예시 — 문서 처리
 
-![](assets/skilljar-s7/L04-02-example.jpg)
+![](01-Notes/assets/skilljar-s7/L04-02-example.jpg)
 *예시 — PDF / Word 문서를 markdown 으로 변환하는 MCP 서버 연결*
 
 실질적인 예시는 **Claude 가 PDF 와 Word 문서를 읽을 수 있게 해주는** tool 을 만드는 것이다. **"document_path_to_markdown"** tool 을 갖춘 MCP 서버를 구축하면, Claude 에게 **문서 내용을 markdown 으로 변환** 해달라고 요청할 수 있다.
 
 `"Convert the tests/fixtures/mcp_docs.docx file to markdown"` 이라고 요청하면, 자동으로 **커스텀 tool 을 사용해** 문서를 읽고 변환된 내용을 반환한다.
 
-![](assets/skilljar-s7/L04-03-example-result.jpg)
+![](01-Notes/assets/skilljar-s7/L04-03-example-result.jpg)
 *실행 결과 — Claude 가 custom tool 을 호출해 docx → markdown 변환 결과를 반환*
 
 이는 W07 에서 구현한 **FastMCP 서버** 가 Claude Code 안에서 실제로 동작하는 장면이다. `tools/call → result` 의 JSON-RPC 왕복이 `claude mcp add` 한 줄로 **완전히 자동화** 된다.
@@ -838,10 +838,10 @@ sequenceDiagram
 
 #### 인기 있는 MCP 통합들
 
-![](assets/skilljar-s7/L04-popular-mcp.jpg)
+![](01-Notes/assets/skilljar-s7/L04-popular-mcp.jpg)
 *인기 MCP 통합 한눈에 보기 --- 개발 워크플로 전반에 걸쳐 자주 채택되는 서버들의 카탈로그*
 
-![](assets/skilljar-s7/L04-04-popular-mcp.jpg)
+![](01-Notes/assets/skilljar-s7/L04-04-popular-mcp.jpg)
 *인기 MCP 통합 — sentry-mcp · playwright-mcp · figma-context-mcp · mcp-atlassian · firecrawl-mcp-server · slack-mcp*
 
 MCP 생태계는 **많은 일반 개발 도구와 서비스들** 을 위한 서버를 포함한다.

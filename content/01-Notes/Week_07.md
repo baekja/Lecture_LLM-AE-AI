@@ -211,27 +211,27 @@ graph LR
 
 핵심은 **"tool definitions and execution 의 부담을 당신 서버에서 전용 MCP 서버로 옮긴다"** 는 것 — 곧 **통합 코드 작성 책임의 이관** 이다.
 
-![](assets/skilljar-s6/L01-01-introducing-mcp.jpg)
+![](01-Notes/assets/skilljar-s6/L01-01-introducing-mcp.jpg)
 *MCP 의 기본 아키텍처 — MCP 클라이언트(당신의 서버)가 tools·prompts·resources 를 가진 MCP 서버에 연결한다*
 
-![](assets/skilljar-s6/L01-mcp-architecture.jpg)
+![](01-Notes/assets/skilljar-s6/L01-mcp-architecture.jpg)
 *MCP 전체 아키텍처 다이어그램 --- 호스트·클라이언트·서버 3 계층의 역할 분리와 데이터 흐름*
 
 #### MCP 이전: GitHub 챗봇 예제로 보는 통합 지옥
 
 L01 은 실제 시나리오로 개념을 설명한다. 사용자가 *"What open pull requests are there across all my repositories?"* 라고 물으면, Claude 는 GitHub 의 API 에 접근할 도구가 필요하다. **MCP 가 없다면** 당신이 GitHub 통합 도구를 **전부 직접 만들어야** 한다 — 지원하려는 GitHub 기능 하나하나마다 스키마와 함수를 작성해야 한다.
 
-![](assets/skilljar-s6/L01-02-introducing-mcp.jpg)
+![](01-Notes/assets/skilljar-s6/L01-02-introducing-mcp.jpg)
 *MCP 가 없을 때 — 당신이 GitHub 의 모든 통합 도구를 직접 구현해야 한다*
 
 #### 도구 함수 문제 (The Tool Function Problem)
 
 GitHub 는 **거대한 기능 집합** 을 가진다 — repositories, pull requests, issues, projects, 그리고 그 외 수많은 기능들. 완전한 GitHub 챗봇을 짓는다면 엄청난 수의 도구를 직접 제작해야 한다.
 
-![](assets/skilljar-s6/L01-03-introducing-mcp.jpg)
+![](01-Notes/assets/skilljar-s6/L01-03-introducing-mcp.jpg)
 *Tool Function Problem — 각 도구마다 schema 와 function 구현이 모두 필요하다*
 
-![](assets/skilljar-s6/L01-mcp-tool-problem.jpg)
+![](01-Notes/assets/skilljar-s6/L01-mcp-tool-problem.jpg)
 *도구 함수 문제의 본질 --- 통합 대상이 늘수록 schema·function·테스트·유지보수 비용이 곱셈으로 증가*
 
 각 도구는 **schema definition 과 function implementation 을 모두** 필요로 한다. 이는 개발자가 직접 작성·테스트·유지보수해야 할 코드가 방대하다는 뜻이다.
@@ -256,18 +256,18 @@ graph LR
 
 MCP 는 도구 정의와 실행의 부담을 **당신 서버에서 MCP 서버로** 옮긴다. GitHub 도구를 당신이 쓰는 대신, 그 도구들은 **전용 MCP 서버 안에서 제작·실행** 된다.
 
-![](assets/skilljar-s6/L01-04-introducing-mcp.jpg)
+![](01-Notes/assets/skilljar-s6/L01-04-introducing-mcp.jpg)
 *MCP 서버가 GitHub 기능의 래퍼 역할을 한다 — 미리 만들어진 도구를 가져다 쓴다*
 
-![](assets/skilljar-s6/L01-05-introducing-mcp.jpg)
+![](01-Notes/assets/skilljar-s6/L01-05-introducing-mcp.jpg)
 *MCP 서버는 외부 서비스의 데이터/기능을 재사용 가능한 컴포넌트로 패키징한다*
 
-![](assets/skilljar-s6/L01-mcp-solution.jpg)
+![](01-Notes/assets/skilljar-s6/L01-mcp-solution.jpg)
 *MCP 의 해결 방식 한눈에 보기 --- 도구 정의·실행 부담을 당신의 서버에서 전용 MCP 서버로 이관*
 
 #### MCP 에 대한 흔한 질문
 
-![](assets/skilljar-s6/L01-06-introducing-mcp.jpg)
+![](01-Notes/assets/skilljar-s6/L01-06-introducing-mcp.jpg)
 
 L01 은 세 가지 흔한 질문에 답한다.
 
@@ -336,7 +336,7 @@ MCP 클라이언트는 **당신의 서버와 MCP 서버 사이의 통신 브릿�
 
 MCP 의 핵심 강점 중 하나는 **transport agnostic** 이라는 점 — 클라이언트와 서버가 **다양한 통신 방법** 으로 서로 대화할 수 있다는 뜻이다. 가장 흔한 설정은 MCP 클라이언트와 서버가 **같은 머신에서** 실행되며 **standard input/output (stdio)** 로 통신하는 것이다.
 
-![](assets/skilljar-s6/L02-01-mcp-clients.jpg)
+![](01-Notes/assets/skilljar-s6/L02-01-mcp-clients.jpg)
 *로컬 stdio 통신 — 가장 흔한 설정*
 
 하지만 이게 전부가 아니다. MCP 클라이언트와 서버는 다음으로도 연결할 수 있다:
@@ -345,75 +345,75 @@ MCP 의 핵심 강점 중 하나는 **transport agnostic** 이라는 점 — 클
 - **WebSockets**
 - **Various other network protocols**
 
-![](assets/skilljar-s6/L02-02-mcp-clients.jpg)
+![](01-Notes/assets/skilljar-s6/L02-02-mcp-clients.jpg)
 *transport-agnostic — 네트워크 프로토콜을 통한 원격 연결도 가능*
 
-![](assets/skilljar-s6/L02-client-transport.jpg)
+![](01-Notes/assets/skilljar-s6/L02-client-transport.jpg)
 *클라이언트 ↔ 서버 통신 트랜스포트 비교 --- stdio·HTTP·WebSocket 의 사용 시나리오와 장단점 요약*
 
 #### Message Types — 클라이언트·서버가 주고받는 메시지
 
 연결되면 클라이언트와 서버는 **MCP specification 에 정의된 특정 메시지 타입** 들을 교환한다. 주로 다루게 될 메시지 타입은 다음 두 쌍이다.
 
-![](assets/skilljar-s6/L02-03-mcp-clients.jpg)
+![](01-Notes/assets/skilljar-s6/L02-03-mcp-clients.jpg)
 
 **1. `ListToolsRequest` / `ListToolsResult`**
 — 클라이언트가 서버에게 *"what tools do you provide?"* 를 물으면 서버가 사용 가능한 도구 목록을 돌려준다.
 
-![](assets/skilljar-s6/L02-04-mcp-clients.jpg)
+![](01-Notes/assets/skilljar-s6/L02-04-mcp-clients.jpg)
 *ListTools — 도구 카탈로그 조회*
 
 **2. `CallToolRequest` / `CallToolResult`**
 — 클라이언트가 서버에게 특정 도구를 특정 인자로 실행해 달라고 요청하고, 결과를 받는다.
 
-![](assets/skilljar-s6/L02-05-mcp-clients.jpg)
+![](01-Notes/assets/skilljar-s6/L02-05-mcp-clients.jpg)
 *CallTool — 도구 실행 요청과 결과*
 
 #### 완전한 흐름 예제 — *"What repositories do I have?"*
 
 L02 는 **사용자 질문 → 최종 응답** 까지의 전체 통신 플로우를 단계별로 시각화한다.
 
-![](assets/skilljar-s6/L02-06-mcp-clients.jpg)
+![](01-Notes/assets/skilljar-s6/L02-06-mcp-clients.jpg)
 *Step 1 — 사용자가 쿼리 제출, 서버는 tool 목록이 필요함을 인지*
 
 사용자가 쿼리를 제출하면서 프로세스가 시작된다. 당신의 서버는 Claude 에게 보내기 전에 **사용 가능한 도구 목록을 먼저 확보해야 함** 을 인식한다.
 
-![](assets/skilljar-s6/L02-07-mcp-clients.jpg)
+![](01-Notes/assets/skilljar-s6/L02-07-mcp-clients.jpg)
 *Step 2 — 서버 → MCP 클라이언트 → MCP 서버: ListToolsRequest*
 
 당신의 서버가 MCP 클라이언트에게 도구를 요청하면, 클라이언트는 MCP 서버에 `ListToolsRequest` 를 보내고 `ListToolsResult` 를 받는다.
 
-![](assets/skilljar-s6/L02-08-mcp-clients.jpg)
+![](01-Notes/assets/skilljar-s6/L02-08-mcp-clients.jpg)
 *Step 3 — 사용자 질문 + 도구 목록 을 모두 확보*
 
 이제 서버는 **사용자의 질문** 과 **사용 가능한 도구** 모두를 Claude 에게 첫 요청으로 보낼 수 있다.
 
-![](assets/skilljar-s6/L02-09-mcp-clients.jpg)
+![](01-Notes/assets/skilljar-s6/L02-09-mcp-clients.jpg)
 *Step 4 — Claude 가 도구 호출을 결정*
 
 Claude 는 도구들을 살펴보고 질문에 답하기 위해 도구 호출이 필요하다고 판단한다. 그 결과 **tool use request** 를 응답한다.
 
-![](assets/skilljar-s6/L02-10-mcp-clients.jpg)
+![](01-Notes/assets/skilljar-s6/L02-10-mcp-clients.jpg)
 *Step 5 — 서버가 MCP 클라이언트에게 CallToolRequest 요청*
 
 당신의 서버가 Claude 가 요청한 도구를 MCP 클라이언트를 통해 실행한다. MCP 클라이언트는 `CallToolRequest` 를 MCP 서버로 보내고, MCP 서버는 실제 GitHub 요청을 수행한다.
 
-![](assets/skilljar-s6/L02-11-mcp-clients.jpg)
+![](01-Notes/assets/skilljar-s6/L02-11-mcp-clients.jpg)
 *Step 6 — GitHub 응답이 역순으로 돌아온다*
 
 GitHub 가 repository 데이터를 반환하면, 그것이 MCP 서버 → `CallToolResult` 로 포장되어 → MCP 클라이언트 → 당신의 서버 순으로 흘러온다.
 
-![](assets/skilljar-s6/L02-12-mcp-clients.jpg)
+![](01-Notes/assets/skilljar-s6/L02-12-mcp-clients.jpg)
 *Step 7 — 도구 결과를 Claude 에게 follow-up 메시지로 전달*
 
 당신의 서버는 tool 결과를 Claude 에게 **follow-up 메시지** 로 되돌려 보낸다. 이제 Claude 는 완전한 답변을 만들 모든 정보를 가졌다.
 
-![](assets/skilljar-s6/L02-13-mcp-clients.jpg)
+![](01-Notes/assets/skilljar-s6/L02-13-mcp-clients.jpg)
 *Step 8 — Claude 가 최종 답변 → 사용자*
 
 마지막으로 Claude 가 포맷된 답을 내놓고, 당신의 서버가 그것을 사용자에게 전달한다.
 
-![](assets/skilljar-s6/L02-complete-flow.jpg)
+![](01-Notes/assets/skilljar-s6/L02-complete-flow.jpg)
 *완전한 흐름 한 장 요약 --- 사용자 쿼리부터 최종 응답까지 8 단계 통신을 한눈에 정리*
 
 #### 전체 흐름의 Mermaid 도식
@@ -477,7 +477,7 @@ CLI 기반 챗봇이며, 사용자는 **문서 컬렉션** 과 커맨드 라인 
 - **MCP 클라이언트** — 사용자 상호작용을 처리
 - **커스텀 MCP 서버** — 문서 작업을 관리
 
-![](assets/skilljar-s6/L03-01-project-setup.jpg)
+![](01-Notes/assets/skilljar-s6/L03-01-project-setup.jpg)
 *프로젝트 아키텍처 — CLI 챗봇(MCP 클라이언트) + 문서 MCP 서버*
 
 서버는 **두 개의 핵심 도구** 를 제공한다: 문서 내용을 읽는 도구와 문서를 업데이트하는 도구. 모든 문서는 **간결성을 위해 메모리 내(in-memory)** 에 저장된다 — 데이터베이스는 필요하지 않다.
@@ -491,7 +491,7 @@ CLI 기반 챗봇이며, 사용자는 **문서 컬렉션** 과 커맨드 라인 
 > - **MCP 클라이언트** — 기존 MCP 서버에 연결할 때
 > 둘 중 **하나만** 만든다. 이 프로젝트에서 **둘 다** 만드는 것은 **순전히 교육 목적** — 어떻게 소통하고 함께 동작하는지를 직접 보기 위함이다.
 
-![](assets/skilljar-s6/L03-02-project-setup.jpg)
+![](01-Notes/assets/skilljar-s6/L03-02-project-setup.jpg)
 *일반적 실무 패턴 — 당신은 서버 또는 클라이언트 중 한 쪽만 구현한다*
 
 #### 프로젝트 셋업 단계
@@ -575,10 +575,10 @@ graph TB
 
 MCP 서버 구축은 **공식 Python SDK** 를 쓰면 훨씬 단순해진다. 복잡한 JSON 스키마를 수동으로 작성하는 대신, **SDK 가 데코레이터와 타입 힌트로 모든 복잡성** 을 처리해 준다.
 
-![](assets/skilljar-s6/L04-01-defining-tools.jpg)
+![](01-Notes/assets/skilljar-s6/L04-01-defining-tools.jpg)
 *Tool 정의의 구조 — 데코레이터 + 타입 힌트 + Pydantic Field*
 
-![](assets/skilljar-s6/L04-fastmcp-tools.jpg)
+![](01-Notes/assets/skilljar-s6/L04-fastmcp-tools.jpg)
 *FastMCP 로 도구를 정의하는 전체 그림 --- 한 줄 초기화부터 데코레이터·타입 힌트·스키마 자동 생성까지*
 
 L04 의 예제는 **메모리 내 문서 관리 MCP 서버** 를 만든다. 두 도구를 제공한다: 문서 내용을 읽는 도구와 find-and-replace 로 문서를 업데이트하는 도구.
@@ -616,7 +616,7 @@ docs = {
 
 #### 데코레이터로 도구 정의
 
-![](assets/skilljar-s6/L04-02-defining-tools.jpg)
+![](01-Notes/assets/skilljar-s6/L04-02-defining-tools.jpg)
 *데코레이터 접근법 — 장황한 JSON 스키마가 깨끗한 Python 함수로*
 
 SDK 는 도구 생성을 장황한 프로세스에서 깨끗하고 읽기 쉬운 코드로 바꾼다. 긴 JSON 스키마를 쓰는 대신 **Python 데코레이터와 타입 힌트** 를 사용한다.
@@ -729,10 +729,10 @@ mcp dev mcp_server.py
 
 이 명령이 **포트 6277 에 개발 서버를 띄우고** 브라우저에서 열 수 있는 로컬 URL 을 제공한다. 인스펙터 인터페이스가 로드되면서 MCP Inspector 대시보드가 나타난다.
 
-![](assets/skilljar-s6/L05-01-server-inspector.jpg)
+![](01-Notes/assets/skilljar-s6/L05-01-server-inspector.jpg)
 *MCP Inspector 대시보드 초기 화면 — 포트 6277 로 기동*
 
-![](assets/skilljar-s6/L05-inspector-ui.jpg)
+![](01-Notes/assets/skilljar-s6/L05-inspector-ui.jpg)
 *MCP Inspector UI 구성 요소 --- Tools·Resources·Prompts 탭과 좌측 Connect / 우측 결과 패널의 역할*
 
 > [!tip] 인터페이스는 진화 중
@@ -743,7 +743,7 @@ mcp dev mcp_server.py
 
 왼쪽의 **"Connect" 버튼** 을 클릭해 MCP 서버를 시작한다. 연결되면 **Resources, Prompts, Tools** 및 기타 기능을 위한 네비게이션 바가 보인다.
 
-![](assets/skilljar-s6/L05-02-server-inspector.jpg)
+![](01-Notes/assets/skilljar-s6/L05-02-server-inspector.jpg)
 *Connect 클릭 후 — Resources / Prompts / Tools 네비게이션이 활성화*
 
 도구 테스트 절차는 다음과 같다:
@@ -754,14 +754,14 @@ mcp dev mcp_server.py
 4. 필요한 매개변수를 채운다
 5. **"Run Tool"** 을 클릭해 실행하고 결과를 본다
 
-![](assets/skilljar-s6/L05-03-server-inspector.jpg)
+![](01-Notes/assets/skilljar-s6/L05-03-server-inspector.jpg)
 *Tools 섹션에서 도구를 선택 → 매개변수 입력 → Run Tool*
 
 #### 문서 작업 테스트 예시
 
 예컨대 **문서 읽기 도구** 를 테스트하려면 `deposition.md` 같은 문서 ID 를 입력하고 도구를 실행한다. 인스펙터는 반환된 내용 또는 성공 메시지 같은 결과를 보여준다.
 
-![](assets/skilljar-s6/L05-04-server-inspector.jpg)
+![](01-Notes/assets/skilljar-s6/L05-04-server-inspector.jpg)
 *read_doc_contents 를 실행한 결과 — 반환 텍스트가 인스펙터에 출력*
 
 #### 작업 연쇄로 기능 검증
@@ -835,7 +835,7 @@ MCP 서버가 동작하니 이제 **클라이언트 쪽** 을 만들 차례다. 
 > *"In most real-world projects, you'll either implement an MCP client OR an MCP server - not both. We're building both in this project just so you can see how they work together."*
 > 실무에서는 클라이언트 **또는** 서버 중 한 쪽만 구현하는 게 일반적이다 — 본 프로젝트에서 둘 다 만드는 건 오직 **둘이 어떻게 협업하는지를 보기 위함** 이다.
 
-![](assets/skilljar-s6/L06-01-implementing-client.jpg)
+![](01-Notes/assets/skilljar-s6/L06-01-implementing-client.jpg)
 *클라이언트 측 두 컴포넌트 — MCP Client (우리 클래스) + Client Session (SDK 제공)*
 
 MCP 클라이언트는 **두 개의 주요 컴포넌트** 로 구성된다:
@@ -843,14 +843,14 @@ MCP 클라이언트는 **두 개의 주요 컴포넌트** 로 구성된다:
 - **MCP Client** — 세션을 더 쓰기 쉽게 만들기 위해 **우리가 만드는 커스텀 클래스**
 - **Client Session** — 서버로의 실제 연결 (MCP Python SDK 의 일부)
 
-![](assets/skilljar-s6/L06-02-implementing-client.jpg)
+![](01-Notes/assets/skilljar-s6/L06-02-implementing-client.jpg)
 *Client Session 은 리소스 정리가 필요 — 그래서 우리 커스텀 클래스로 래핑*
 
 클라이언트 세션은 **종료 시 적절한 리소스 정리(resource cleanup)** 가 필요하다. 그래서 우리가 만든 `MCPClient` 클래스로 감싸 그 정리를 자동화한다.
 
 #### 애플리케이션 안에서의 위치
 
-![](assets/skilljar-s6/L06-03-implementing-client.jpg)
+![](01-Notes/assets/skilljar-s6/L06-03-implementing-client.jpg)
 *애플리케이션 플로우 — CLI 코드는 MCP 서버로 두 가지 작업을 한다*
 
 우리 CLI 코드가 MCP 서버로 해야 할 두 가지 주요 일을 기억하자:
@@ -972,27 +972,27 @@ MCP 서버의 **Resources** 는 **클라이언트에게 데이터를 노출** �
 - **사용 가능한 모든 문서 목록 조회** (autocomplete 용)
 - **특정 문서의 내용 조회** (멘션되었을 때)
 
-![](assets/skilljar-s6/L07-resources-concept.jpg)
+![](01-Notes/assets/skilljar-s6/L07-resources-concept.jpg)
 *Resources 의 핵심 개념 --- HTTP GET 처럼 데이터를 노출하는 읽기 전용 채널, Tools 와 책임 분리*
 
-![](assets/skilljar-s6/L07-01-mention-feature.jpg)
+![](01-Notes/assets/skilljar-s6/L07-01-mention-feature.jpg)
 *@멘션 기능 — @ 입력 시 문서 목록 드롭다운, 선택 시 내용 주입*
 
 사용자가 `@` 를 입력하면 **사용 가능한 문서를 보여줘야** 한다. 그리고 멘션이 포함된 메시지를 제출하면 **해당 문서의 내용을 Claude 에게 보내는 프롬프트에 자동 주입** 해야 한다.
 
-![](assets/skilljar-s6/L07-02-mention-flow.jpg)
+![](01-Notes/assets/skilljar-s6/L07-02-mention-flow.jpg)
 *멘션의 데이터 플로우 — 클라이언트가 리소스 요청 → 서버 응답 → 프롬프트에 주입*
 
 #### 리소스의 동작 방식 — Request/Response 패턴
 
 리소스는 **요청-응답 패턴** 을 따른다. 클라이언트가 URI 와 함께 `ReadResourceRequest` 를 보내면, MCP 서버가 데이터로 응답한다. **URI 는 접근하려는 리소스의 주소** 처럼 작동한다.
 
-![](assets/skilljar-s6/L07-03-request-response.jpg)
+![](01-Notes/assets/skilljar-s6/L07-03-request-response.jpg)
 *ReadResourceRequest/Response — URI 로 리소스를 식별*
 
 #### 리소스의 두 종류
 
-![](assets/skilljar-s6/L07-04-resource-types.jpg)
+![](01-Notes/assets/skilljar-s6/L07-04-resource-types.jpg)
 *Direct vs Templated 리소스*
 
 - **Direct Resources** — 변하지 않는 **정적 URI** (예: `docs://documents`)
@@ -1056,7 +1056,7 @@ uv run mcp dev mcp_server.py
 
 그런 다음 브라우저에서 인스펙터에 연결한다.
 
-![](assets/skilljar-s6/L07-05-inspector-resources.jpg)
+![](01-Notes/assets/skilljar-s6/L07-05-inspector-resources.jpg)
 *Inspector 의 Resources · Resource Templates 섹션*
 
 두 탭이 보인다:
@@ -1066,7 +1066,7 @@ uv run mcp dev mcp_server.py
 
 리소스를 클릭해 테스트하고 클라이언트가 받을 정확한 응답 구조를 확인한다.
 
-![](assets/skilljar-s6/L07-06-inspector-test.jpg)
+![](01-Notes/assets/skilljar-s6/L07-06-inspector-test.jpg)
 *특정 리소스 호출 결과 — 반환값과 MIME type 이 함께 표시*
 
 #### Tools vs Resources — 언제 무엇을 쓰는가
@@ -1129,7 +1129,7 @@ graph TB
 
 서버에 리소스를 정의했으니, 이제 **클라이언트가 그것을 요청·사용** 하는 방법이 필요하다. 클라이언트는 **애플리케이션과 MCP 서버 사이의 브릿지** 로 동작하며, 통신과 데이터 파싱을 자동 처리한다.
 
-![](assets/skilljar-s6/L08-01-client-bridge.jpg)
+![](01-Notes/assets/skilljar-s6/L08-01-client-bridge.jpg)
 *클라이언트는 애플리케이션과 MCP 서버 간의 브릿지*
 
 플로우는 단순하다: 사용자가 문서를 참조하면 (예: `@report.pdf` 입력), 애플리케이션이 **MCP 클라이언트를 사용해 해당 리소스를 서버에서 가져와 Claude 프롬프트에 직접 포함** 시킨다.
@@ -1185,7 +1185,7 @@ from pydantic import AnyUrl
 - **리소스 내용을 자동으로 가져옴**
 - 그 내용을 **Claude 프롬프트에 포함**
 
-![](assets/skilljar-s6/L08-02-cli-autocomplete.jpg)
+![](01-Notes/assets/skilljar-s6/L08-02-cli-autocomplete.jpg)
 *CLI 에서 `@` 입력 시 autocomplete — 사용 가능한 리소스(문서 목록)가 드롭다운*
 
 > [!finding] 왜 리소스가 도구 호출보다 효율적인가
@@ -1257,10 +1257,10 @@ MCP 서버의 **Prompts** 는 **미리 만들어진 고품질 지시문** 을 �
 
 Claude 가 문서를 Markdown 으로 재포맷하게 하고 싶다고 하자. 사용자는 그냥 *"convert report.pdf to markdown"* 이라고 쳐도 동작하긴 한다. 하지만 **포맷·구조·출력 요구사항** 에 대한 구체적 지시가 포함된 **철저히 테스트된 프롬프트** 를 쓰면 훨씬 좋은 결과를 얻는다.
 
-![](assets/skilljar-s6/L09-prompts-concept.jpg)
+![](01-Notes/assets/skilljar-s6/L09-prompts-concept.jpg)
 *Prompts 의 핵심 개념 --- 서버가 제공하는 검증된 템플릿이 사용자 즉흥 프롬프트보다 일관된 품질을 보장*
 
-![](assets/skilljar-s6/L09-01-why-prompts.jpg)
+![](01-Notes/assets/skilljar-s6/L09-01-why-prompts.jpg)
 *왜 프롬프트인가 — 사용자 즉흥 프롬프트 vs 서버 제공 검증된 템플릿*
 
 > [!finding] 핵심 통찰
@@ -1271,7 +1271,7 @@ Claude 가 문서를 Markdown 으로 재포맷하게 하고 싶다고 하자. �
 
 프롬프트는 **클라이언트가 바로 사용할 수 있는 user/assistant 메시지 세트** 를 정의한다. 클라이언트가 프롬프트를 요청하면, 서버는 **Claude 에게 바로 보낼 수 있는 메시지 리스트** 를 반환한다.
 
-![](assets/skilljar-s6/L09-02-prompt-messages.jpg)
+![](01-Notes/assets/skilljar-s6/L09-02-prompt-messages.jpg)
 *프롬프트는 user/assistant 메시지 리스트를 반환*
 
 기본 구조는:
@@ -1324,7 +1324,7 @@ Use the 'edit_document' tool to edit the document. After the document has been r
 
 프롬프트도 MCP Inspector 로 테스트할 수 있다. **Prompts 섹션** 으로 이동하여 프롬프트를 선택하고 필요한 매개변수를 제공한다. Inspector 는 Claude 에게 보내질 **생성된 메시지** 를 보여준다.
 
-![](assets/skilljar-s6/L09-03-inspector-prompts.jpg)
+![](01-Notes/assets/skilljar-s6/L09-03-inspector-prompts.jpg)
 *Inspector 의 Prompts 섹션 — 매개변수 입력 시 보간된 최종 메시지가 미리보기*
 
 이를 통해 **변수 보간이 정확한지**, **메시지 구조가 기대한 대로인지** 를 실제 애플리케이션에 쓰기 전에 검증할 수 있다.
@@ -1381,7 +1381,7 @@ graph TB
 
 MCP 의 프롬프트는 **클라이언트가 사용할 user/assistant 메시지 세트** 를 정의한다. 고품질, 잘 테스트, 서버 목적에 부합하는 프롬프트여야 한다.
 
-![](assets/skilljar-s6/L10-01-client-prompts.jpg)
+![](01-Notes/assets/skilljar-s6/L10-01-client-prompts.jpg)
 *클라이언트 측 프롬프트 통합의 전체 구조*
 
 #### `list_prompts` 구현
@@ -1423,7 +1423,7 @@ def format_document(doc_id: str):
 
 구현 후 **커맨드 라인 인터페이스** 에서 프롬프트를 테스트할 수 있다. **슬래시(/)** 를 입력하면 **사용 가능한 프롬프트가 명령어로 나타난다**. 프롬프트를 선택하면 가용 옵션(예: 문서 ID) 중에서 선택하라는 프롬프트가 뜨고, 그런 다음 **완전한 프롬프트가 Claude 에게 전송** 된다.
 
-![](assets/skilljar-s6/L10-02-cli-slash.jpg)
+![](01-Notes/assets/skilljar-s6/L10-02-cli-slash.jpg)
 *CLI 에서 `/` 를 입력하면 슬래시 명령으로 프롬프트가 나열 — 마치 Slack·Discord 의 슬래시 명령처럼*
 
 워크플로는 이렇다:
@@ -1433,7 +1433,7 @@ def format_document(doc_id: str):
 - **보간된 값과 함께 프롬프트가 Claude 에게 전송**
 - Claude 가 **추가 데이터 조회를 위해 도구를 사용** 하고 태스크 완료
 
-![](assets/skilljar-s6/L10-03-prompt-workflow.jpg)
+![](01-Notes/assets/skilljar-s6/L10-03-prompt-workflow.jpg)
 *전체 워크플로 — 프롬프트 선택 → 인자 입력 → Claude 가 내부에서 도구 호출까지 수행*
 
 #### 프롬프트 모범 사례 재확인

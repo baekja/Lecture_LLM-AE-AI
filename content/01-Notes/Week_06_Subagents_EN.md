@@ -221,7 +221,7 @@ Beyond the built-in agents, you can create your own subagents with **custom syst
 
 Beyond Claude Code's built-in subagents, you can create **custom subagents** specialized for specific tasks. Custom subagents are defined as **markdown files** with YAML frontmatter.
 
-![](assets/skilljar-sa/L02-creating-subagent.png)
+![](01-Notes/assets/skilljar-sa/L02-creating-subagent.png)
 *Subagent creation --- the process of creating a custom subagent via the `/agents` command*
 
 #### Creating with the `/agents` Command
@@ -263,7 +263,7 @@ flowchart TD
 
 When creating a subagent, you can select accessible tools **by category**:
 
-![](assets/skilljar-sa/L02-subagent-config.png)
+![](01-Notes/assets/skilljar-sa/L02-subagent-config.png)
 *Subagent configuration --- tool category and model selection*
 
 | Category | Included Tools | Use Scenario |
@@ -580,7 +580,7 @@ Find any violations of KDS standards in this structural calculation code
 
 Creating a subagent is not the end. A poorly configured subagent wanders off course, runs too long, or produces output the main agent cannot use. Effective subagents come down to **4 things**: good descriptions, a defined output format, obstacle reporting, and limited tool access.
 
-![](assets/skilljar-sa/L03-effective-design.png)
+![](01-Notes/assets/skilljar-sa/L03-effective-design.png)
 *Effective subagent design --- the four pillars: Description, output format, obstacle reporting, tool restriction*
 
 #### The Dual Role of Description
@@ -637,7 +637,7 @@ The **single most important improvement** for a subagent is to **define an outpu
 1. **Natural stopping point**: once every section of the format is filled, the subagent recognizes it is done
 2. **Prevents over-running**: without an output format, the subagent cannot judge whether it has "investigated enough" and tends to run far longer than necessary
 
-![](assets/skilljar-sa/L03-design-patterns.png)
+![](01-Notes/assets/skilljar-sa/L03-design-patterns.png)
 *Subagent design patterns --- defining the output format and manipulating input via Description*
 
 ```mermaid

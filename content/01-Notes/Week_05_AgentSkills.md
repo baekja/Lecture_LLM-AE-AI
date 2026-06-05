@@ -105,7 +105,7 @@ Claude Code를 사용하면서 매번 같은 지시를 반복한 적이 있는�
 
 Skills는 Claude Code가 발견하고 사용할 수 있는 **지시문, 스크립트, 리소스의 폴더**이다. 각 스킬은 `SKILL.md` 파일을 포함하는 디렉토리이며, frontmatter에 `name`과 `description`이 정의되어 있다.
 
-![](assets/skilljar-as/L01-skills-overview.png)
+![](01-Notes/assets/skilljar-as/L01-skills-overview.png)
 *Skills 개요 --- 스킬의 구조와 Claude Code의 매칭 메커니즘*
 
 ```mermaid
@@ -264,7 +264,7 @@ sequenceDiagram
 
 이론을 이해했으니, 실제로 스킬을 작성해보자. 모든 프로젝트에서 사용할 수 있는 **Personal PR Description 스킬**을 만든다.
 
-![](assets/skilljar-as/L02-first-skill.png)
+![](01-Notes/assets/skilljar-as/L02-first-skill.png)
 *첫 번째 스킬 작성 --- PR Description 스킬의 생성 과정*
 
 #### Step 1: 스킬 디렉토리 생성
@@ -629,7 +629,7 @@ graph TD
 
 기본 스킬은 `name`과 `description`만으로도 동작하지만, 고급 메타데이터 필드를 활용하면 훨씬 정교한 제어가 가능하다.
 
-![](assets/skilljar-as/L03-multi-file.png)
+![](01-Notes/assets/skilljar-as/L03-multi-file.png)
 *스킬 메타데이터와 멀티파일 구성 --- 고급 설정과 복합 스킬 구조*
 
 #### 메타데이터 필드 전체 목록
@@ -845,7 +845,7 @@ Read the changed files and understand the scope of changes.
 
 Claude Code에는 동작을 커스터마이징하는 여러 방법이 있다. 각 기능의 목적과 적합한 사용 시나리오를 이해하면, 올바른 도구를 선택할 수 있다.
 
-![](assets/skilljar-as/L04-skills-comparison.png)
+![](01-Notes/assets/skilljar-as/L04-skills-comparison.png)
 *Skills vs 다른 Claude Code 기능 --- CLAUDE.md, Hooks, Subagents와의 비교*
 
 #### 전체 비교 표
@@ -1004,7 +1004,7 @@ description: Formats PRs with What/Why/Changes sections. Use when creating PRs.
 
 개인적으로 유용한 스킬을 만들었다면, 팀이나 조직과 공유하고 싶을 것이다. Skills는 세 가지 수준의 공유 메커니즘을 제공한다.
 
-![](assets/skilljar-as/L05-sharing-skills.png)
+![](01-Notes/assets/skilljar-as/L05-sharing-skills.png)
 *스킬 공유와 배포 --- Git, 플러그인, Enterprise 3단계 공유 전략*
 
 #### 공유 전략 비교

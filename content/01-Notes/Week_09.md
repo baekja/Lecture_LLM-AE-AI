@@ -148,7 +148,7 @@ graph LR
 
 Skilljar L01 은 *"Workflows and agents are strategies for handling user tasks that can't be completed by Claude in a single request"* 로 시작한다. 이 한 문장이 Week 09 전체의 출발점이다 --- **워크플로** 와 **에이전트** 는 단일 요청으로 풀리지 않는 문제를 다루기 위한 **두 가지 전략** 이며, 이 코스에서 이미 도구를 사용해 Claude 가 문제를 스스로 풀게 한 순간, 우리는 **이미 에이전트를 만든 적이 있다**.
 
-![](assets/skilljar-s8/L01-01-agents-and-workflows-01.jpg)
+![](01-Notes/assets/skilljar-s8/L01-01-agents-and-workflows-01.jpg)
 *When to Use Workflows vs Agents --- 개발자가 흐름을 "그릴 수 있는가" 가 선택의 기준*
 
 #### 언제 워크플로를, 언제 에이전트를 쓰는가
@@ -190,7 +190,7 @@ graph TB
 
 L01 은 *"Imagine building a web app where users drag and drop an image of a metal part, and you create a STEP file (an industry standard for 3D models) from it"* 라는 구체적인 워크플로 예제를 제시한다. 이는 **"what exactly to do when a user supplies an image file"** 가 분명하고, 전 과정을 **코드로 사전에 쓸 수 있으므로** 워크플로의 완벽한 후보다.
 
-![](assets/skilljar-s8/L01-02-agents-and-workflows-06.jpg)
+![](01-Notes/assets/skilljar-s8/L01-02-agents-and-workflows-06.jpg)
 *이미지 → STEP 파일 워크플로 예시 --- UX 가 입력을 한정하므로 사전 정의 가능*
 
 단계는 다음과 같다.
@@ -200,7 +200,7 @@ L01 은 *"Imagine building a web app where users drag and drop an image of a met
 - Create a rendering
 - Ask Claude to **grade the rendering** against the original image. If there are issues, fix them
 
-![](assets/skilljar-s8/L01-03-agents-and-workflows-07.jpg)
+![](01-Notes/assets/skilljar-s8/L01-03-agents-and-workflows-07.jpg)
 *4 단계 워크플로 분해 --- describe → model(CadQuery) → render → grade*
 
 이 흐름은 "드래그 앤 드롭된 이미지" 라는 **매우 좁은 입력 공간** 을 가정한다. UX 가 사용자를 한 가지 작업으로 한정하므로, 개발자가 단계를 **미리 확정** 해 둘 수 있다. 워크플로의 교과서적 적용이다.
@@ -209,7 +209,7 @@ L01 은 *"Imagine building a web app where users drag and drop an image of a met
 
 위 예제의 마지막 단계(*"grade the rendering"*)는 단순한 출력 평가가 아니라, L01 이 정식으로 명명한 **Evaluator-Optimizer 패턴** 의 사례다.
 
-![](assets/skilljar-s8/L01-04-agents-and-workflows-15.jpg)
+![](01-Notes/assets/skilljar-s8/L01-04-agents-and-workflows-15.jpg)
 *Evaluator-Optimizer 패턴 --- Producer ↔ Grader 의 피드백 루프*
 
 네 구성 요소는 다음과 같다.
@@ -231,7 +231,7 @@ graph LR
     style OUT fill:#d1fae5,stroke:#059669
 ```
 
-![](assets/skilljar-s8/L01-evaluator-optimizer.jpg)
+![](01-Notes/assets/skilljar-s8/L01-evaluator-optimizer.jpg)
 *Evaluator-Optimizer 패턴 시각화 --- Producer(생성) ↔ Grader(채점) 의 반복 루프*
 
 > [!finding] Evaluator-Optimizer 가 중요한 이유
@@ -256,7 +256,7 @@ L01 은 다음 경고도 포함한다.
 | 평가·테스트 | 쉬움 (각 step 독립 평가) | 어려움 (가능한 경로가 다수) |
 | 적합한 예 | 이미지→STEP, 번역 검증 | 데스크톱 에이전트, 개발 CLI |
 
-![](assets/skilljar-s8/L01-workflows-vs-agents.jpg)
+![](01-Notes/assets/skilljar-s8/L01-workflows-vs-agents.jpg)
 *Workflows vs Agents --- 한눈에 보기 (제어 주체·실행 경로·예측 가능성의 대비)*
 
 > [!tip] Claude Code 자체가 그 증거
@@ -278,21 +278,21 @@ L02 는 *"When building AI applications, you'll often encounter tasks that seem 
 
 상상해보자 --- 사용자가 부품 이미지를 올리면 *metal, polymer, ceramic, composite, elastomer, or wood* 중 어떤 재료가 가장 적합한지 추천해주는 **재료 설계(material designer) 앱** 을 만든다.
 
-![](assets/skilljar-s8/L02-01-parallelization-workflows-02.jpg)
+![](01-Notes/assets/skilljar-s8/L02-01-parallelization-workflows-02.jpg)
 *단일 프롬프트 접근 --- *"choose between metal, polymer, ceramic, composite, elastomer, or wood"*
 
 첫 본능은 이미지와 함께 *"이 여섯 중 골라줘"* 프롬프트 하나를 쏘는 것이다. 동작은 하지만 *"a lot of heavy lifting in a single request"* 가 된다. **재료별 판별 기준이 없으면 결과가 덜 신뢰할 만하다**.
 
 그 보완책으로 모든 기준을 거대한 프롬프트 안에 욱여넣으면 새 문제가 생긴다.
 
-![](assets/skilljar-s8/L02-02-parallelization-workflows-06.jpg)
+![](01-Notes/assets/skilljar-s8/L02-02-parallelization-workflows-06.jpg)
 *거대 프롬프트 함정 --- *"Claude has to juggle all these different considerations simultaneously"*
 
 Claude 가 여섯 가지 기준을 **동시에 저글링(juggle)** 하느라 *"confusion and suboptimal results"* 를 내놓는다. 긴 프롬프트가 성능을 보장하지 않는다는 것이 W03 에서 이미 본 교훈이다.
 
 #### 해법 --- Parallelization
 
-![](assets/skilljar-s8/L02-parallelization-concept.jpg)
+![](01-Notes/assets/skilljar-s8/L02-parallelization-concept.jpg)
 *병렬화 개념 --- "한 작업을 여러 전문 호출로 쪼개 동시 실행"*
 
 ```
@@ -300,7 +300,7 @@ Claude 가 여섯 가지 기준을 **동시에 저글링(juggle)** 하느라 *"c
       마지막에 한 번 더 Claude 를 불러 종합 추천을 내린다.
 ```
 
-![](assets/skilljar-s8/L02-03-parallelization-workflows-09.jpg)
+![](01-Notes/assets/skilljar-s8/L02-03-parallelization-workflows-09.jpg)
 *병렬화 구조 --- 같은 이미지를 여러 번 동시에 보내되, 각 호출은 단일 재료 전문 프롬프트*
 
 L02이 명시한 단계는 다음과 같다.
@@ -310,14 +310,14 @@ L02이 명시한 단계는 다음과 같다.
 - Claude evaluates the part's suitability for each material **independently**
 - Collect all the analysis results and feed them into a **final aggregation step**
 
-![](assets/skilljar-s8/L02-04-parallelization-workflows-11.jpg)
+![](01-Notes/assets/skilljar-s8/L02-04-parallelization-workflows-11.jpg)
 *마지막 단계 --- 개별 분석을 모두 한 번에 Claude 에 다시 보내 최종 비교·추천*
 
 마지막 집계(aggregation) 호출이 하는 일은 *"compare them and make a final material recommendation"* 다. 즉 **병렬 → 종합** 이 한 세트다.
 
 #### 병렬화 패턴의 4 요소
 
-![](assets/skilljar-s8/L02-05-parallelization-workflows-15.jpg)
+![](01-Notes/assets/skilljar-s8/L02-05-parallelization-workflows-15.jpg)
 *Parallelization 패턴 구조 --- split · run in parallel · aggregate · sub-tasks need not be identical*
 
 L02 의 요약은 네 줄이다.
@@ -455,7 +455,7 @@ sequenceDiagram
 
 #### Parallelization 의 4 가지 이점
 
-![](assets/skilljar-s8/L02-parallelization-benefits.jpg)
+![](01-Notes/assets/skilljar-s8/L02-parallelization-benefits.jpg)
 *Parallelization 의 4 가지 이점 요약 --- Focused · Optimizable · Scalable · Reliable*
 
 L02은 이점을 명확하게 명명해 준다.
@@ -512,10 +512,10 @@ L03 는 *"Chaining workflows might seem obvious at first, but they're actually o
 
 각 단계가 **이전 단계의 출력을 입력** 으로 받고, **자기만의 초점** 을 갖는다.
 
-![](assets/skilljar-s8/L03-01-chaining-workflows-03.jpg)
+![](01-Notes/assets/skilljar-s8/L03-01-chaining-workflows-03.jpg)
 *체이닝의 동기 --- 긴 작업을 포커스된 순차 단계로 나눈다*
 
-![](assets/skilljar-s8/L03-chaining-flow.jpg)
+![](01-Notes/assets/skilljar-s8/L03-chaining-flow.jpg)
 *체이닝 워크플로의 전체 흐름 --- 단계 출력이 다음 단계의 입력이 되는 순차 구조*
 
 #### 실전 예 --- 소셜 미디어 영상 자동 제작
@@ -529,7 +529,7 @@ L03 의 대표 예제는 *"social media marketing tool that creates and posts vi
 - **Use an AI avatar and text-to-speech to create a video**
 - **Post the video to social media**
 
-![](assets/skilljar-s8/L03-02-chaining-workflows-08.jpg)
+![](01-Notes/assets/skilljar-s8/L03-02-chaining-workflows-08.jpg)
 *소셜 미디어 영상 체인 --- Twitter → 주제 선택 → 리서치 → 스크립트 → 영상 → 게시*
 
 이 중 *"select"·"research"·"write script"* 세 단계가 **Claude 체인** 이다. 나머지는 Twitter API · TTS · 게시 API 등 **non-LLM 처리** 로, L03 의 원문 *"optionally do non-LLM processing between each task"* 가 바로 이 부분을 가리킨다.
@@ -553,7 +553,7 @@ graph LR
 
 L03 는 세 가지 이점을 정리한다.
 
-![](assets/skilljar-s8/L03-03-chaining-workflows-09.jpg)
+![](01-Notes/assets/skilljar-s8/L03-03-chaining-workflows-09.jpg)
 *Chaining 의 세 이점 --- split · non-LLM processing · focused Claude*
 
 - **Split large tasks into smaller, non-parallelizable subtasks** --- 병렬화는 독립일 때, 체이닝은 **의존** 일 때 쓴다
@@ -564,7 +564,7 @@ L03 는 세 가지 이점을 정리한다.
 
 체이닝이 특히 빛나는 상황이 있다. L03 가 명명한 **"long prompt problem"** --- 기술 기사 작성에 아래처럼 많은 제약을 달았을 때다.
 
-![](assets/skilljar-s8/L03-04-chaining-workflows-11.jpg)
+![](01-Notes/assets/skilljar-s8/L03-04-chaining-workflows-11.jpg)
 *장문 제약조건 --- Claude 가 모두 지키기 어려운 4 가지 요구사항*
 
 - Not mention that it's written by an AI
@@ -574,19 +574,19 @@ L03 는 세 가지 이점을 정리한다.
 
 > *"Even with all these constraints clearly stated, Claude might still produce content that violates some of your rules. You might get back an article that still uses emojis, mentions AI authorship, or sounds unprofessional."*
 
-![](assets/skilljar-s8/L03-05-chaining-workflows-13.jpg)
+![](01-Notes/assets/skilljar-s8/L03-05-chaining-workflows-13.jpg)
 *현실 --- Claude 가 제약을 모두 지키지 못하는 순간*
 
 #### 해법 --- Two-Step Revision 체인
 
 L03 의 교과서적 해법은 **한 개 거대 프롬프트 대신 두 단계로 쪼개는 것** 이다.
 
-![](assets/skilljar-s8/L03-06-chaining-workflows-14.jpg)
+![](01-Notes/assets/skilljar-s8/L03-06-chaining-workflows-14.jpg)
 *Step 1 --- 처음엔 제약 위반이 있어도 그대로 생성*
 
 **Step 1**: 초기 프롬프트를 보내고, *"첫 결과가 완벽하지 않을 수 있음을 받아들인다"*. Claude 가 기사를 내놓되 몇몇 제약을 어길 수 있다.
 
-![](assets/skilljar-s8/L03-07-chaining-workflows-17.jpg)
+![](01-Notes/assets/skilljar-s8/L03-07-chaining-workflows-17.jpg)
 *Step 2 --- 교정(revision) 프롬프트로 위반만 집중 수정*
 
 **Step 2**: 생성된 기사를 넘겨주면서 **수정(revision)** 만을 요청한다. L03 이 제시한 원문 그대로의 교정 프롬프트는 다음과 같다.
@@ -718,9 +718,9 @@ L03의 체크리스트 그대로다.
 
 체이닝이 *"순서"* 의 문제를 해결했다면, 라우팅은 *"종류"* 의 문제를 해결한다. Skilljar L04 는 같은 social media video 앱을 확장한다 --- 사용자가 *"programming"* 이라고 입력했을 때와 *"surfing"* 이라고 입력했을 때, 생성해야 하는 스크립트의 성격이 완전히 다르다. 프로그래밍 토픽은 **정의와 설명이 명확한 교육 콘텐츠** 가 필요하고, 서핑 토픽은 **흥분과 시각적 매력을 강조한 엔터테인먼트 스크립트** 가 어울린다.
 
-![](assets/skilljar-s8/L04-01-routing-workflows-02.jpg)
+![](01-Notes/assets/skilljar-s8/L04-01-routing-workflows-02.jpg)
 
-![](assets/skilljar-s8/L04-routing-concept.jpg)
+![](01-Notes/assets/skilljar-s8/L04-routing-concept.jpg)
 *라우팅 개념 --- 입력의 "종류" 를 먼저 판별하고, 카테고리별 전문 프롬프트로 분기*
 
 > [!finding] Skilljar L04 원문
@@ -732,7 +732,7 @@ L03의 체크리스트 그대로다.
 
 L04 가 제시하는 해결책은 **콘텐츠 장르(genre)** 를 먼저 분류하고, 장르별 전문 프롬프트 템플릿을 적용하는 것이다. 제안하는 카테고리는 다음과 같다.
 
-![](assets/skilljar-s8/L04-02-routing-workflows-07.jpg)
+![](01-Notes/assets/skilljar-s8/L04-02-routing-workflows-07.jpg)
 
 | 카테고리 | 특성 | 언어 스타일 |
 | --- | --- | --- |
@@ -750,7 +750,7 @@ L04 가 제시하는 해결책은 **콘텐츠 장르(genre)** 를 먼저 분류�
 
 라우팅 워크플로는 항상 **2단계** 로 작동한다.
 
-![](assets/skilljar-s8/L04-03-routing-workflows-13.jpg)
+![](01-Notes/assets/skilljar-s8/L04-03-routing-workflows-13.jpg)
 
 1. **Categorization** --- 사용자 입력을 카테고리 중 하나로 분류
 2. **Specialized Processing** --- 분류 결과에 맞는 프롬프트 템플릿 선택 후 실행
@@ -771,7 +771,7 @@ Categorize the topic of a video into one of the listed categories:
 </categories>
 ```
 
-![](assets/skilljar-s8/L04-04-routing-workflows-15.jpg)
+![](01-Notes/assets/skilljar-s8/L04-04-routing-workflows-15.jpg)
 
 Claude 는 *"Educational"* 을 반환한다. 2단계는 이 결과를 이용해 교육용 템플릿으로 실제 스크립트를 생성한다.
 
@@ -851,7 +851,7 @@ print(dispatch("surfing in Hawaii"))  # → [Entertainment] ...
 
 #### 2.1.5 라우팅 아키텍처 다이어그램
 
-![](assets/skilljar-s8/L04-05-routing-workflows-17.jpg)
+![](01-Notes/assets/skilljar-s8/L04-05-routing-workflows-17.jpg)
 
 ```mermaid
 graph TD
@@ -891,9 +891,9 @@ L04 가 강조하는 **핵심 통찰** 은 *"user input only goes to one special
 
 Skilljar L05 는 Ch.1~§2.1 까지 다룬 워크플로의 **대척점** 에 있는 개념으로 에이전트를 소개한다.
 
-![](assets/skilljar-s8/L05-01-agents-and-tools-00.jpg)
+![](01-Notes/assets/skilljar-s8/L05-01-agents-and-tools-00.jpg)
 
-![](assets/skilljar-s8/L05-agent-tools.jpg)
+![](01-Notes/assets/skilljar-s8/L05-agent-tools.jpg)
 *에이전트의 기본 구조 --- goal + tools 를 주면 LLM 이 스스로 도구 선택과 반복 횟수를 결정한다*
 
 > [!finding] Skilljar L05 원문
@@ -912,7 +912,7 @@ Skilljar L05 는 Ch.1~§2.1 까지 다룬 워크플로의 **대척점** 에 있�
 
 L05 의 첫 번째 예제는 **의도적으로 단순한** 도구 3 개다.
 
-![](assets/skilljar-s8/L05-02-agents-and-tools-04.jpg)
+![](01-Notes/assets/skilljar-s8/L05-02-agents-and-tools-04.jpg)
 
 | 도구 | 기능 | 입력 → 출력 |
 | --- | --- | --- |
@@ -922,7 +922,7 @@ L05 의 첫 번째 예제는 **의도적으로 단순한** 도구 3 개다.
 
 단독으로 보면 각 도구는 **일차 함수 호출** 에 불과하다. 하지만 Claude 는 이들을 **조합해** 복합 질의를 처리한다.
 
-![](assets/skilljar-s8/L05-03-agents-and-tools-05.jpg)
+![](01-Notes/assets/skilljar-s8/L05-03-agents-and-tools-05.jpg)
 
 | 사용자 질의 | 에이전트의 도구 체인 |
 | --- | --- |
@@ -938,9 +938,9 @@ L05 의 첫 번째 예제는 **의도적으로 단순한** 도구 3 개다.
 
 L05 의 두 번째 예제는 더 큰 스케일이다 --- Week 08 에서 배운 **Claude Code** 자체가 에이전트의 교과서적 사례다.
 
-![](assets/skilljar-s8/L05-04-agents-and-tools-11.jpg)
+![](01-Notes/assets/skilljar-s8/L05-04-agents-and-tools-11.jpg)
 
-![](assets/skilljar-s8/L05-cc-abstract-tools.jpg)
+![](01-Notes/assets/skilljar-s8/L05-cc-abstract-tools.jpg)
 *Claude Code --- 범용 추상 도구의 결합 (Read · Write · Bash · Grep 등)*
 
 Claude Code 에 주어진 도구는 **모두 범용(generic) 유닉스 프리미티브** 다.
@@ -965,7 +965,7 @@ Claude Code 에는 `refactor_code`, `install_dependency`, `run_tests`, `fix_impo
 
 L05 의 세 번째 예제는 비디오 생성 에이전트다.
 
-![](assets/skilljar-s8/L05-05-agents-and-tools-16.jpg)
+![](01-Notes/assets/skilljar-s8/L05-05-agents-and-tools-16.jpg)
 
 | 도구 | 기능 |
 | --- | --- |
@@ -976,7 +976,7 @@ L05 의 세 번째 예제는 비디오 생성 에이전트다.
 
 이 도구 집합은 **단순 워크플로(비디오 생성 → 포스팅)** 와 **상호작용 시나리오(샘플 이미지 먼저 생성 → 사용자 승인 → 진행)** 를 모두 지원한다. 워크플로로 구현하면 두 플로우를 별도 함수로 분기해야 하지만, 에이전트에서는 **시스템 프롬프트의 *"ask user for approval before expensive operations"*** 한 문장이면 끝난다.
 
-![](assets/skilljar-s8/L05-06-agents-and-tools-19.jpg)
+![](01-Notes/assets/skilljar-s8/L05-06-agents-and-tools-19.jpg)
 
 #### 2.2.5 Python 에이전트 루프 --- 기본 구조
 
@@ -1031,10 +1031,10 @@ def agent_loop(user_goal: str, tools: list[dict], tool_impls: dict, max_turns: i
 
 L06 은 에이전트 구현의 **가장 자주 간과되는 함정** 을 다룬다.
 
-![](assets/skilljar-s8/L06-environment-inspection.jpg)
+![](01-Notes/assets/skilljar-s8/L06-environment-inspection.jpg)
 *환경 인스펙션 --- 에이전트가 "행동 전에 관찰" 하는 단계로 맹목성을 줄인다*
 
-![](assets/skilljar-s8/L06-01-environment-inspection-00.jpg)
+![](01-Notes/assets/skilljar-s8/L06-01-environment-inspection-00.jpg)
 
 > [!finding] Skilljar L06 원문
 > *"When building AI agents, one crucial concept often gets overlooked: environment inspection. Claude operates blindly --- it needs to be able to observe and understand the results of its actions to work effectively."*
@@ -1047,7 +1047,7 @@ L06 은 에이전트 구현의 **가장 자주 간과되는 함정** 을 다룬�
 
 파일 작업에서도 같은 원리가 적용된다. Claude 가 Python 파일에 새 라우트를 추가하려면, **먼저 기존 코드를 읽어서** 현재 구조를 파악해야 한다.
 
-![](assets/skilljar-s8/L06-02-environment-inspection-08.jpg)
+![](01-Notes/assets/skilljar-s8/L06-02-environment-inspection-08.jpg)
 
 > [!method] Read-Before-Write Pattern
 > ```
@@ -1064,7 +1064,7 @@ Week 08 실습에서 `Edit` 도구 사용 전 반드시 `Read` 를 요구받은 
 
 L06 의 비디오 에이전트 예제는 환경 인스펙션을 시스템 프롬프트로 강제하는 방법을 보여준다.
 
-![](assets/skilljar-s8/L06-03-environment-inspection-11.jpg)
+![](01-Notes/assets/skilljar-s8/L06-03-environment-inspection-11.jpg)
 
 시스템 프롬프트 예시:
 
@@ -1130,7 +1130,7 @@ L06 이 제안하는 설계 질문은 단 하나다 --- *"How will Claude know i
 
 L07 은 Ch.1~§2.3 전체를 관통하는 **선택 기준** 을 공식화한다.
 
-![](assets/skilljar-s8/L07-01-workflows-vs-agents-00.jpg)
+![](01-Notes/assets/skilljar-s8/L07-01-workflows-vs-agents-00.jpg)
 
 > [!finding] Skilljar L07 --- Workflows 정의
 > *"Workflows are a predefined series of calls to Claude designed to solve a known problem or set of problems. You use workflows when you can picture the flow of steps ahead of time --- essentially when you know the exact sequence needed to complete a task."*
@@ -1140,7 +1140,7 @@ L07 은 Ch.1~§2.3 전체를 관통하는 **선택 기준** 을 공식화한다.
 
 #### 2.4.2 4-항목 비교 매트릭스 (Benefits × Downsides)
 
-![](assets/skilljar-s8/L07-workflows-vs-agents-summary.jpg)
+![](01-Notes/assets/skilljar-s8/L07-workflows-vs-agents-summary.jpg)
 *Workflows vs Agents 최종 비교 --- Benefits × Downsides 한 장 요약*
 
 L07 이 제시하는 4-항목 비교는 **실무 의사결정의 핵심 레퍼런스** 다.

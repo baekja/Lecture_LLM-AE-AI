@@ -163,14 +163,14 @@ graph LR
 
 Extended thinking 은 Claude 의 **고급 추론(advanced reasoning)** 기능이다. 복잡한 문제를 풀기 전에 모델에게 **"풀이용 종이(scratch paper)"** 를 쥐여 주어, 답을 생성하기 전에 생각 과정을 **구조화된 블록** 으로 드러낸다. Skilljar L01 은 이를 이렇게 표현한다: *"Think of it as Claude's 'scratch paper' — you can see the reasoning process that leads to the answer."*
 
-![](assets/skilljar-s5/L01-01-thinking-response-04.jpg)
+![](01-Notes/assets/skilljar-s5/L01-01-thinking-response-04.jpg)
 *기본 응답 구조 — thinking 이 꺼져 있으면 단일 text 블록만 반환*
 
 #### Extended Thinking 이 동작하는 방식
 
 thinking 을 활성화하면, 지금까지 단일 text 블록이던 응답이 **두 부분 구조** 로 바뀐다.
 
-![](assets/skilljar-s5/L01-02-thinking-response-05.jpg)
+![](01-Notes/assets/skilljar-s5/L01-02-thinking-response-05.jpg)
 *thinking 활성화 응답 — reasoning process + final answer 두 블록이 나란히 반환*
 
 주요 장점(*"key benefits"*):
@@ -213,10 +213,10 @@ Skilljar 는 결정을 단순화한다 — *"Use your prompt evaluations."* 먼�
 
 Extended thinking 응답은 **보안을 위한 특수 서명 시스템(special signature system for security)** 을 포함한다.
 
-![](assets/skilljar-s5/L01-03-thinking-response-06.jpg)
+![](01-Notes/assets/skilljar-s5/L01-03-thinking-response-06.jpg)
 *Signature 포함 thinking 블록 — 변조 방지 암호화 토큰*
 
-![](assets/skilljar-s5/L01-extended-thinking-response.jpg)
+![](01-Notes/assets/skilljar-s5/L01-extended-thinking-response.jpg)
 *Extended Thinking 응답 종합 — ThinkingBlock + TextBlock 의 두 부분 구조와 signature 필드 시각화*
 
 signature 는 **thinking 텍스트가 수정되지 않았음을 보장하는 암호화 토큰(cryptographic token)** 이다. 개발자가 Claude 의 추론을 임의로 편집해 안전하지 않은 방향으로 유도하는 것을 막는다.
@@ -225,10 +225,10 @@ signature 는 **thinking 텍스트가 수정되지 않았음을 보장하는 암
 
 때때로 읽을 수 있는 추론 대신 **redacted thinking block** 이 돌아온다.
 
-![](assets/skilljar-s5/L01-04-thinking-response-08.jpg)
+![](01-Notes/assets/skilljar-s5/L01-04-thinking-response-08.jpg)
 *Redacted thinking — Claude 내부 안전 시스템이 플래그한 추론을 암호화해 반환*
 
-![](assets/skilljar-s5/L01-extended-thinking-redacted.jpg)
+![](01-Notes/assets/skilljar-s5/L01-extended-thinking-redacted.jpg)
 *Redacted thinking 블록의 데이터 구조 — `type: "redacted_thinking"` 과 암호화된 `data` 필드*
 
 이것은 Claude 의 사고 과정이 **내부 안전 시스템에 의해 플래그(flagged by internal safety systems)** 된 경우 발생한다. 암호화된 형태의 thinking 이 그대로 들어 있어, **다음 턴의 대화에서 완전한 메시지를 되돌려 보내도 문맥을 잃지 않는다**. 즉 redacted 블록도 **세션 컨텍스트 유지를 위해 반드시 보존**해야 한다.
@@ -328,7 +328,7 @@ graph TD
 
 Claude 의 **비전 기능(vision capabilities)** 은 메시지에 이미지를 포함시키고 *"셀 수 없이 다양한 방식으로"* 분석을 요청할 수 있게 해준다 — 이미지 묘사, 여러 이미지 비교, 객체 개수 세기, 복잡한 시각 분석까지.
 
-![](assets/skilljar-s5/L02-01-image-intro-01.jpg)
+![](01-Notes/assets/skilljar-s5/L02-01-image-intro-01.jpg)
 *Image Support 개요 — 이미지를 메시지 내 별도 블록으로 첨부*
 
 #### 이미지 처리의 기본 제약
@@ -355,7 +355,7 @@ graph LR
     style A fill:#e8c07a,stroke:#c4a882,color:#333
 ```
 
-![](assets/skilljar-s5/L02-02-image-intro-02.jpg)
+![](01-Notes/assets/skilljar-s5/L02-02-image-intro-02.jpg)
 *사용자 서버 → Claude 왕복 흐름 — 텍스트와 동일한 conversation 패턴*
 
 #### 기본 구현 — Base64 인코딩
@@ -393,7 +393,7 @@ add_user_message(messages, [
 
 L02 의 핵심 메시지는 *"the same prompting techniques that work for text apply to images"* 다. 단순 프롬프트는 단순한 결과만 낳는다.
 
-![](assets/skilljar-s5/L02-03-image-input-04.jpg)
+![](01-Notes/assets/skilljar-s5/L02-03-image-input-04.jpg)
 *예시 — marble 이미지 개수 세기: 단순 질문의 실패*
 
 예를 들어 *"How many marbles are in this image?"* 라고 물어 보면, 종종 틀린 개수가 나온다. 정확도를 끌어올리려면:
@@ -404,7 +404,7 @@ L02 의 핵심 메시지는 *"the same prompting techniques that work for text a
 
 #### Step-by-Step 분석 프롬프트 (marble counting)
 
-![](assets/skilljar-s5/L02-04-image-input-05.jpg)
+![](01-Notes/assets/skilljar-s5/L02-04-image-input-05.jpg)
 *체계적 방법론 프롬프트 — 단순 질문을 step-by-step 메서드로 대체*
 
 Skilljar 공식 예제 그대로:
@@ -421,17 +421,17 @@ What is the exact, verified number of marbles in this image?
 
 #### One-Shot 예시로 정확도 끌어올리기
 
-![](assets/skilljar-s5/L02-05-image-best-practices-07.jpg)
+![](01-Notes/assets/skilljar-s5/L02-05-image-best-practices-07.jpg)
 *one-shot 기법 — 정답을 아는 레퍼런스 이미지 먼저 제시*
 
 메시지 안에 **개수를 이미 아는 이미지** 를 먼저 넣고, *"이 이미지는 12 개다"* 라고 알려준 뒤 **타겟 이미지** 를 질문하는 방식. Claude 에게 *"내가 원하는 분석의 종류"* 를 레퍼런스로 제공하는 것이다 — 텍스트 few-shot 과 정확히 같은 원리.
 
 #### 실전 사례 — Fire Risk Assessment (산불 위험도 평가)
 
-![](assets/skilljar-s5/L02-06-image-best-practices-08.jpg)
+![](01-Notes/assets/skilljar-s5/L02-06-image-best-practices-08.jpg)
 *Fire Risk Assessment — 위성 이미지 기반 주거지 위험도 자동 평가*
 
-![](assets/skilljar-s5/L02-fire-risk-assessment.jpg)
+![](01-Notes/assets/skilljar-s5/L02-fire-risk-assessment.jpg)
 *Fire Risk Assessment 5단계 워크플로 — residence identification → tree overhang → fire risk → defensible space → rating 1-4*
 
 L02 가 제시하는 실전 응용은 **주택 화재 보험을 위한 자동 위험도 평가** 다. 모든 부동산에 조사원을 보내는 대신, 위성 이미지 + Claude 분석으로 대체한다. 시스템이 살펴보는 요소:
@@ -497,7 +497,7 @@ L02 가 보여주는 5단계 메서드는 **도메인 불문의 템플릿** 이�
 
 #### Image + Text 블록 구조 요약
 
-![](assets/skilljar-s5/L02-image-support-structure.jpg)
+![](01-Notes/assets/skilljar-s5/L02-image-support-structure.jpg)
 *Image Support 메시지 구조 — image block (base64/url) + text block 이 user 메시지 안에 나란히 배치*
 
 ```mermaid
@@ -594,10 +594,10 @@ flowchart LR
 - **표와 그 데이터 관계** (Tables and their data relationships)
 - **문서 구조와 서식** (Document structure and formatting)
 
-![](assets/skilljar-s5/L03-01-pdf-support-02.jpg)
+![](01-Notes/assets/skilljar-s5/L03-01-pdf-support-02.jpg)
 *Wikipedia Earth PDF 예제 — 한 문장 요약 성공*
 
-![](assets/skilljar-s5/L03-pdf-processing.jpg)
+![](01-Notes/assets/skilljar-s5/L03-pdf-processing.jpg)
 *PDF Processing 흐름 — base64 인코딩 → document block → Claude 가 텍스트·이미지·표·구조를 통합 추출*
 
 위 스크린샷은 **Wikipedia Earth 기사 PDF** 를 단 한 문장으로 요약한 실제 출력이다. 이는 *"PDF 문서에서 어떤 종류의 정보든 추출할 수 있는 원스톱 솔루션(one-stop solution)"* 이 된다는 증명이다.
@@ -655,10 +655,10 @@ Claude 가 제공한 문서를 바탕으로 답변할 때, 사용자는 *"이거
 
 #### 왜 Citations 가 필요한가
 
-![](assets/skilljar-s5/L04-01-citations-intro-00.jpg)
+![](01-Notes/assets/skilljar-s5/L04-01-citations-intro-00.jpg)
 *Citations 의 목적 — Claude 의 답변이 문서 어디서 왔는지 사용자에게 보여주는 투명성 기능*
 
-![](assets/skilljar-s5/L04-citations-concept.jpg)
+![](01-Notes/assets/skilljar-s5/L04-citations-concept.jpg)
 *Citations 개념도 — Claude 응답의 각 주장(claim)에 소스 문서의 원문 발췌가 자동 attach*
 
 Citation 없이 답변만 제공하면, 사용자는 **두 가지를 검증할 수 없다**.
@@ -691,7 +691,7 @@ Citation 없이 답변만 제공하면, 사용자는 **두 가지를 검증할 �
 
 Citations 가 켜지면, Claude 의 응답은 **단순 텍스트가 아닌 구조화된 데이터**로 바뀐다. 각 주장(claim)마다 citation 이 따라붙는다.
 
-![](assets/skilljar-s5/L04-02-citations-response-08.jpg)
+![](01-Notes/assets/skilljar-s5/L04-02-citations-response-08.jpg)
 *Citations 응답 구조 — 각 주장 뒤에 cited_text / document_index / title / page 범위가 attached*
 
 각 citation 은 5개의 핵심 필드를 갖는다.
@@ -704,10 +704,10 @@ Citations 가 켜지면, Claude 의 응답은 **단순 텍스트가 아닌 구�
 | **`start_page_number`** | cited_text 가 시작되는 페이지 |
 | **`end_page_number`** | cited_text 가 끝나는 페이지 |
 
-![](assets/skilljar-s5/L04-03-citations-response-09.jpg)
+![](01-Notes/assets/skilljar-s5/L04-03-citations-response-09.jpg)
 *Citation 필드 예시 — earth.pdf 의 특정 페이지 범위와 원문 발췌가 함께 반환*
 
-![](assets/skilljar-s5/L04-citations-structure.jpg)
+![](01-Notes/assets/skilljar-s5/L04-citations-structure.jpg)
 *Citation 응답 구조 — cited_text · document_index · document_title · start_page · end_page 5개 필드의 전체 데이터 구조*
 
 #### Citations 응답 흐름 다이어그램
@@ -728,7 +728,7 @@ sequenceDiagram
 
 #### Citations 를 UI 에 녹여내기
 
-![](assets/skilljar-s5/L04-04-citations-format-11.jpg)
+![](01-Notes/assets/skilljar-s5/L04-04-citations-format-11.jpg)
 *Citations 기반 UI — 마우스 호버 시 원문 발췌가 뜨는 인터랙티브 각주*
 
 Citations 의 **진짜 힘**은 이 정보를 **사용자 인터페이스** 에서 접근 가능하게 만들 때 나온다. 호버 시 원문 발췌가 뜨는 각주, 클릭 시 원본 PDF 의 해당 페이지로 점프, 사이드바에 citation 리스트 렌더 등의 인터랙션으로 **투명한 사용자 경험** 을 만들 수 있다.
@@ -804,15 +804,15 @@ Prompt caching 은 **이전 요청의 계산 작업을 재사용해** Claude 의
 
 #### 기본 동작 — 캐시가 없을 때 무슨 일이 일어나는가
 
-![](assets/skilljar-s5/L05-01-caching-intro-01.jpg)
+![](01-Notes/assets/skilljar-s5/L05-01-caching-intro-01.jpg)
 *Prompt caching 소개 — 현재 어떤 낭비가 일어나고 있는가*
 
-![](assets/skilljar-s5/L05-caching-concept.jpg)
+![](01-Notes/assets/skilljar-s5/L05-caching-concept.jpg)
 *Prompt Caching 개념 — 전처리 결과를 버리지 않고 cache 에 저장해 후속 요청에서 재사용*
 
 사용자가 Claude 에 메시지를 보내면, Claude 는 응답을 **바로** 생성하지 않는다. 먼저 입력에 대한 **엄청난 양의 전처리(tremendous amount of preprocessing work)** 를 수행한다.
 
-![](assets/skilljar-s5/L05-02-caching-diagram-04.jpg)
+![](01-Notes/assets/skilljar-s5/L05-02-caching-diagram-04.jpg)
 *전처리 4단계 — tokenize → embed → context → generate*
 
 - 프롬프트를 더 작은 조각으로 **tokenize**
@@ -822,39 +822,39 @@ Prompt caching 은 **이전 요청의 계산 작업을 재사용해** Claude 의
 
 그리고 응답을 돌려준 뒤, 이 모든 계산 작업을 **버린다**. tokenization, embedding, context 분석 전부 discard 된다.
 
-![](assets/skilljar-s5/L05-03-caching-diagram-07.jpg)
+![](01-Notes/assets/skilljar-s5/L05-03-caching-diagram-07.jpg)
 *기본 동작 — 응답 생성 후 모든 전처리 결과 폐기*
 
 #### 낭비가 드러나는 시나리오
 
 이 버리는 방식이 문제가 되는 건 **같은 콘텐츠가 포함된 후속 요청(follow-up requests)** 을 보낼 때다.
 
-![](assets/skilljar-s5/L05-04-caching-usage-09.jpg)
+![](01-Notes/assets/skilljar-s5/L05-04-caching-usage-09.jpg)
 *동일 문서에 대한 반복 요청 — 같은 전처리를 매번 재수행*
 
 예를 들어 긴 텍스트의 요약을 **여러 번 다듬어 달라고** 대화하는 상황. Claude 는 **조금 전에 분석한** 바로 그 내용에 대해 같은 전처리를 다시 해야 한다. L05 는 이를 Claude 의 속마음으로 표현한다 — *"I just processed that message and threw away all the work I did — I could have reused it!"*
 
-![](assets/skilljar-s5/L05-05-caching-usage-11.jpg)
+![](01-Notes/assets/skilljar-s5/L05-05-caching-usage-11.jpg)
 *"I could have reused it!" — 낭비 구간을 직시하기*
 
 #### Prompt Caching 이 하는 일
 
 이 워크플로를 **전처리 결과를 버리지 않고 저장**하는 방식으로 바꾼다.
 
-![](assets/skilljar-s5/L05-06-caching-costs-15.jpg)
+![](01-Notes/assets/skilljar-s5/L05-06-caching-costs-15.jpg)
 *Prompt caching 이후 — 전처리 결과를 cache 에 저장, 재요청에서 재사용*
 
 최초 요청 시 Claude 는 평소처럼 전처리를 수행하되, 결과를 **버리는 대신 cache 에 저장한다**. cache 는 *"이 메시지가 또 오면, 전에 한 일을 재사용하겠다"* 는 일종의 lookup table 로 동작한다.
 
-![](assets/skilljar-s5/L05-07-caching-costs-17.jpg)
+![](01-Notes/assets/skilljar-s5/L05-07-caching-costs-17.jpg)
 *Cache hit — 초기 write 이후 follow-up 요청은 read 로 처리*
 
-![](assets/skilljar-s5/L05-caching-workflow.jpg)
+![](01-Notes/assets/skilljar-s5/L05-caching-workflow.jpg)
 *Caching Workflow 전체 — 최초 요청(WRITE) → 캐시 저장(1h TTL) → 후속 요청(HIT, 90% 할인)*
 
 #### 이득과 제약
 
-![](assets/skilljar-s5/L05-08-caching-costs-19.jpg)
+![](01-Notes/assets/skilljar-s5/L05-08-caching-costs-19.jpg)
 *Prompt caching 의 장점과 한계 요약*
 
 **이득**:
@@ -904,7 +904,7 @@ graph LR
 
 Prompt caching 은 **반복적으로 동일한 내용을 보낼 때만** 이득을 준다. L06 은 *"이득을 실제로 받기 위한 규칙"* 을 10 장의 슬라이드로 단계별로 설명한다.
 
-![](assets/skilljar-s5/L06-01-rules-intro-00.jpg)
+![](01-Notes/assets/skilljar-s5/L06-01-rules-intro-00.jpg)
 *L06 인트로 — 동작 원리 복습 + "one hour 유효" 강조*
 
 #### 규칙 1 — 캐시는 자동이 아니며, breakpoint 가 필요하다
@@ -916,14 +916,14 @@ L06 이 가장 먼저 못박는 규칙은 다음 네 가지다.
 - breakpoint **이전의** 모든 작업이 캐시된다
 - follow-up 요청에서 **breakpoint 까지의 내용이 완전히 동일할 때만** 캐시가 사용된다
 
-![](assets/skilljar-s5/L06-02-rules-order-04.jpg)
+![](01-Notes/assets/skilljar-s5/L06-02-rules-order-04.jpg)
 *Breakpoint 배치 — 해당 위치까지 연속적으로 캐싱*
 
 #### 규칙 2 — Longhand 블록 형식을 써야 한다
 
 shorthand form 에서는 `cache_control` 을 둘 자리가 없다. 그래서 **longhand(확장) 텍스트 블록 형식** 으로 적어야 한다.
 
-![](assets/skilljar-s5/L06-03-rules-order-06.jpg)
+![](01-Notes/assets/skilljar-s5/L06-03-rules-order-06.jpg)
 *Shorthand vs longhand — cache_control 필드를 넣기 위한 구조 차이*
 
 ```python
@@ -947,24 +947,24 @@ shorthand form 에서는 `cache_control` 을 둘 자리가 없다. 그래서 **l
 
 #### 규칙 3 — Breakpoint 까지의 모든 것이 동일해야 한다
 
-![](assets/skilljar-s5/L06-04-rules-breakpoints-08.jpg)
+![](01-Notes/assets/skilljar-s5/L06-04-rules-breakpoints-08.jpg)
 *Breakpoint 전후 — 전은 캐시, 후는 일반 처리*
 
-![](assets/skilljar-s5/L06-cache-breakpoints.jpg)
+![](01-Notes/assets/skilljar-s5/L06-cache-breakpoints.jpg)
 *Cache Breakpoints 종합 — 최대 4개 breakpoint 의 배치 전략과 tools/system/messages 처리 순서*
 
 breakpoint 를 배치한 순간, **그 지점까지의 모든 처리 작업** 이 캐시된다. breakpoint **이후** 콘텐츠는 평소대로 처리된다.
 
 그런데 여기 **잔인한 규칙**이 있다 — *"Even small changes like adding the word 'please' will invalidate the cache and force Claude to reprocess everything."*
 
-![](assets/skilljar-s5/L06-05-rules-breakpoints-10.jpg)
+![](01-Notes/assets/skilljar-s5/L06-05-rules-breakpoints-10.jpg)
 *캐시 무효화 — 작은 변경(단어 하나!)이 캐시 전체를 깨뜨림*
 
 이것이 prompt caching 이 **변하지 않는 콘텐츠 뒤에** breakpoint 를 배치해야 하는 이유다. 조금이라도 사용자 입력처럼 바뀌는 부분이 앞에 있으면 캐시는 쓸모가 없다.
 
 #### 규칙 4 — Cross-Message Caching (여러 메시지에 걸친 캐시)
 
-![](assets/skilljar-s5/L06-06-rules-ttl-11.jpg)
+![](01-Notes/assets/skilljar-s5/L06-06-rules-ttl-11.jpg)
 *Cross-message caching — 뒤쪽 메시지의 breakpoint 가 앞쪽 메시지 전부를 포함*
 
 breakpoint 를 **나중 메시지에** 두면, 이전 메시지들(user / assistant 전부)이 모두 캐시 대상에 포함된다. 대화 문맥 전체를 특정 시점까지 **통째로 캐싱** 하고 싶을 때 유용하다.
@@ -978,7 +978,7 @@ breakpoint 는 텍스트 블록에만 붙는 게 아니다.
 - **Image blocks**
 - **Tool use 및 tool result 블록**
 
-![](assets/skilljar-s5/L06-07-rules-ttl-13.jpg)
+![](01-Notes/assets/skilljar-s5/L06-07-rules-ttl-13.jpg)
 *System prompt · Tool 정의는 캐싱의 최적 후보 — 거의 변하지 않음*
 
 시스템 프롬프트와 tool 정의는 요청 간에 **거의 변하지 않으므로** 캐싱의 가장 좋은 후보다. L06 은 이를 두고 *"this is often where you'll get the most benefit from prompt caching"* 이라 강조한다.
@@ -987,7 +987,7 @@ breakpoint 는 텍스트 블록에만 붙는 게 아니다.
 
 내부적으로 Claude 는 요청 구성요소를 **특정 순서**로 처리한다.
 
-![](assets/skilljar-s5/L06-08-rules-modify-15.jpg)
+![](01-Notes/assets/skilljar-s5/L06-08-rules-modify-15.jpg)
 *내부 처리 순서 — tools 먼저, 그 다음 system, 마지막 messages*
 
 이 순서를 이해하면 breakpoint 를 **어디에 놓을지** 직관이 생긴다.
@@ -1013,14 +1013,14 @@ flowchart LR
 
 #### 규칙 7 — breakpoint 는 **최대 4개**
 
-![](assets/skilljar-s5/L06-09-rules-modify-17.jpg)
+![](01-Notes/assets/skilljar-s5/L06-09-rules-modify-17.jpg)
 *최대 4개 breakpoint — 다양한 변화 지점을 분리해 부분 캐싱*
 
 breakpoint 는 **총 4개까지** 추가할 수 있다. 예를 들어 tools 를 캐싱하고, 대화 history 중간에 또 하나를 추가하는 식이다. 이 유연성 덕분에 **요청의 어느 부분이 자주 바뀌고 어느 부분이 고정인지**에 따라 다르게 캐싱할 수 있다.
 
 #### 규칙 8 — 최소 길이 **1,024 tokens**
 
-![](assets/skilljar-s5/L06-10-rules-summary-19.jpg)
+![](01-Notes/assets/skilljar-s5/L06-10-rules-summary-19.jpg)
 *최소 1,024 tokens — 임계값 아래는 캐싱 불가*
 
 마지막으로 가장 자주 놓치는 규칙 — **캐싱할 내용은 최소 1,024 tokens 이상**이어야 한다. 이것은 개별 블록이 아니라 **캐시 대상이 되는 모든 메시지·블록의 합**이다.
@@ -1056,7 +1056,7 @@ breakpoint 는 **총 4개까지** 추가할 수 있다. 예를 들어 tools 를 
 
 L05-L06 이 *"왜"* 와 *"규칙"* 이었다면, L07 은 **실전 구현 패턴**이다. L07 의 강력한 한 장짜리 시각 자료가 전체 요점을 담는다.
 
-![](assets/skilljar-s5/L07-01-caching-action-19.jpg)
+![](01-Notes/assets/skilljar-s5/L07-01-caching-action-19.jpg)
 *Prompt caching in action — 대표 캐시 대상: 6K 시스템 프롬프트 + 1.7K tool schemas*
 
 #### 어디에 쓸 때 이득이 큰가
@@ -1180,7 +1180,7 @@ Anthropic API 는 **함께 쓰면 위력이 배가되는** 두 기능을 제공�
 
 Files API 는 이미지나 PDF 를 **base64 로 매번 포함하는 대신**, 파일을 미리 업로드해 두고 나중에 **file id 로 참조**할 수 있게 해준다.
 
-![](assets/skilljar-s5/L08-01-code-exec-intro-01.jpg)
+![](01-Notes/assets/skilljar-s5/L08-01-code-exec-intro-01.jpg)
 *Files API 플로우 — 사전 업로드 → file metadata 획득 → 이후 메시지에서 id 로 참조*
 
 동작 순서:
@@ -1188,10 +1188,10 @@ Files API 는 이미지나 PDF 를 **base64 로 매번 포함하는 대신**, �
 2. **고유한 file ID** 가 담긴 **파일 메타데이터 객체** 수신
 3. 이후 메시지에서는 **raw 데이터 대신 file ID** 로 참조
 
-![](assets/skilljar-s5/L08-02-code-exec-intro-02.jpg)
+![](01-Notes/assets/skilljar-s5/L08-02-code-exec-intro-02.jpg)
 *base64 inline vs Files API — 파일 재사용, 대용량 처리에 Files API 가 유리*
 
-![](assets/skilljar-s5/L08-files-api-concept.jpg)
+![](01-Notes/assets/skilljar-s5/L08-files-api-concept.jpg)
 *Files API 개념 — 사전 업로드된 파일을 file_id 로 참조해 inline base64 보다 효율적인 multi-request 패턴*
 
 특히 **같은 파일을 여러 번 참조**해야 하거나, **모든 요청에 포함하기 부담스러운 큰 파일**을 다룰 때 유용하다.
@@ -1200,7 +1200,7 @@ Files API 는 이미지나 PDF 를 **base64 로 매번 포함하는 대신**, �
 
 Code execution 은 **서버 기반 도구(server-based tool)** 로, 개발자가 구현체를 제공할 필요가 없다. 사전 정의된 tool schema 를 요청에 포함하기만 하면, Claude 가 **격리된 Docker 컨테이너** 에서 Python 코드를 선택적으로 실행할 수 있다.
 
-![](assets/skilljar-s5/L08-03-code-exec-flow-04.jpg)
+![](01-Notes/assets/skilljar-s5/L08-03-code-exec-flow-04.jpg)
 *Code execution 환경 — isolated Docker container, no network, 반복 실행 가능*
 
 실행 환경의 핵심 성질:
@@ -1216,10 +1216,10 @@ Code execution 은 **서버 기반 도구(server-based tool)** 로, 개발자가
 
 진짜 힘은 두 기능을 **함께** 쓸 때 나온다. Docker 컨테이너는 네트워크가 없기 때문에, Files API 가 **실행 환경에 데이터를 넣고 결과물을 꺼내는 주요 통로**가 된다.
 
-![](assets/skilljar-s5/L08-04-code-exec-flow-06.jpg)
+![](01-Notes/assets/skilljar-s5/L08-04-code-exec-flow-06.jpg)
 *Files API × Code Execution — 업로드 → container_upload → 실행 → 다운로드*
 
-![](assets/skilljar-s5/L08-code-execution-flow.jpg)
+![](01-Notes/assets/skilljar-s5/L08-code-execution-flow.jpg)
 *Code Execution Flow — Claude 가 isolated Docker container 에서 Python 을 반복 실행하고 결과를 응답에 통합*
 
 전형적인 워크플로:
@@ -1233,7 +1233,7 @@ Code execution 은 **서버 기반 도구(server-based tool)** 로, 개발자가
 
 L08 이 제시하는 구체적 예제는 **스트리밍 서비스 데이터** 분석이다. CSV 에는 구독 등급(subscription tier), 시청 습관, 이탈 여부(churn) 등의 사용자 정보가 들어 있다.
 
-![](assets/skilljar-s5/L08-05-files-api-08.jpg)
+![](01-Notes/assets/skilljar-s5/L08-05-files-api-08.jpg)
 *streaming.csv 예제 — subscription / viewing / churn 컬럼 구성*
 
 먼저 헬퍼 함수로 파일 업로드.
@@ -1272,7 +1272,7 @@ Code execution 이 쓰이면 응답에는 **여러 타입의 블록**이 섞여�
 - **Server tool use blocks** — 실제로 Claude 가 실행하기로 결정한 코드
 - **Code execution tool result blocks** — 코드 실행 결과
 
-![](assets/skilljar-s5/L08-06-files-api-13.jpg)
+![](01-Notes/assets/skilljar-s5/L08-06-files-api-13.jpg)
 *응답 블록 다양화 — text + server_tool_use + code_execution_output 혼합*
 
 Claude 는 한 응답 안에서 **여러 번 코드를 실행** 할 수 있다 — 한 번 돌려 보고, 결과를 보고 다시 코드를 짜서 실행하는 **반복(iterative)** 분석 패턴이다. 각 실행 사이클은 **코드 + 결과** 쌍을 포함한다.
@@ -1287,7 +1287,7 @@ Claude 는 한 응답 안에서 **여러 번 코드를 실행** 할 수 있다 �
 download_file("file_id_from_response")
 ```
 
-![](assets/skilljar-s5/L08-07-code-exec-summary-18.jpg)
+![](01-Notes/assets/skilljar-s5/L08-07-code-exec-summary-18.jpg)
 *최종 결과 — 손으로 짜면 오래 걸릴 시각화가 Claude 의 자동 실행으로 완성*
 
 결과는 *"significant manual coding 이 필요했을 전문적인 시각화가 포함된 종합 분석"* 이다.
@@ -1844,22 +1844,22 @@ graph TD
 
 다음 6 장은 IMCP 트랙의 핵심 슬라이드 요약본이다. **W07 본강의의 forward reference** 로 미리 한 번 훑어 두면 다음 주 진입이 훨씬 수월하다.
 
-![](assets/skilljar-s5/skilljar-s5-mcp-intro.webp)
+![](01-Notes/assets/skilljar-s5/skilljar-s5-mcp-intro.webp)
 *MCP 개요 — Model Context Protocol 의 목적과 위치 (W07 L01 preview)*
 
-![](assets/skilljar-s5/skilljar-s5-architecture.webp)
+![](01-Notes/assets/skilljar-s5/skilljar-s5-architecture.webp)
 *MCP 아키텍처 — Host · Client · Server 3계층 구조 (W07 L02 preview)*
 
-![](assets/skilljar-s5/skilljar-s5-tool-definition.webp)
+![](01-Notes/assets/skilljar-s5/skilljar-s5-tool-definition.webp)
 *MCP Tool 정의 — FastMCP `@mcp.tool()` 데코레이터로 함수 → tool 변환 (W07 L03~L04 preview)*
 
-![](assets/skilljar-s5/skilljar-s5-resources.webp)
+![](01-Notes/assets/skilljar-s5/skilljar-s5-resources.webp)
 *MCP Resources — 변하지 않는 데이터를 resource 로 노출 (W06 caching 설계와 동일 사고)*
 
-![](assets/skilljar-s5/skilljar-s5-inspector.webp)
+![](01-Notes/assets/skilljar-s5/skilljar-s5-inspector.webp)
 *MCP Inspector — 개발 단계에서 MCP 서버를 시각적으로 테스트하는 도구 (W07 L06 preview)*
 
-![](assets/skilljar-s5/skilljar-s5-client-impl.webp)
+![](01-Notes/assets/skilljar-s5/skilljar-s5-client-impl.webp)
 *MCP Client 구현 — Python 클라이언트가 MCP 서버에 연결해 tool/resource 를 호출하는 패턴 (W07 L07 preview)*
 
 > [!tip] W06 → W07 자연스러운 연결

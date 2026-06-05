@@ -221,7 +221,7 @@ graph LR
 
 Claude Code의 내장 서브에이전트 외에도, 특정 작업에 전문화된 **커스텀 서브에이전트**를 만들 수 있다. 커스텀 서브에이전트는 YAML 프론트매터를 포함한 **마크다운 파일**로 정의된다.
 
-![](assets/skilljar-sa/L02-creating-subagent.png)
+![](01-Notes/assets/skilljar-sa/L02-creating-subagent.png)
 *서브에이전트 생성 --- /agents 명령을 통한 커스텀 서브에이전트 생성 과정*
 
 #### `/agents` 명령으로 생성
@@ -263,7 +263,7 @@ flowchart TD
 
 서브에이전트 생성 시, 접근 가능한 도구를 **카테고리별로** 선택할 수 있다:
 
-![](assets/skilljar-sa/L02-subagent-config.png)
+![](01-Notes/assets/skilljar-sa/L02-subagent-config.png)
 *서브에이전트 설정 --- 도구 카테고리와 모델 선택 구성*
 
 | 카테고리 | 포함 도구 | 사용 시나리오 |
@@ -579,7 +579,7 @@ Provide your review in the following format:
 
 서브에이전트를 만들었다고 끝이 아니다. 잘못 설정된 서브에이전트는 방향을 잃거나, 너무 오래 실행되거나, 메인 에이전트가 활용할 수 없는 출력을 생성한다. 효과적인 서브에이전트의 핵심은 **4가지**: 좋은 Description, 출력 포맷 정의, 장애물 보고, 도구 접근 제한이다.
 
-![](assets/skilljar-sa/L03-effective-design.png)
+![](01-Notes/assets/skilljar-sa/L03-effective-design.png)
 *효과적인 서브에이전트 설계 --- Description, 출력 포맷, 장애물 보고, 도구 제한의 4가지 핵심*
 
 #### Description의 이중 역할
@@ -636,7 +636,7 @@ description: Reviews code changes for quality issues. You must tell the agent pr
 1. **자연스러운 종료 지점**: 서브에이전트가 포맷의 모든 섹션을 채우면 완료를 인식
 2. **과도한 실행 방지**: 출력 포맷 없이는 "충분히 조사했는지" 판단하지 못해 불필요하게 오래 실행
 
-![](assets/skilljar-sa/L03-design-patterns.png)
+![](01-Notes/assets/skilljar-sa/L03-design-patterns.png)
 *서브에이전트 설계 패턴 --- 출력 포맷 정의와 Description 기반 입력 조작*
 
 ```mermaid

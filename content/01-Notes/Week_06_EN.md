@@ -163,14 +163,14 @@ This lecture note is based on Anthropic's official education platform Skilljar's
 
 Extended thinking is Claude's **advanced reasoning** feature. Before solving a complex problem, it hands the model a **"scratch paper"** so that the thinking process is surfaced as **structured blocks** before the final answer is generated. Skilljar L01 phrases it like this: *"Think of it as Claude's 'scratch paper' — you can see the reasoning process that leads to the answer."*
 
-![](assets/skilljar-s5/L01-01-thinking-response-04.jpg)
+![](01-Notes/assets/skilljar-s5/L01-01-thinking-response-04.jpg)
 *Default response structure — when thinking is off, only a single text block is returned*
 
 #### How Extended Thinking Works
 
 Once thinking is enabled, the response — previously a single text block — changes into a **two-part structure**.
 
-![](assets/skilljar-s5/L01-02-thinking-response-05.jpg)
+![](01-Notes/assets/skilljar-s5/L01-02-thinking-response-05.jpg)
 *Thinking-enabled response — reasoning process + final answer returned as two side-by-side blocks*
 
 Key benefits:
@@ -213,10 +213,10 @@ Skilljar simplifies the decision — *"Use your prompt evaluations."* First run 
 
 Extended thinking responses include a **special signature system for security**.
 
-![](assets/skilljar-s5/L01-03-thinking-response-06.jpg)
+![](01-Notes/assets/skilljar-s5/L01-03-thinking-response-06.jpg)
 *Signature-bearing thinking block — tamper-proof cryptographic token*
 
-![](assets/skilljar-s5/L01-extended-thinking-response.jpg)
+![](01-Notes/assets/skilljar-s5/L01-extended-thinking-response.jpg)
 *Extended Thinking response overview — visualization of the two-part structure (ThinkingBlock + TextBlock) and signature field*
 
 The signature is a **cryptographic token that guarantees the thinking text was not modified**. It prevents developers from arbitrarily editing Claude's reasoning and steering it into unsafe directions.
@@ -225,10 +225,10 @@ The signature is a **cryptographic token that guarantees the thinking text was n
 
 Sometimes, instead of readable reasoning, a **redacted thinking block** is returned.
 
-![](assets/skilljar-s5/L01-04-thinking-response-08.jpg)
+![](01-Notes/assets/skilljar-s5/L01-04-thinking-response-08.jpg)
 *Redacted thinking — reasoning flagged by Claude's internal safety systems is returned encrypted*
 
-![](assets/skilljar-s5/L01-extended-thinking-redacted.jpg)
+![](01-Notes/assets/skilljar-s5/L01-extended-thinking-redacted.jpg)
 *Redacted thinking block data structure — `type: "redacted_thinking"` with encrypted `data` field*
 
 This happens when Claude's thinking has been **flagged by internal safety systems**. It contains an encrypted form of the thinking, so that **passing the complete message back on the next turn preserves context without loss**. That is, redacted blocks **must also be preserved for session continuity**.
@@ -328,7 +328,7 @@ graph TD
 
 Claude's **vision capabilities** let you include images in messages and request analysis in *"countless different ways"* — from describing images and comparing multiple images to counting objects and performing complex visual analysis.
 
-![](assets/skilljar-s5/L02-01-image-intro-01.jpg)
+![](01-Notes/assets/skilljar-s5/L02-01-image-intro-01.jpg)
 *Image Support overview — attach images as separate blocks inside the message*
 
 #### Basic Image Processing Constraints
@@ -355,7 +355,7 @@ graph LR
     style A fill:#e8c07a,stroke:#c4a882,color:#333
 ```
 
-![](assets/skilljar-s5/L02-02-image-intro-02.jpg)
+![](01-Notes/assets/skilljar-s5/L02-02-image-intro-02.jpg)
 *User server ↔ Claude round trip — same conversation pattern as text*
 
 #### Basic Implementation — Base64 Encoding
@@ -393,7 +393,7 @@ add_user_message(messages, [
 
 L02's core message is *"the same prompting techniques that work for text apply to images."* Simple prompts yield only simple results.
 
-![](assets/skilljar-s5/L02-03-image-input-04.jpg)
+![](01-Notes/assets/skilljar-s5/L02-03-image-input-04.jpg)
 *Example — counting marbles: failure of a naive question*
 
 For instance, asking *"How many marbles are in this image?"* often returns a wrong count. To raise accuracy:
@@ -404,7 +404,7 @@ For instance, asking *"How many marbles are in this image?"* often returns a wro
 
 #### Step-by-Step Analysis Prompt (Marble Counting)
 
-![](assets/skilljar-s5/L02-04-image-input-05.jpg)
+![](01-Notes/assets/skilljar-s5/L02-04-image-input-05.jpg)
 *Systematic methodology prompt — replace a naive question with a step-by-step method*
 
 The official Skilljar example, as-is:
@@ -421,17 +421,17 @@ By enforcing two **independent counting methods** — unique identification + ro
 
 #### Boosting Accuracy With a One-Shot Example
 
-![](assets/skilljar-s5/L02-05-image-best-practices-07.jpg)
+![](01-Notes/assets/skilljar-s5/L02-05-image-best-practices-07.jpg)
 *One-shot technique — present a reference image with a known answer first*
 
 Include inside the message an **image with a known count** first, tell Claude *"this image has 12 marbles,"* and then ask about the **target image**. This gives Claude a reference for *"the kind of analysis I want,"* which is exactly the same principle as text few-shot.
 
 #### Real-World Case — Fire Risk Assessment
 
-![](assets/skilljar-s5/L02-06-image-best-practices-08.jpg)
+![](01-Notes/assets/skilljar-s5/L02-06-image-best-practices-08.jpg)
 *Fire Risk Assessment — automated residence risk evaluation based on satellite imagery*
 
-![](assets/skilljar-s5/L02-fire-risk-assessment.jpg)
+![](01-Notes/assets/skilljar-s5/L02-fire-risk-assessment.jpg)
 *Fire Risk Assessment 5-step workflow — residence identification → tree overhang → fire risk → defensible space → rating 1-4*
 
 L02's real-world application is **automated risk assessment for home fire insurance**. Instead of sending an inspector to every property, satellite imagery + Claude analysis is used. The system examines:
@@ -497,7 +497,7 @@ The 5-step method L02 demonstrates is a **domain-agnostic template** — the ord
 
 #### Image + Text Block Structure Summary
 
-![](assets/skilljar-s5/L02-image-support-structure.jpg)
+![](01-Notes/assets/skilljar-s5/L02-image-support-structure.jpg)
 *Image Support message structure — image block (base64/url) + text block placed side-by-side inside a user message*
 
 ```mermaid
@@ -594,10 +594,10 @@ Beyond plain text extraction — L03 specifies four capabilities.
 - **Tables and their data relationships**
 - **Document structure and formatting**
 
-![](assets/skilljar-s5/L03-01-pdf-support-02.jpg)
+![](01-Notes/assets/skilljar-s5/L03-01-pdf-support-02.jpg)
 *Wikipedia Earth PDF example — successful one-sentence summary*
 
-![](assets/skilljar-s5/L03-pdf-processing.jpg)
+![](01-Notes/assets/skilljar-s5/L03-pdf-processing.jpg)
 *PDF Processing flow — base64 encoding → document block → Claude integrates text, images, tables, and structure extraction*
 
 The screenshot above is the actual output summarizing the **Wikipedia Earth article PDF** in a single sentence. This is proof that PDF becomes *"a one-stop solution that can extract any kind of information from the document."*
@@ -655,10 +655,10 @@ When Claude answers based on documents you provide, users may suspect *"is this 
 
 #### Why Citations Are Needed
 
-![](assets/skilljar-s5/L04-01-citations-intro-00.jpg)
+![](01-Notes/assets/skilljar-s5/L04-01-citations-intro-00.jpg)
 *Citations purpose — a transparency feature that shows users where Claude's answer came from in the document*
 
-![](assets/skilljar-s5/L04-citations-concept.jpg)
+![](01-Notes/assets/skilljar-s5/L04-citations-concept.jpg)
 *Citations concept — every claim in Claude's response is auto-attached with the source document's original excerpt*
 
 Without citations, users **cannot verify two things**:
@@ -691,7 +691,7 @@ Add **two new fields** to an existing document block.
 
 With citations enabled, Claude's response changes from **plain text into structured data**. Each claim is accompanied by a citation.
 
-![](assets/skilljar-s5/L04-02-citations-response-08.jpg)
+![](01-Notes/assets/skilljar-s5/L04-02-citations-response-08.jpg)
 *Citation response structure — each claim is attached with cited_text / document_index / title / page range*
 
 Each citation has 5 core fields.
@@ -704,10 +704,10 @@ Each citation has 5 core fields.
 | **`start_page_number`** | The page where `cited_text` begins |
 | **`end_page_number`** | The page where `cited_text` ends |
 
-![](assets/skilljar-s5/L04-03-citations-response-09.jpg)
+![](01-Notes/assets/skilljar-s5/L04-03-citations-response-09.jpg)
 *Citation field example — returns specific page range and verbatim excerpt from earth.pdf*
 
-![](assets/skilljar-s5/L04-citations-structure.jpg)
+![](01-Notes/assets/skilljar-s5/L04-citations-structure.jpg)
 *Citation response structure — full data layout of the 5 fields: cited_text, document_index, document_title, start_page, end_page*
 
 #### Citations Response-Flow Diagram
@@ -728,7 +728,7 @@ sequenceDiagram
 
 #### Baking Citations Into the UI
 
-![](assets/skilljar-s5/L04-04-citations-format-11.jpg)
+![](01-Notes/assets/skilljar-s5/L04-04-citations-format-11.jpg)
 *Citations-powered UI — interactive footnotes where the excerpt appears on hover*
 
 The **real power** of citations emerges when you make this information **accessible in the user interface**. You can build a transparent user experience with interactions such as hover footnotes that show verbatim excerpts, clicks that jump to the specific PDF page, and sidebar citation lists.
@@ -804,15 +804,15 @@ Prompt caching is a feature that **reuses the computation of previous requests**
 
 #### Default Behavior — What Happens Without a Cache
 
-![](assets/skilljar-s5/L05-01-caching-intro-01.jpg)
+![](01-Notes/assets/skilljar-s5/L05-01-caching-intro-01.jpg)
 *Prompt caching intro — what waste is happening today*
 
-![](assets/skilljar-s5/L05-caching-concept.jpg)
+![](01-Notes/assets/skilljar-s5/L05-caching-concept.jpg)
 *Prompt Caching concept — store preprocessing results in cache instead of discarding, so follow-up requests can reuse them*
 
 When a user sends Claude a message, Claude does not generate a response **immediately**. First it performs a **tremendous amount of preprocessing work** on the input.
 
-![](assets/skilljar-s5/L05-02-caching-diagram-04.jpg)
+![](01-Notes/assets/skilljar-s5/L05-02-caching-diagram-04.jpg)
 *Four preprocessing stages — tokenize → embed → context → generate*
 
 - **Tokenize** the prompt into smaller pieces
@@ -822,39 +822,39 @@ When a user sends Claude a message, Claude does not generate a response **immedi
 
 And after returning the response, all of this computation is **discarded**. Tokenization, embedding, and context analysis are all thrown away.
 
-![](assets/skilljar-s5/L05-03-caching-diagram-07.jpg)
+![](01-Notes/assets/skilljar-s5/L05-03-caching-diagram-07.jpg)
 *Default behavior — all preprocessing results discarded after response generation*
 
 #### Scenarios Where Waste Becomes Visible
 
 This throw-away approach becomes problematic when you send **follow-up requests that contain the same content**.
 
-![](assets/skilljar-s5/L05-04-caching-usage-09.jpg)
+![](01-Notes/assets/skilljar-s5/L05-04-caching-usage-09.jpg)
 *Repeated requests against the same document — same preprocessing redone every time*
 
 For example, a conversation where you **iteratively refine** a summary of a long text. Claude must redo the same preprocessing on the content it just analyzed moments ago. L05 expresses it through Claude's inner voice — *"I just processed that message and threw away all the work I did — I could have reused it!"*
 
-![](assets/skilljar-s5/L05-05-caching-usage-11.jpg)
+![](01-Notes/assets/skilljar-s5/L05-05-caching-usage-11.jpg)
 *"I could have reused it!" — face the wasted window*
 
 #### What Prompt Caching Does
 
 It transforms this workflow into one that **stores preprocessing results rather than discarding them**.
 
-![](assets/skilljar-s5/L05-06-caching-costs-15.jpg)
+![](01-Notes/assets/skilljar-s5/L05-06-caching-costs-15.jpg)
 *After prompt caching — preprocessing results are saved to the cache and reused on re-requests*
 
 On the first request, Claude does its usual preprocessing, but **saves the result in the cache instead of discarding it**. The cache acts as a lookup table saying *"if this message arrives again, I'll reuse what I did before."*
 
-![](assets/skilljar-s5/L05-07-caching-costs-17.jpg)
+![](01-Notes/assets/skilljar-s5/L05-07-caching-costs-17.jpg)
 *Cache hit — after the initial write, follow-up requests are served as reads*
 
-![](assets/skilljar-s5/L05-caching-workflow.jpg)
+![](01-Notes/assets/skilljar-s5/L05-caching-workflow.jpg)
 *Full Caching Workflow — first request (WRITE) → cache stored (1h TTL) → follow-up request (HIT, 90% discount)*
 
 #### Benefits and Constraints
 
-![](assets/skilljar-s5/L05-08-caching-costs-19.jpg)
+![](01-Notes/assets/skilljar-s5/L05-08-caching-costs-19.jpg)
 *Summary of prompt caching benefits and limits*
 
 **Benefits**:
@@ -904,7 +904,7 @@ graph LR
 
 Prompt caching only pays off when **the same content is sent repeatedly**. L06 explains *"the rules for actually receiving that benefit"* across 10 slides, step by step.
 
-![](assets/skilljar-s5/L06-01-rules-intro-00.jpg)
+![](01-Notes/assets/skilljar-s5/L06-01-rules-intro-00.jpg)
 *L06 intro — recap of the mechanism + emphasis on "one-hour lifetime"*
 
 #### Rule 1 — Caching Is Not Automatic; Breakpoints Are Required
@@ -916,14 +916,14 @@ The first thing L06 nails down is these four rules.
 - All work **up to the breakpoint** is cached
 - The cache is used on follow-up requests **only when everything up to the breakpoint is exactly identical**
 
-![](assets/skilljar-s5/L06-02-rules-order-04.jpg)
+![](01-Notes/assets/skilljar-s5/L06-02-rules-order-04.jpg)
 *Breakpoint placement — everything up to that point is cached contiguously*
 
 #### Rule 2 — You Must Use Longhand Block Form
 
 The shorthand form has no place to put `cache_control`. So you must use the **longhand (expanded) text-block form**.
 
-![](assets/skilljar-s5/L06-03-rules-order-06.jpg)
+![](01-Notes/assets/skilljar-s5/L06-03-rules-order-06.jpg)
 *Shorthand vs longhand — structural difference needed to accept a cache_control field*
 
 ```python
@@ -947,24 +947,24 @@ Placing `{"type": "ephemeral"}` in the `cache_control` field is the standard. "E
 
 #### Rule 3 — Everything Up to the Breakpoint Must Be Identical
 
-![](assets/skilljar-s5/L06-04-rules-breakpoints-08.jpg)
+![](01-Notes/assets/skilljar-s5/L06-04-rules-breakpoints-08.jpg)
 *Before and after the breakpoint — before is cached, after is processed normally*
 
-![](assets/skilljar-s5/L06-cache-breakpoints.jpg)
+![](01-Notes/assets/skilljar-s5/L06-cache-breakpoints.jpg)
 *Cache Breakpoints overview — placement strategy for up to 4 breakpoints and the tools/system/messages processing order*
 
 The moment you place a breakpoint, **all processing work up to that point** is cached. Content **after** the breakpoint is processed as usual.
 
 But here is the **cruel rule** — *"Even small changes like adding the word 'please' will invalidate the cache and force Claude to reprocess everything."*
 
-![](assets/skilljar-s5/L06-05-rules-breakpoints-10.jpg)
+![](01-Notes/assets/skilljar-s5/L06-05-rules-breakpoints-10.jpg)
 *Cache invalidation — a tiny change (a single word!) breaks the entire cache*
 
 This is why prompt caching requires placing breakpoints **after content that does not change**. If anything that changes like user input sits before the breakpoint, the cache is useless.
 
 #### Rule 4 — Cross-Message Caching
 
-![](assets/skilljar-s5/L06-06-rules-ttl-11.jpg)
+![](01-Notes/assets/skilljar-s5/L06-06-rules-ttl-11.jpg)
 *Cross-message caching — a breakpoint in a later message includes all earlier messages*
 
 If you place a breakpoint in **a later message**, all previous messages (both user and assistant) fall within the cache scope. This is useful when you want to **cache the entire conversation context** up to a specific point.
@@ -978,7 +978,7 @@ Breakpoints are not restricted to text blocks.
 - **Image blocks**
 - **Tool use and tool result blocks**
 
-![](assets/skilljar-s5/L06-07-rules-ttl-13.jpg)
+![](01-Notes/assets/skilljar-s5/L06-07-rules-ttl-13.jpg)
 *System prompts · Tool definitions are the best caching candidates — they rarely change*
 
 System prompts and tool definitions **rarely change** between requests, making them the best candidates for caching. L06 emphasizes *"this is often where you'll get the most benefit from prompt caching."*
@@ -987,7 +987,7 @@ System prompts and tool definitions **rarely change** between requests, making t
 
 Internally, Claude processes request components in a **specific order**.
 
-![](assets/skilljar-s5/L06-08-rules-modify-15.jpg)
+![](01-Notes/assets/skilljar-s5/L06-08-rules-modify-15.jpg)
 *Internal processing order — tools first, then system, finally messages*
 
 Understanding this order gives you intuition about **where to place breakpoints**.
@@ -1013,14 +1013,14 @@ flowchart LR
 
 #### Rule 7 — Maximum **4 Breakpoints**
 
-![](assets/skilljar-s5/L06-09-rules-modify-17.jpg)
+![](01-Notes/assets/skilljar-s5/L06-09-rules-modify-17.jpg)
 *Up to 4 breakpoints — partial caching at multiple change points*
 
 You can add **at most 4 breakpoints** in total. For example, you can cache the tools and also add another breakpoint in the middle of the conversation history. This flexibility lets you cache differently depending on **which parts of the request change often and which parts stay fixed**.
 
 #### Rule 8 — Minimum Length **1,024 Tokens**
 
-![](assets/skilljar-s5/L06-10-rules-summary-19.jpg)
+![](01-Notes/assets/skilljar-s5/L06-10-rules-summary-19.jpg)
 *Minimum 1,024 tokens — caching is disallowed below the threshold*
 
 Finally, the rule most often missed — **the content being cached must be at least 1,024 tokens**. This is not per-block but the **sum of all messages and blocks that are the cache target**.
@@ -1056,7 +1056,7 @@ Finally, the rule most often missed — **the content being cached must be at le
 
 If L05-L06 were *"the why"* and *"the rules,"* L07 is the **practical implementation pattern**. A single powerful visual in L07 captures the whole point.
 
-![](assets/skilljar-s5/L07-01-caching-action-19.jpg)
+![](01-Notes/assets/skilljar-s5/L07-01-caching-action-19.jpg)
 *Prompt caching in action — typical caching candidates: 6K system prompt + 1.7K tool schemas*
 
 #### Where Caching Pays Off Most
@@ -1180,7 +1180,7 @@ The Anthropic API provides two features that are **far more powerful when used t
 
 The Files API lets you upload a file in advance and later **reference it by its file id**, rather than including images or PDFs as **base64 every time**.
 
-![](assets/skilljar-s5/L08-01-code-exec-intro-01.jpg)
+![](01-Notes/assets/skilljar-s5/L08-01-code-exec-intro-01.jpg)
 *Files API flow — pre-upload → obtain file metadata → reference by id in subsequent messages*
 
 Flow:
@@ -1188,10 +1188,10 @@ Flow:
 2. Receive a **file-metadata object** containing a **unique file ID**
 3. In subsequent messages, reference by **file ID instead of raw data**
 
-![](assets/skilljar-s5/L08-02-code-exec-intro-02.jpg)
+![](01-Notes/assets/skilljar-s5/L08-02-code-exec-intro-02.jpg)
 *base64 inline vs Files API — Files API wins for file reuse and large-file handling*
 
-![](assets/skilljar-s5/L08-files-api-concept.jpg)
+![](01-Notes/assets/skilljar-s5/L08-files-api-concept.jpg)
 *Files API concept — reference pre-uploaded files by file_id for an efficient multi-request pattern that beats inline base64*
 
 It is especially useful when you must **reference the same file repeatedly** or when handling **large files that are burdensome to include in every request**.
@@ -1200,7 +1200,7 @@ It is especially useful when you must **reference the same file repeatedly** or 
 
 Code execution is a **server-based tool** — developers do not need to supply the implementation. By simply including a predefined tool schema in the request, Claude can selectively execute Python code in an **isolated Docker container**.
 
-![](assets/skilljar-s5/L08-03-code-exec-flow-04.jpg)
+![](01-Notes/assets/skilljar-s5/L08-03-code-exec-flow-04.jpg)
 *Code execution environment — isolated Docker container, no network, repeated execution possible*
 
 Key properties of the execution environment:
@@ -1216,10 +1216,10 @@ Key properties of the execution environment:
 
 True power emerges when the two features are used **together**. Because the Docker container has no network, the Files API becomes the **primary channel to bring data into the execution environment and retrieve outputs**.
 
-![](assets/skilljar-s5/L08-04-code-exec-flow-06.jpg)
+![](01-Notes/assets/skilljar-s5/L08-04-code-exec-flow-06.jpg)
 *Files API × Code Execution — upload → container_upload → execute → download*
 
-![](assets/skilljar-s5/L08-code-execution-flow.jpg)
+![](01-Notes/assets/skilljar-s5/L08-code-execution-flow.jpg)
 *Code Execution Flow — Claude iteratively runs Python in an isolated Docker container and integrates results into the response*
 
 A typical workflow:
@@ -1233,7 +1233,7 @@ A typical workflow:
 
 L08's concrete example is an analysis of **streaming-service data**. The CSV contains user information such as subscription tier, viewing habits, and churn status.
 
-![](assets/skilljar-s5/L08-05-files-api-08.jpg)
+![](01-Notes/assets/skilljar-s5/L08-05-files-api-08.jpg)
 *streaming.csv example — column layout of subscription / viewing / churn*
 
 First, upload the file with a helper.
@@ -1272,7 +1272,7 @@ When code execution is used, the response contains a **mix of several block type
 - **Server tool use blocks** — code that Claude decided to execute
 - **Code execution tool result blocks** — results of running the code
 
-![](assets/skilljar-s5/L08-06-files-api-13.jpg)
+![](01-Notes/assets/skilljar-s5/L08-06-files-api-13.jpg)
 *Diversified response blocks — text + server_tool_use + code_execution_output intermixed*
 
 Claude can **execute code multiple times** within a single response — an **iterative** analysis pattern where it runs once, sees the result, writes new code, and runs again. Each execution cycle contains a **code + result** pair.
@@ -1287,7 +1287,7 @@ Find blocks with `type: "code_execution_output"` in the response — they contai
 download_file("file_id_from_response")
 ```
 
-![](assets/skilljar-s5/L08-07-code-exec-summary-18.jpg)
+![](01-Notes/assets/skilljar-s5/L08-07-code-exec-summary-18.jpg)
 *Final result — a professional visualization that would take significant manual coding, completed by Claude's automated execution*
 
 The result is *"a comprehensive analysis with professional visualizations that would have required significant manual coding."*
@@ -1844,22 +1844,22 @@ graph TD
 
 The 6 slides below are the core IMCP-track summary slides. As a **forward reference for the W07 main lecture**, skimming them once now makes entry into next week much smoother.
 
-![](assets/skilljar-s5/skilljar-s5-mcp-intro.webp)
+![](01-Notes/assets/skilljar-s5/skilljar-s5-mcp-intro.webp)
 *MCP overview — purpose and positioning of the Model Context Protocol (W07 L01 preview)*
 
-![](assets/skilljar-s5/skilljar-s5-architecture.webp)
+![](01-Notes/assets/skilljar-s5/skilljar-s5-architecture.webp)
 *MCP architecture — the 3-tier Host · Client · Server structure (W07 L02 preview)*
 
-![](assets/skilljar-s5/skilljar-s5-tool-definition.webp)
+![](01-Notes/assets/skilljar-s5/skilljar-s5-tool-definition.webp)
 *MCP Tool definition — convert a function into a tool via FastMCP `@mcp.tool()` decorator (W07 L03~L04 preview)*
 
-![](assets/skilljar-s5/skilljar-s5-resources.webp)
+![](01-Notes/assets/skilljar-s5/skilljar-s5-resources.webp)
 *MCP Resources — expose unchanging data as resources (the same mental model as W06 caching design)*
 
-![](assets/skilljar-s5/skilljar-s5-inspector.webp)
+![](01-Notes/assets/skilljar-s5/skilljar-s5-inspector.webp)
 *MCP Inspector — a tool for visually testing MCP servers during development (W07 L06 preview)*
 
-![](assets/skilljar-s5/skilljar-s5-client-impl.webp)
+![](01-Notes/assets/skilljar-s5/skilljar-s5-client-impl.webp)
 *MCP Client implementation — pattern for a Python client connecting to an MCP server and invoking tools/resources (W07 L07 preview)*
 
 > [!tip] Natural W06 → W07 Bridge

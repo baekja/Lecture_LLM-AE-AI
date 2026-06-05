@@ -148,7 +148,7 @@ This lecture note is based on Anthropic's official education platform Skilljar *
 
 Skilljar L01 opens with *"Workflows and agents are strategies for handling user tasks that can't be completed by Claude in a single request"*. That sentence is the starting point of all of Week 09 --- **workflows** and **agents** are **two strategies** for dealing with problems that cannot be solved in a single request, and the moment this course let Claude solve a problem by itself using tools, we had **already built an agent**.
 
-![](assets/skilljar-s8/L01-01-agents-and-workflows-01.jpg)
+![](01-Notes/assets/skilljar-s8/L01-01-agents-and-workflows-01.jpg)
 *When to Use Workflows vs Agents --- whether the developer "can draw the flow" is the deciding criterion*
 
 #### When to Use a Workflow, When to Use an Agent
@@ -190,7 +190,7 @@ graph TB
 
 L01 presents a specific workflow example: *"Imagine building a web app where users drag and drop an image of a metal part, and you create a STEP file (an industry standard for 3D models) from it"*. Because **"what exactly to do when a user supplies an image file"** is clear and the whole process **can be pre-written in code**, this is a perfect candidate for a workflow.
 
-![](assets/skilljar-s8/L01-02-agents-and-workflows-06.jpg)
+![](01-Notes/assets/skilljar-s8/L01-02-agents-and-workflows-06.jpg)
 *Image → STEP file workflow example --- UX constrains input, so it can be pre-defined*
 
 The steps are as follows.
@@ -200,7 +200,7 @@ The steps are as follows.
 - Create a rendering
 - Ask Claude to **grade the rendering** against the original image. If there are issues, fix them
 
-![](assets/skilljar-s8/L01-03-agents-and-workflows-07.jpg)
+![](01-Notes/assets/skilljar-s8/L01-03-agents-and-workflows-07.jpg)
 *4-step workflow breakdown --- describe → model(CadQuery) → render → grade*
 
 This flow assumes a **very narrow input space** --- "an image dragged and dropped". Because the UX restricts the user to one task, the developer can **fix the steps in advance**. This is a textbook case for a workflow.
@@ -209,7 +209,7 @@ This flow assumes a **very narrow input space** --- "an image dragged and droppe
 
 The last step of the example above (*"grade the rendering"*) is not simply output evaluation but an instance of the **Evaluator-Optimizer pattern** formally named by L01.
 
-![](assets/skilljar-s8/L01-04-agents-and-workflows-15.jpg)
+![](01-Notes/assets/skilljar-s8/L01-04-agents-and-workflows-15.jpg)
 *Evaluator-Optimizer pattern --- Producer ↔ Grader feedback loop*
 
 The four components are as follows.
@@ -231,7 +231,7 @@ graph LR
     style OUT fill:#d1fae5,stroke:#059669
 ```
 
-![](assets/skilljar-s8/L01-evaluator-optimizer.jpg)
+![](01-Notes/assets/skilljar-s8/L01-evaluator-optimizer.jpg)
 *Evaluator-Optimizer pattern visualization --- the iterative Producer ↔ Grader loop*
 
 > [!finding] Why the Evaluator-Optimizer Matters
@@ -256,7 +256,7 @@ In other words, knowing the name "parallelization" and actually implementing par
 | Evaluation / testing | Easy (each step independently) | Hard (many possible paths) |
 | Fits examples like | Image→STEP, translation verification | Desktop agents, dev CLIs |
 
-![](assets/skilljar-s8/L01-workflows-vs-agents.jpg)
+![](01-Notes/assets/skilljar-s8/L01-workflows-vs-agents.jpg)
 *Workflows vs Agents at a glance --- control owner, execution path, and predictability contrast*
 
 > [!tip] Claude Code Itself Is the Proof
@@ -278,21 +278,21 @@ L02 opens with *"When building AI applications, you'll often encounter tasks tha
 
 Imagine we build a **material designer app** where a user uploads an image of a part, and we recommend the best material among *metal, polymer, ceramic, composite, elastomer, or wood*.
 
-![](assets/skilljar-s8/L02-01-parallelization-workflows-02.jpg)
+![](01-Notes/assets/skilljar-s8/L02-01-parallelization-workflows-02.jpg)
 *Single-prompt approach --- *"choose between metal, polymer, ceramic, composite, elastomer, or wood"*
 
 The first instinct is to fire one prompt with the image saying *"pick one of these six"*. It works, but it becomes *"a lot of heavy lifting in a single request"*. **Without per-material discrimination criteria, the result is less trustworthy.**
 
 To compensate, you might cram every criterion into one giant prompt --- but that creates a new problem.
 
-![](assets/skilljar-s8/L02-02-parallelization-workflows-06.jpg)
+![](01-Notes/assets/skilljar-s8/L02-02-parallelization-workflows-06.jpg)
 *Giant prompt trap --- *"Claude has to juggle all these different considerations simultaneously"*
 
 Claude ends up *"confusion and suboptimal results"* while **juggling six criteria simultaneously**. W03 already taught us that long prompts don't guarantee performance.
 
 #### The Solution --- Parallelization
 
-![](assets/skilljar-s8/L02-parallelization-concept.jpg)
+![](01-Notes/assets/skilljar-s8/L02-parallelization-concept.jpg)
 *Parallelization concept --- "split one task into specialized parallel calls"*
 
 ```
@@ -300,7 +300,7 @@ Solution: split one request, run each material judgment as an independent Claude
           then call Claude once more at the end to synthesize the recommendation.
 ```
 
-![](assets/skilljar-s8/L02-03-parallelization-workflows-09.jpg)
+![](01-Notes/assets/skilljar-s8/L02-03-parallelization-workflows-09.jpg)
 *Parallelization structure --- the same image is sent multiple times in parallel, each call with a single-material specialist prompt*
 
 The L02 transcript states the steps explicitly.
@@ -310,14 +310,14 @@ The L02 transcript states the steps explicitly.
 - Claude evaluates the part's suitability for each material **independently**
 - Collect all the analysis results and feed them into a **final aggregation step**
 
-![](assets/skilljar-s8/L02-04-parallelization-workflows-11.jpg)
+![](01-Notes/assets/skilljar-s8/L02-04-parallelization-workflows-11.jpg)
 *Final step --- feed every individual analysis back to Claude in one call for final comparison and recommendation*
 
 The job of the final aggregation call is *"compare them and make a final material recommendation"*. In short, **parallel → synthesize** is one unit.
 
 #### The Four Elements of the Parallelization Pattern
 
-![](assets/skilljar-s8/L02-05-parallelization-workflows-15.jpg)
+![](01-Notes/assets/skilljar-s8/L02-05-parallelization-workflows-15.jpg)
 *Parallelization pattern structure --- split · run in parallel · aggregate · sub-tasks need not be identical*
 
 L02 summarizes the pattern in four lines.
@@ -455,7 +455,7 @@ sequenceDiagram
 
 #### The 4 Benefits of Parallelization
 
-![](assets/skilljar-s8/L02-parallelization-benefits.jpg)
+![](01-Notes/assets/skilljar-s8/L02-parallelization-benefits.jpg)
 *The 4 benefits of parallelization at a glance --- Focused · Optimizable · Scalable · Reliable*
 
 The L02 transcript names the benefits clearly.
@@ -512,10 +512,10 @@ L03 opens with a surprising emphasis: *"Chaining workflows might seem obvious at
 
 Each step receives **the previous step's output** as its input and has **its own focused purpose**.
 
-![](assets/skilljar-s8/L03-01-chaining-workflows-03.jpg)
+![](01-Notes/assets/skilljar-s8/L03-01-chaining-workflows-03.jpg)
 *The motivation for chaining --- split a long task into focused sequential steps*
 
-![](assets/skilljar-s8/L03-chaining-flow.jpg)
+![](01-Notes/assets/skilljar-s8/L03-chaining-flow.jpg)
 *Overall flow of a chaining workflow --- each step's output feeds the next step's input*
 
 #### Concrete Example --- Automated Social Media Video Production
@@ -529,7 +529,7 @@ L03's headline example is a *"social media marketing tool that creates and posts
 - **Use an AI avatar and text-to-speech to create a video**
 - **Post the video to social media**
 
-![](assets/skilljar-s8/L03-02-chaining-workflows-08.jpg)
+![](01-Notes/assets/skilljar-s8/L03-02-chaining-workflows-08.jpg)
 *Social media video chain --- Twitter → topic select → research → script → video → post*
 
 Three of these (*"select" · "research" · "write script"*) form the **Claude chain**. The rest are **non-LLM processing** via the Twitter API · TTS · posting APIs, which is what the L03 original *"optionally do non-LLM processing between each task"* refers to.
@@ -553,7 +553,7 @@ graph LR
 
 L03 lists three benefits.
 
-![](assets/skilljar-s8/L03-03-chaining-workflows-09.jpg)
+![](01-Notes/assets/skilljar-s8/L03-03-chaining-workflows-09.jpg)
 *The three benefits of chaining --- split · non-LLM processing · focused Claude*
 
 - **Split large tasks into smaller, non-parallelizable subtasks** --- parallelization is for independent subtasks; chaining is for **dependent** ones
@@ -564,7 +564,7 @@ L03 lists three benefits.
 
 Chaining shines in one situation in particular. L03 names it the **"long prompt problem"** --- writing a technical article with many constraints such as:
 
-![](assets/skilljar-s8/L03-04-chaining-workflows-11.jpg)
+![](01-Notes/assets/skilljar-s8/L03-04-chaining-workflows-11.jpg)
 *Long constraint list --- 4 requirements hard for Claude to keep simultaneously*
 
 - Not mention that it's written by an AI
@@ -574,19 +574,19 @@ Chaining shines in one situation in particular. L03 names it the **"long prompt 
 
 > *"Even with all these constraints clearly stated, Claude might still produce content that violates some of your rules. You might get back an article that still uses emojis, mentions AI authorship, or sounds unprofessional."*
 
-![](assets/skilljar-s8/L03-05-chaining-workflows-13.jpg)
+![](01-Notes/assets/skilljar-s8/L03-05-chaining-workflows-13.jpg)
 *The reality --- the moment Claude fails to keep every constraint*
 
 #### The Solution --- the Two-Step Revision Chain
 
 L03's textbook solution is to **split one mega-prompt into two steps**.
 
-![](assets/skilljar-s8/L03-06-chaining-workflows-14.jpg)
+![](01-Notes/assets/skilljar-s8/L03-06-chaining-workflows-14.jpg)
 *Step 1 --- generate freely even if some constraints are violated*
 
 **Step 1**: send the initial prompt and *"accept that the first output may not be perfect"*. Claude produces an article but may violate some constraints.
 
-![](assets/skilljar-s8/L03-07-chaining-workflows-17.jpg)
+![](01-Notes/assets/skilljar-s8/L03-07-chaining-workflows-17.jpg)
 *Step 2 --- a revision prompt that focuses only on fixing the violations*
 
 **Step 2**: pass the generated article back with a request to **revise** only. The revision prompt exactly as given in L03 is:
@@ -718,9 +718,9 @@ Directly from the L03 checklist.
 
 If chaining solved the *"order"* problem, routing solves the *"type"* problem. Skilljar L04 extends the same social-media-video app --- when the user types *"programming"* vs *"surfing"*, the script that should be generated has a completely different character. A programming topic needs **educational content with clear definitions and explanations**, while a surfing topic suits **entertainment-focused scripts emphasizing excitement and visual appeal**.
 
-![](assets/skilljar-s8/L04-01-routing-workflows-02.jpg)
+![](01-Notes/assets/skilljar-s8/L04-01-routing-workflows-02.jpg)
 
-![](assets/skilljar-s8/L04-routing-concept.jpg)
+![](01-Notes/assets/skilljar-s8/L04-routing-concept.jpg)
 *Routing concept --- classify the input's "type" first, then branch to category-specific prompts*
 
 > [!finding] Skilljar L04 Original
@@ -732,7 +732,7 @@ Trying to cover both cases with one generic prompt creates the classic **lose-bo
 
 L04's proposed solution is to **classify content genres** first, then apply a specialized prompt template per genre. The proposed categories are as follows.
 
-![](assets/skilljar-s8/L04-02-routing-workflows-07.jpg)
+![](01-Notes/assets/skilljar-s8/L04-02-routing-workflows-07.jpg)
 
 | Category | Trait | Language style |
 | --- | --- | --- |
@@ -750,7 +750,7 @@ L04's proposed solution is to **classify content genres** first, then apply a sp
 
 A routing workflow always operates in **two steps**.
 
-![](assets/skilljar-s8/L04-03-routing-workflows-13.jpg)
+![](01-Notes/assets/skilljar-s8/L04-03-routing-workflows-13.jpg)
 
 1. **Categorization** --- classify the user input into one of the categories
 2. **Specialized Processing** --- pick the prompt template that matches the classification, then run it
@@ -771,7 +771,7 @@ Categorize the topic of a video into one of the listed categories:
 </categories>
 ```
 
-![](assets/skilljar-s8/L04-04-routing-workflows-15.jpg)
+![](01-Notes/assets/skilljar-s8/L04-04-routing-workflows-15.jpg)
 
 Claude returns *"Educational"*. Step 2 uses that to generate the actual script with the educational template.
 
@@ -851,7 +851,7 @@ print(dispatch("surfing in Hawaii"))  # → [Entertainment] ...
 
 #### 2.1.5 Routing Architecture Diagram
 
-![](assets/skilljar-s8/L04-05-routing-workflows-17.jpg)
+![](01-Notes/assets/skilljar-s8/L04-05-routing-workflows-17.jpg)
 
 ```mermaid
 graph TD
@@ -891,9 +891,9 @@ L04's **key insight** is *"user input only goes to one specialized pipeline, not
 
 Skilljar L05 introduces agents as the **polar opposite** of the workflows covered in Ch.1 ~ §2.1.
 
-![](assets/skilljar-s8/L05-01-agents-and-tools-00.jpg)
+![](01-Notes/assets/skilljar-s8/L05-01-agents-and-tools-00.jpg)
 
-![](assets/skilljar-s8/L05-agent-tools.jpg)
+![](01-Notes/assets/skilljar-s8/L05-agent-tools.jpg)
 *Basic agent structure --- give it goal + tools, and the LLM decides which tool to use and when to stop*
 
 > [!finding] Skilljar L05 Original
@@ -912,7 +912,7 @@ This difference shows up directly in the code structure.
 
 L05's first example uses **deliberately simple** tools --- three of them.
 
-![](assets/skilljar-s8/L05-02-agents-and-tools-04.jpg)
+![](01-Notes/assets/skilljar-s8/L05-02-agents-and-tools-04.jpg)
 
 | Tool | Function | Input → Output |
 | --- | --- | --- |
@@ -922,7 +922,7 @@ L05's first example uses **deliberately simple** tools --- three of them.
 
 Each tool individually is just a **first-order function call**. Yet Claude handles compound queries by **composing** them.
 
-![](assets/skilljar-s8/L05-03-agents-and-tools-05.jpg)
+![](01-Notes/assets/skilljar-s8/L05-03-agents-and-tools-05.jpg)
 
 | User query | Agent's tool chain |
 | --- | --- |
@@ -938,9 +938,9 @@ Each tool individually is just a **first-order function call**. Yet Claude handl
 
 L05's second example is at a larger scale --- **Claude Code** itself, which we learned in Week 08, is a textbook agent.
 
-![](assets/skilljar-s8/L05-04-agents-and-tools-11.jpg)
+![](01-Notes/assets/skilljar-s8/L05-04-agents-and-tools-11.jpg)
 
-![](assets/skilljar-s8/L05-cc-abstract-tools.jpg)
+![](01-Notes/assets/skilljar-s8/L05-cc-abstract-tools.jpg)
 *Claude Code --- composing generic, abstract tools (Read · Write · Bash · Grep ...)*
 
 The tools given to Claude Code are **all generic Unix primitives**.
@@ -965,7 +965,7 @@ The hands-on experience from **Week 08** --- using `bash + read + write + edit` 
 
 L05's third example is a video-generation agent.
 
-![](assets/skilljar-s8/L05-05-agents-and-tools-16.jpg)
+![](01-Notes/assets/skilljar-s8/L05-05-agents-and-tools-16.jpg)
 
 | Tool | Function |
 | --- | --- |
@@ -976,7 +976,7 @@ L05's third example is a video-generation agent.
 
 This toolset supports both a **simple workflow (generate video → post)** and an **interactive scenario (generate a sample image first → get user approval → proceed)**. Implementing it as a workflow would require separate functions for the two flows, but in the agent, the single system-prompt line *"ask user for approval before expensive operations"* is enough.
 
-![](assets/skilljar-s8/L05-06-agents-and-tools-19.jpg)
+![](01-Notes/assets/skilljar-s8/L05-06-agents-and-tools-19.jpg)
 
 #### 2.2.5 Python Agent Loop --- the Basic Structure
 
@@ -1031,10 +1031,10 @@ def agent_loop(user_goal: str, tools: list[dict], tool_impls: dict, max_turns: i
 
 L06 tackles **the most commonly overlooked pitfall** of agent implementation.
 
-![](assets/skilljar-s8/L06-environment-inspection.jpg)
+![](01-Notes/assets/skilljar-s8/L06-environment-inspection.jpg)
 *Environment inspection --- the "observe before acting" step that cures the agent's blindness*
 
-![](assets/skilljar-s8/L06-01-environment-inspection-00.jpg)
+![](01-Notes/assets/skilljar-s8/L06-01-environment-inspection-00.jpg)
 
 > [!finding] Skilljar L06 Original
 > *"When building AI agents, one crucial concept often gets overlooked: environment inspection. Claude operates blindly --- it needs to be able to observe and understand the results of its actions to work effectively."*
@@ -1047,7 +1047,7 @@ Tool calls **affect the outside world**, but Claude **cannot automatically know*
 
 The same applies to file operations. To add a new route to a Python file, Claude must **first read the existing code** to understand the current structure.
 
-![](assets/skilljar-s8/L06-02-environment-inspection-08.jpg)
+![](01-Notes/assets/skilljar-s8/L06-02-environment-inspection-08.jpg)
 
 > [!method] Read-Before-Write Pattern
 > ```
@@ -1064,7 +1064,7 @@ In the Week 08 exercises, you will have been required to `Read` before using `Ed
 
 The L06 video agent example shows how to force environment inspection via the system prompt.
 
-![](assets/skilljar-s8/L06-03-environment-inspection-11.jpg)
+![](01-Notes/assets/skilljar-s8/L06-03-environment-inspection-11.jpg)
 
 An example system prompt:
 
@@ -1130,7 +1130,7 @@ L06 proposes a single design question --- *"How will Claude know if this action 
 
 L07 formalizes the **selection criterion** that runs through all of Ch.1 ~ §2.3.
 
-![](assets/skilljar-s8/L07-01-workflows-vs-agents-00.jpg)
+![](01-Notes/assets/skilljar-s8/L07-01-workflows-vs-agents-00.jpg)
 
 > [!finding] Skilljar L07 --- Workflows Definition
 > *"Workflows are a predefined series of calls to Claude designed to solve a known problem or set of problems. You use workflows when you can picture the flow of steps ahead of time --- essentially when you know the exact sequence needed to complete a task."*
@@ -1140,7 +1140,7 @@ L07 formalizes the **selection criterion** that runs through all of Ch.1 ~ §2.3
 
 #### 2.4.2 The 4-Cell Comparison Matrix (Benefits × Downsides)
 
-![](assets/skilljar-s8/L07-workflows-vs-agents-summary.jpg)
+![](01-Notes/assets/skilljar-s8/L07-workflows-vs-agents-summary.jpg)
 *Final Workflows vs Agents comparison --- one-page Benefits × Downsides summary*
 
 L07's 4-cell comparison is the **core reference for practical decision-making**.

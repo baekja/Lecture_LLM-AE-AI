@@ -211,27 +211,27 @@ These notes are built on Anthropic's official training platform Skilljar — spe
 
 The key idea is **"shifting the burden of tool definitions and execution away from your server to specialized MCP servers"** — that is, a **transfer of responsibility for writing integration code**.
 
-![](assets/skilljar-s6/L01-01-introducing-mcp.jpg)
+![](01-Notes/assets/skilljar-s6/L01-01-introducing-mcp.jpg)
 *The basic architecture of MCP — the MCP client (your server) connects to an MCP server that holds tools, prompts, and resources.*
 
-![](assets/skilljar-s6/L01-mcp-architecture.jpg)
+![](01-Notes/assets/skilljar-s6/L01-mcp-architecture.jpg)
 *The full MCP architecture diagram --- host, client, and server in a three-layer separation of responsibilities and data flow.*
 
 #### Before MCP: The GitHub Chatbot Example Shows Integration Hell
 
 L01 explains the concept through a concrete scenario. When a user asks *"What open pull requests are there across all my repositories?"*, Claude needs tools to reach GitHub's API. **Without MCP**, you must **build all of the GitHub integration tools yourself** — writing a schema and a function for every single GitHub capability you want to support.
 
-![](assets/skilljar-s6/L01-02-introducing-mcp.jpg)
+![](01-Notes/assets/skilljar-s6/L01-02-introducing-mcp.jpg)
 *Without MCP — you have to implement every GitHub integration tool yourself.*
 
 #### The Tool Function Problem
 
 GitHub has a **massive feature set** — repositories, pull requests, issues, projects, and many more. Building a complete GitHub chatbot means authoring an enormous number of tools by hand.
 
-![](assets/skilljar-s6/L01-03-introducing-mcp.jpg)
+![](01-Notes/assets/skilljar-s6/L01-03-introducing-mcp.jpg)
 *The Tool Function Problem — each tool needs both a schema definition and a function implementation.*
 
-![](assets/skilljar-s6/L01-mcp-tool-problem.jpg)
+![](01-Notes/assets/skilljar-s6/L01-mcp-tool-problem.jpg)
 *The essence of the tool-function problem --- as the integration surface grows, schema, function, test, and maintenance costs multiply.*
 
 Each tool requires **both a schema definition and a function implementation**. That means a large body of code that developers must write, test, and maintain themselves.
@@ -256,18 +256,18 @@ graph LR
 
 MCP shifts the burden of tool definition and execution **from your server to the MCP server**. Instead of you writing the GitHub tools, those tools are **authored and executed inside a dedicated MCP server**.
 
-![](assets/skilljar-s6/L01-04-introducing-mcp.jpg)
+![](01-Notes/assets/skilljar-s6/L01-04-introducing-mcp.jpg)
 *The MCP server acts as a wrapper around GitHub's capabilities — you consume ready-made tools.*
 
-![](assets/skilljar-s6/L01-05-introducing-mcp.jpg)
+![](01-Notes/assets/skilljar-s6/L01-05-introducing-mcp.jpg)
 *An MCP server packages the data and capabilities of an external service into reusable components.*
 
-![](assets/skilljar-s6/L01-mcp-solution.jpg)
+![](01-Notes/assets/skilljar-s6/L01-mcp-solution.jpg)
 *MCP's solution at a glance --- shift the burden of tool definition and execution from your server to a dedicated MCP server.*
 
 #### Common Questions About MCP
 
-![](assets/skilljar-s6/L01-06-introducing-mcp.jpg)
+![](01-Notes/assets/skilljar-s6/L01-06-introducing-mcp.jpg)
 
 L01 answers three common questions.
 
@@ -336,7 +336,7 @@ The MCP client is the **communication bridge between your server and MCP servers
 
 One of MCP's key strengths is that it is **transport-agnostic** — client and server can talk to each other via **various communication methods**. The most common setup is for the MCP client and server to run **on the same machine** and communicate over **standard input/output (stdio)**.
 
-![](assets/skilljar-s6/L02-01-mcp-clients.jpg)
+![](01-Notes/assets/skilljar-s6/L02-01-mcp-clients.jpg)
 *Local stdio communication — the most common setup.*
 
 But that isn't the whole story. MCP clients and servers can also connect via:
@@ -345,75 +345,75 @@ But that isn't the whole story. MCP clients and servers can also connect via:
 - **WebSockets**
 - **Various other network protocols**
 
-![](assets/skilljar-s6/L02-02-mcp-clients.jpg)
+![](01-Notes/assets/skilljar-s6/L02-02-mcp-clients.jpg)
 *Transport-agnostic — remote connections over network protocols are also possible.*
 
-![](assets/skilljar-s6/L02-client-transport.jpg)
+![](01-Notes/assets/skilljar-s6/L02-client-transport.jpg)
 *Client-to-server transport comparison --- stdio, HTTP, and WebSocket usage scenarios with their trade-offs summarized.*
 
 #### Message Types — What the Client and Server Exchange
 
 Once connected, the client and server exchange **specific message types defined by the MCP specification**. The two pairs of message types you will work with most often are the following.
 
-![](assets/skilljar-s6/L02-03-mcp-clients.jpg)
+![](01-Notes/assets/skilljar-s6/L02-03-mcp-clients.jpg)
 
 **1. `ListToolsRequest` / `ListToolsResult`**
 — the client asks the server *"what tools do you provide?"*, and the server returns the list of available tools.
 
-![](assets/skilljar-s6/L02-04-mcp-clients.jpg)
+![](01-Notes/assets/skilljar-s6/L02-04-mcp-clients.jpg)
 *ListTools — browsing the tool catalog.*
 
 **2. `CallToolRequest` / `CallToolResult`**
 — the client asks the server to execute a specific tool with specific arguments and receives the result.
 
-![](assets/skilljar-s6/L02-05-mcp-clients.jpg)
+![](01-Notes/assets/skilljar-s6/L02-05-mcp-clients.jpg)
 *CallTool — a tool execution request and its result.*
 
 #### A Complete Flow — *"What repositories do I have?"*
 
 L02 visualizes the entire communication flow step-by-step, from the **user's question to the final response**.
 
-![](assets/skilljar-s6/L02-06-mcp-clients.jpg)
+![](01-Notes/assets/skilljar-s6/L02-06-mcp-clients.jpg)
 *Step 1 — the user submits the query; the server recognizes it needs the tool list.*
 
 The process begins when the user submits a query. Your server realizes it must **obtain the list of available tools** before calling Claude.
 
-![](assets/skilljar-s6/L02-07-mcp-clients.jpg)
+![](01-Notes/assets/skilljar-s6/L02-07-mcp-clients.jpg)
 *Step 2 — server → MCP client → MCP server: ListToolsRequest.*
 
 Your server requests tools from the MCP client, which in turn sends a `ListToolsRequest` to the MCP server and receives a `ListToolsResult`.
 
-![](assets/skilljar-s6/L02-08-mcp-clients.jpg)
+![](01-Notes/assets/skilljar-s6/L02-08-mcp-clients.jpg)
 *Step 3 — both the user's question and the tool list are now in hand.*
 
 Your server can now send **both the user's question and the available tools** to Claude in the first request.
 
-![](assets/skilljar-s6/L02-09-mcp-clients.jpg)
+![](01-Notes/assets/skilljar-s6/L02-09-mcp-clients.jpg)
 *Step 4 — Claude decides to invoke a tool.*
 
 Claude examines the tools and decides that a tool call is needed to answer the question. It responds with a **tool use request**.
 
-![](assets/skilljar-s6/L02-10-mcp-clients.jpg)
+![](01-Notes/assets/skilljar-s6/L02-10-mcp-clients.jpg)
 *Step 5 — the server asks the MCP client to perform a CallToolRequest.*
 
 Your server executes Claude's requested tool through the MCP client. The MCP client sends a `CallToolRequest` to the MCP server, which performs the actual GitHub request.
 
-![](assets/skilljar-s6/L02-11-mcp-clients.jpg)
+![](01-Notes/assets/skilljar-s6/L02-11-mcp-clients.jpg)
 *Step 6 — GitHub's response travels back in reverse order.*
 
 When GitHub returns repository data, that data flows from the MCP server → wrapped in a `CallToolResult` → to the MCP client → to your server.
 
-![](assets/skilljar-s6/L02-12-mcp-clients.jpg)
+![](01-Notes/assets/skilljar-s6/L02-12-mcp-clients.jpg)
 *Step 7 — the tool result is sent back to Claude as a follow-up message.*
 
 Your server sends the tool result back to Claude as a **follow-up message**. Claude now has all the information it needs to craft a complete answer.
 
-![](assets/skilljar-s6/L02-13-mcp-clients.jpg)
+![](01-Notes/assets/skilljar-s6/L02-13-mcp-clients.jpg)
 *Step 8 — Claude returns the final answer to the user.*
 
 Finally, Claude produces the formatted response, and your server relays it to the user.
 
-![](assets/skilljar-s6/L02-complete-flow.jpg)
+![](01-Notes/assets/skilljar-s6/L02-complete-flow.jpg)
 *The complete flow summarized in one image --- the entire 8-step communication path from user query to final response.*
 
 #### A Mermaid Diagram of the Full Flow
@@ -477,7 +477,7 @@ A CLI-based chatbot in which users interact with a **document collection** throu
 - **MCP Client** — handles user interaction
 - **Custom MCP Server** — manages document operations
 
-![](assets/skilljar-s6/L03-01-project-setup.jpg)
+![](01-Notes/assets/skilljar-s6/L03-01-project-setup.jpg)
 *The project architecture — a CLI chatbot (MCP client) and a document MCP server.*
 
 The server provides **two core tools**: one to read a document's contents and one to update a document. All documents are stored **in memory for simplicity** — no database is needed.
@@ -491,7 +491,7 @@ The server provides **two core tools**: one to read a document's contents and on
 > - an **MCP client** — when you want to connect to existing MCP servers.
 > Building **both** in this project is **purely for educational purposes** — so you can see firsthand how they communicate and work together.
 
-![](assets/skilljar-s6/L03-02-project-setup.jpg)
+![](01-Notes/assets/skilljar-s6/L03-02-project-setup.jpg)
 *The normal real-world pattern — you implement either a server or a client, not both.*
 
 #### Project Setup Steps
@@ -575,10 +575,10 @@ graph TB
 
 Building an MCP server becomes far simpler with the **official Python SDK**. Instead of writing complex JSON schemas manually, the **SDK handles all that complexity with decorators and type hints**.
 
-![](assets/skilljar-s6/L04-01-defining-tools.jpg)
+![](01-Notes/assets/skilljar-s6/L04-01-defining-tools.jpg)
 *The structure of a tool definition — decorator + type hints + Pydantic Field.*
 
-![](assets/skilljar-s6/L04-fastmcp-tools.jpg)
+![](01-Notes/assets/skilljar-s6/L04-fastmcp-tools.jpg)
 *Defining tools with FastMCP, end to end --- from one-line server initialization to decorators, type hints, and automatic schema generation.*
 
 The L04 example builds an **in-memory document-management MCP server**. It provides two tools: one to read a document's contents and one to update a document with find-and-replace.
@@ -616,7 +616,7 @@ docs = {
 
 #### Defining Tools with a Decorator
 
-![](assets/skilljar-s6/L04-02-defining-tools.jpg)
+![](01-Notes/assets/skilljar-s6/L04-02-defining-tools.jpg)
 *The decorator approach — verbose JSON schemas become clean Python functions.*
 
 The SDK turns tool creation from a verbose process into clean, readable code. Instead of long JSON schemas, it uses **Python decorators and type hints**.
@@ -729,10 +729,10 @@ mcp dev mcp_server.py
 
 This command **launches a development server on port 6277** and gives you a local URL to open in your browser. When the inspector interface loads, the MCP Inspector dashboard appears.
 
-![](assets/skilljar-s6/L05-01-server-inspector.jpg)
+![](01-Notes/assets/skilljar-s6/L05-01-server-inspector.jpg)
 *The initial MCP Inspector dashboard — running on port 6277.*
 
-![](assets/skilljar-s6/L05-inspector-ui.jpg)
+![](01-Notes/assets/skilljar-s6/L05-inspector-ui.jpg)
 *MCP Inspector UI components --- the Tools, Resources, and Prompts tabs alongside the left-hand Connect panel and right-hand result pane.*
 
 > [!tip] The interface is evolving
@@ -743,7 +743,7 @@ This command **launches a development server on port 6277** and gives you a loca
 
 Click the **"Connect" button** on the left to start the MCP server. Once connected, you'll see a navigation bar for **Resources, Prompts, Tools**, and other features.
 
-![](assets/skilljar-s6/L05-02-server-inspector.jpg)
+![](01-Notes/assets/skilljar-s6/L05-02-server-inspector.jpg)
 *After clicking Connect — the Resources / Prompts / Tools navigation is activated.*
 
 The tool-testing procedure is:
@@ -754,14 +754,14 @@ The tool-testing procedure is:
 4. Fill in the required parameters
 5. Click **"Run Tool"** to execute and inspect the result
 
-![](assets/skilljar-s6/L05-03-server-inspector.jpg)
+![](01-Notes/assets/skilljar-s6/L05-03-server-inspector.jpg)
 *In the Tools section, pick a tool → enter parameters → Run Tool.*
 
 #### Example — Testing Document Operations
 
 For example, to test the **document-reading tool**, enter a document ID like `deposition.md` and run the tool. The inspector shows the result — such as the returned content or a success message.
 
-![](assets/skilljar-s6/L05-04-server-inspector.jpg)
+![](01-Notes/assets/skilljar-s6/L05-04-server-inspector.jpg)
 *The result of running read_doc_contents — the returned text is displayed in the inspector.*
 
 #### Chaining Operations for Verification
@@ -835,7 +835,7 @@ Now that the MCP server is running, it's time to build the **client side**. The 
 > *"In most real-world projects, you'll either implement an MCP client OR an MCP server - not both. We're building both in this project just so you can see how they work together."*
 > In real-world projects you typically implement either the client **or** the server, not both — we build both here purely to **see how they cooperate**.
 
-![](assets/skilljar-s6/L06-01-implementing-client.jpg)
+![](01-Notes/assets/skilljar-s6/L06-01-implementing-client.jpg)
 *Two components on the client side — the MCP Client (our class) plus the Client Session (provided by the SDK).*
 
 An MCP client consists of **two main components**:
@@ -843,14 +843,14 @@ An MCP client consists of **two main components**:
 - **MCP Client** — **the custom class we build** to make sessions easier to use
 - **Client Session** — the actual connection to the server (part of the MCP Python SDK)
 
-![](assets/skilljar-s6/L06-02-implementing-client.jpg)
+![](01-Notes/assets/skilljar-s6/L06-02-implementing-client.jpg)
 *The Client Session needs resource cleanup — so we wrap it in our custom class.*
 
 The client session requires **proper resource cleanup** when it ends. That's why we wrap it in our own `MCPClient` class, which automates that cleanup.
 
 #### Placement Within the Application
 
-![](assets/skilljar-s6/L06-03-implementing-client.jpg)
+![](01-Notes/assets/skilljar-s6/L06-03-implementing-client.jpg)
 *Application flow — the CLI code does two things with the MCP server.*
 
 Recall the two main things our CLI code must do with the MCP server:
@@ -972,27 +972,27 @@ Suppose we want a **document mention feature** in which *"users type `@document_
 - **List all available documents** (for autocomplete)
 - **Fetch a specific document's contents** (when mentioned)
 
-![](assets/skilljar-s6/L07-resources-concept.jpg)
+![](01-Notes/assets/skilljar-s6/L07-resources-concept.jpg)
 *The core concept of Resources --- a read-only channel that exposes data like HTTP GET, with responsibilities clearly separated from Tools.*
 
-![](assets/skilljar-s6/L07-01-mention-feature.jpg)
+![](01-Notes/assets/skilljar-s6/L07-01-mention-feature.jpg)
 *@mention feature — typing @ shows a document dropdown; selecting one injects the contents.*
 
 When the user types `@`, we must **show the available documents**. When a message containing a mention is submitted, we must **automatically inject the contents of the referenced document** into the prompt sent to Claude.
 
-![](assets/skilljar-s6/L07-02-mention-flow.jpg)
+![](01-Notes/assets/skilljar-s6/L07-02-mention-flow.jpg)
 *The data flow of a mention — client requests the resource → server responds → injected into the prompt.*
 
 #### How Resources Work — A Request/Response Pattern
 
 Resources follow a **request/response pattern**. The client sends a `ReadResourceRequest` with a URI, and the MCP server responds with data. **The URI acts as the address** of the resource you want to access.
 
-![](assets/skilljar-s6/L07-03-request-response.jpg)
+![](01-Notes/assets/skilljar-s6/L07-03-request-response.jpg)
 *ReadResourceRequest/Response — identify the resource by URI.*
 
 #### Two Kinds of Resources
 
-![](assets/skilljar-s6/L07-04-resource-types.jpg)
+![](01-Notes/assets/skilljar-s6/L07-04-resource-types.jpg)
 *Direct vs. Templated resources.*
 
 - **Direct Resources** — **static URIs** that do not change (e.g., `docs://documents`)
@@ -1056,7 +1056,7 @@ uv run mcp dev mcp_server.py
 
 Then connect to the inspector in your browser.
 
-![](assets/skilljar-s6/L07-05-inspector-resources.jpg)
+![](01-Notes/assets/skilljar-s6/L07-05-inspector-resources.jpg)
 *The Resources and Resource Templates sections in the Inspector.*
 
 You'll see two tabs:
@@ -1066,7 +1066,7 @@ You'll see two tabs:
 
 Click a resource to test it, and confirm the exact response structure your client will receive.
 
-![](assets/skilljar-s6/L07-06-inspector-test.jpg)
+![](01-Notes/assets/skilljar-s6/L07-06-inspector-test.jpg)
 *The result of calling a specific resource — the return value and MIME type are shown together.*
 
 #### Tools vs. Resources — When to Use Which
@@ -1129,7 +1129,7 @@ graph TB
 
 Now that resources are defined on the server, we need a way for the **client to request and use them**. The client serves as the **bridge between the application and the MCP server**, handling the communication and data parsing for us.
 
-![](assets/skilljar-s6/L08-01-client-bridge.jpg)
+![](01-Notes/assets/skilljar-s6/L08-01-client-bridge.jpg)
 *The client is the bridge between the application and the MCP server.*
 
 The flow is simple: when a user references a document (e.g., types `@report.pdf`), the application uses the **MCP client to fetch that resource from the server and inject it directly into Claude's prompt**.
@@ -1185,7 +1185,7 @@ Once implemented, you can test the feature in the CLI application. For an input 
 - **Automatically fetch the resource's contents**
 - Include those contents **in the prompt sent to Claude**
 
-![](assets/skilljar-s6/L08-02-cli-autocomplete.jpg)
+![](01-Notes/assets/skilljar-s6/L08-02-cli-autocomplete.jpg)
 *CLI autocomplete when `@` is typed — available resources (the document list) drop down.*
 
 > [!finding] Why resources are more efficient than tool calls
@@ -1257,10 +1257,10 @@ sequenceDiagram
 
 Say you want Claude to reformat a document into Markdown. The user could simply type *"convert report.pdf to markdown"* and get something that works. But using a **thoroughly tested prompt** with explicit instructions about **formatting, structure, and output requirements** produces much better results.
 
-![](assets/skilljar-s6/L09-prompts-concept.jpg)
+![](01-Notes/assets/skilljar-s6/L09-prompts-concept.jpg)
 *The core concept of Prompts --- server-provided, validated templates guarantee more consistent quality than ad-hoc user prompts.*
 
-![](assets/skilljar-s6/L09-01-why-prompts.jpg)
+![](01-Notes/assets/skilljar-s6/L09-01-why-prompts.jpg)
 *Why prompts — an ad-hoc user prompt vs. a server-provided, validated template.*
 
 > [!finding] Core insight
@@ -1271,7 +1271,7 @@ Say you want Claude to reformat a document into Markdown. The user could simply 
 
 A prompt defines **a set of user/assistant messages that the client can use directly**. When the client requests a prompt, the server returns a **list of messages ready to send to Claude**.
 
-![](assets/skilljar-s6/L09-02-prompt-messages.jpg)
+![](01-Notes/assets/skilljar-s6/L09-02-prompt-messages.jpg)
 *A prompt returns a list of user/assistant messages.*
 
 The basic structure is:
@@ -1324,7 +1324,7 @@ Use the 'edit_document' tool to edit the document. After the document has been r
 
 You can also test prompts in the MCP Inspector. Navigate to the **Prompts section**, select a prompt, and provide the required parameters. The Inspector shows the **generated messages** that will be sent to Claude.
 
-![](assets/skilljar-s6/L09-03-inspector-prompts.jpg)
+![](01-Notes/assets/skilljar-s6/L09-03-inspector-prompts.jpg)
 *The Prompts section of the Inspector — when you enter parameters, the interpolated final message is previewed.*
 
 This lets you verify that **variable interpolation is correct** and **the message structure is as expected** before putting the prompt to real use.
@@ -1381,7 +1381,7 @@ graph TB
 
 MCP prompts define **a set of user/assistant messages for the client to use**. They should be high-quality, well-tested, and aligned with the server's purpose.
 
-![](assets/skilljar-s6/L10-01-client-prompts.jpg)
+![](01-Notes/assets/skilljar-s6/L10-01-client-prompts.jpg)
 *The overall structure of client-side prompt integration.*
 
 #### Implementing `list_prompts`
@@ -1423,7 +1423,7 @@ When the client calls `get_prompt`, the **argument dictionary** must contain the
 
 After implementation, you can test prompts from the **command-line interface**. Typing **slash (`/`)** makes **available prompts appear as commands**. Selecting a prompt prompts you to choose from available options (e.g., a document ID), after which the **complete prompt is sent to Claude**.
 
-![](assets/skilljar-s6/L10-02-cli-slash.jpg)
+![](01-Notes/assets/skilljar-s6/L10-02-cli-slash.jpg)
 *Typing `/` in the CLI lists prompts as slash commands — much like the slash commands of Slack or Discord.*
 
 The workflow is:
@@ -1433,7 +1433,7 @@ The workflow is:
 - **The prompt is sent to Claude with the interpolated values**
 - Claude **uses the tools for any additional data lookups** and completes the task
 
-![](assets/skilljar-s6/L10-03-prompt-workflow.jpg)
+![](01-Notes/assets/skilljar-s6/L10-03-prompt-workflow.jpg)
 *The full workflow — select a prompt → enter arguments → Claude performs tool calls internally.*
 
 #### Prompt Best Practices, Revisited

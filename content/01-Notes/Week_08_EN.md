@@ -167,10 +167,10 @@ In the previous week [[Week_07]] we implemented the **internal structure of an M
 
 Anthropic offers several **applications** simultaneously to put Claude models into developers' hands. In this module we explore two of them — **Claude Code** and **Computer Use**. These two are not just useful tools in their own right; they are also perfect case studies that demonstrate **how AI agents work**. Understanding **how these two products operate internally** forms a solid foundation for building your own agents later.
 
-![](assets/skilljar-s7/L01-anthropic-apps.jpg)
+![](01-Notes/assets/skilljar-s7/L01-anthropic-apps.jpg)
 *Anthropic's main app lineup --- Claude.ai · Claude Code · Computer Use, each offering a different surface on top of the same model*
 
-![](assets/skilljar-s7/L01-01-our-plan.jpg)
+![](01-Notes/assets/skilljar-s7/L01-01-our-plan.jpg)
 *Our Plan — the three-stage progression Claude Code → Computer Use → Agents*
 
 #### Our Plan — A Three-Stage Learning Journey
@@ -278,12 +278,12 @@ The tree turns on two questions. **(1) How close is the task to the code?** — 
 
 Claude Code is a **terminal-based coding assistant that runs right from your command line**. Think of it as *"Claude residing inside your terminal, ready to help with whatever coding task you're working on."*
 
-![](assets/skilljar-s7/L02-01-cc-intro.jpg)
+![](01-Notes/assets/skilljar-s7/L02-01-cc-intro.jpg)
 *Claude Code — an agent that takes natural-language coding instructions inside the terminal*
 
 #### What Claude Code Can Do
 
-![](assets/skilljar-s7/L02-cc-tools.jpg)
+![](01-Notes/assets/skilljar-s7/L02-cc-tools.jpg)
 *Claude Code's built-in toolset --- file ops, terminal exec, web access, and MCP integration laid out on one screen*
 
 Claude Code comes with a **comprehensive set of tools** that support your development workflow.
@@ -299,7 +299,7 @@ Claude Code works on **MacOS, Windows WSL, and Linux**, so it is available regar
 
 #### Installation — Three Steps
 
-![](assets/skilljar-s7/L02-02-installation.jpg)
+![](01-Notes/assets/skilljar-s7/L02-02-installation.jpg)
 *The 3-step Claude Code install — Node.js → npm install -g → claude*
 
 Setting up Claude Code takes only **three steps**.
@@ -477,7 +477,7 @@ graph TD
 
 Claude Code is **not merely a tool for writing code** — it is designed to work alongside the developer through **every stage** of a software project. Think of it as another engineer newly joined to the team: a colleague capable of **handling every stage** from initial setup through deployment and support.
 
-![](assets/skilljar-s7/L03-01-lifecycle.jpg)
+![](01-Notes/assets/skilljar-s7/L03-01-lifecycle.jpg)
 *The scope of Claude Code's partnership — across the full project lifecycle (setup · dev · test · deploy · support)*
 
 #### Project Lifecycle and Claude Code
@@ -504,7 +504,7 @@ The Skilljar lesson is arranged so that you actually experience **setup (/init)*
 
 #### The /init Command — Project Indexing
 
-![](assets/skilljar-s7/L03-cc-init.jpg)
+![](01-Notes/assets/skilljar-s7/L03-cc-init.jpg)
 *Running `/init` --- the first step that scans the codebase and auto-drafts CLAUDE.md*
 
 **The first thing to do** when starting work on a project with Claude Code is run the `/init` command. This command tells Claude to **scan the entire codebase** so it understands the project's **structure, dependencies, coding style, and architecture**.
@@ -517,7 +517,7 @@ Claude summarizes everything it has learned into a **special file** called `CLAU
 
 #### CLAUDE.md — The Three Scopes
 
-![](assets/skilljar-s7/L03-02-claude-md.jpg)
+![](01-Notes/assets/skilljar-s7/L03-02-claude-md.jpg)
 *CLAUDE.md's three scopes — Project · Local · User*
 
 CLAUDE.md can exist in several places, split by different **scopes**.
@@ -562,10 +562,10 @@ graph TD
 
 Claude works best when you think of it as an **effort multiplier**. **The more context and structure you provide, the better the result**. The most effective workflow is as follows.
 
-![](assets/skilljar-s7/L03-cc-workflow.jpg)
+![](01-Notes/assets/skilljar-s7/L03-cc-workflow.jpg)
 *The Claude Code workflow diagram --- the staged collaboration pattern from context injection through implementation*
 
-![](assets/skilljar-s7/L03-03-workflow.jpg)
+![](01-Notes/assets/skilljar-s7/L03-03-workflow.jpg)
 *Common Workflow — the three stages Context → Plan → Implement*
 
 ##### Step 1 — Feed Context into Claude
@@ -618,7 +618,7 @@ graph LR
 
 For even better results, you can adopt a **test-driven approach**.
 
-![](assets/skilljar-s7/L03-04-tdd.jpg)
+![](01-Notes/assets/skilljar-s7/L03-04-tdd.jpg)
 *TDD Workflow — context → test cases → test implementation → code that passes the tests*
 
 1. **Feed context into Claude** — show it the relevant files as before
@@ -760,10 +760,10 @@ Claude Code has an **MCP client built right into it**. That means that **simply 
 
 #### How MCP Extends Claude Code
 
-![](assets/skilljar-s7/L04-mcp-enhancement.jpg)
+![](01-Notes/assets/skilljar-s7/L04-mcp-enhancement.jpg)
 *Extending Claude Code with MCP --- reaching external systems that built-in tools alone cannot touch*
 
-![](assets/skilljar-s7/L04-01-mcp-extends.jpg)
+![](01-Notes/assets/skilljar-s7/L04-01-mcp-extends.jpg)
 *MCP extends Claude Code — built-in capabilities + external servers' Tools · Prompts · Resources*
 
 The Model Context Protocol (MCP) lets Claude Code connect to **external services and tools**. It does this through **MCP servers**. Rather than being **limited to Claude's built-in capabilities**, you can add **custom functionality** by connecting servers that expose **specific Tools · Resources · integrations**.
@@ -794,14 +794,14 @@ Once registered, Claude Code **automatically connects to the server on startup**
 
 #### Example — Document Processing
 
-![](assets/skilljar-s7/L04-02-example.jpg)
+![](01-Notes/assets/skilljar-s7/L04-02-example.jpg)
 *Example — connecting an MCP server that converts PDF/Word docs into markdown*
 
 A practical example is building a tool that lets **Claude read PDF and Word documents**. Build an MCP server with a **"document_path_to_markdown"** tool, and then you can ask Claude to **convert document contents into markdown**.
 
 Ask `"Convert the tests/fixtures/mcp_docs.docx file to markdown"` and it automatically **uses the custom tool** to read the file and return the converted content.
 
-![](assets/skilljar-s7/L04-03-example-result.jpg)
+![](01-Notes/assets/skilljar-s7/L04-03-example-result.jpg)
 *The run result — Claude calls the custom tool and returns the docx → markdown conversion*
 
 This is the scene where the **FastMCP server** you built in W07 actually runs inside Claude Code. The `tools/call → result` JSON-RPC round trip is **fully automated** by the single line `claude mcp add`.
@@ -831,10 +831,10 @@ sequenceDiagram
 
 #### Popular MCP Integrations
 
-![](assets/skilljar-s7/L04-popular-mcp.jpg)
+![](01-Notes/assets/skilljar-s7/L04-popular-mcp.jpg)
 *A glance at popular MCP integrations --- a catalog of servers widely adopted across the modern dev workflow*
 
-![](assets/skilljar-s7/L04-04-popular-mcp.jpg)
+![](01-Notes/assets/skilljar-s7/L04-04-popular-mcp.jpg)
 *Popular MCP integrations — sentry-mcp · playwright-mcp · figma-context-mcp · mcp-atlassian · firecrawl-mcp-server · slack-mcp*
 
 The MCP ecosystem includes servers for **many common dev tools and services**.

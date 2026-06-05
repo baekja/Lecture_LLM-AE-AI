@@ -102,7 +102,7 @@ Have you ever found yourself repeating the same instructions to Claude Code? Exp
 
 Skills are **folders of instructions, scripts, and resources** that Claude Code can discover and use. Each skill is a directory containing a `SKILL.md` file with `name` and `description` defined in its frontmatter.
 
-![](assets/skilljar-as/L01-skills-overview.png)
+![](01-Notes/assets/skilljar-as/L01-skills-overview.png)
 *Skills overview --- skill structure and Claude Code's matching mechanism*
 
 ```mermaid
@@ -256,7 +256,7 @@ sequenceDiagram
 
 Now that we understand the theory, let's actually write a skill. We'll create a **Personal PR Description skill** that works across all projects.
 
-![](assets/skilljar-as/L02-first-skill.png)
+![](01-Notes/assets/skilljar-as/L02-first-skill.png)
 *Creating the first skill --- the PR Description skill build process*
 
 #### Step 1: Create the Skill Directory
@@ -602,7 +602,7 @@ graph TD
 
 Basic skills work with just `name` and `description`, but advanced metadata fields enable much more precise control.
 
-![](assets/skilljar-as/L03-multi-file.png)
+![](01-Notes/assets/skilljar-as/L03-multi-file.png)
 *Skill metadata and multi-file composition --- advanced configuration and composite skill structure*
 
 #### Full Metadata Fields
@@ -811,7 +811,7 @@ With this structure, Claude loads the security checklist **only when it reaches 
 
 Claude Code offers several ways to customize behavior. Understanding the purpose and proper use case for each feature lets you pick the right tool for the job.
 
-![](assets/skilljar-as/L04-skills-comparison.png)
+![](01-Notes/assets/skilljar-as/L04-skills-comparison.png)
 *Skills vs other Claude Code features --- comparison with CLAUDE.md, Hooks, and Subagents*
 
 #### Full comparison table
@@ -969,7 +969,7 @@ description: Formats PRs with What/Why/Changes sections. Use when creating PRs.
 
 Once you have a personally useful skill, you'll want to share it with a team or organization. Skills offer three levels of sharing.
 
-![](assets/skilljar-as/L05-sharing-skills.png)
+![](01-Notes/assets/skilljar-as/L05-sharing-skills.png)
 *Sharing and distributing skills --- the three-level Git / plugin / Enterprise strategy*
 
 #### Sharing Strategy Comparison
