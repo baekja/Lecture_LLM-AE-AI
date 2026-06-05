@@ -298,7 +298,7 @@ for block in response.content:
 ```mermaid
 graph TD
     R["response.content (list)"] --> TB["ThinkingBlock<br/>type: 'thinking'<br/>thinking: '...추론...'<br/>signature: 'crypto token'"]
-    R --> RTB["RedactedThinkingBlock<br/>type: 'redacted_thinking'<br/>data: '<encrypted>'"]
+    R --> RTB["RedactedThinkingBlock<br/>type: 'redacted_thinking'<br/>data: '&lt;encrypted&gt;'"]
     R --> TXT["TextBlock<br/>type: 'text'<br/>text: '최종 답변'"]
 
     TB -. "선택적" .-> RTB
