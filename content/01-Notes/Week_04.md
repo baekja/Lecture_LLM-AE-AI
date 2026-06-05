@@ -94,6 +94,9 @@ Claude는 사용자의 자연어 요청을 이해하고, 필요한 도구들을 
 ---
 ## [Chapter 1] Tool Use 기초와 워크플로 (Lessons 1-8)
 
+![](01-Notes/assets/skilljar-s3/skilljar-s3-tool-use-architecture.webp)
+*Tool Use 전체 아키텍처 — Section 3 Chapter 1의 핵심 개념 정리*
+
 ### 1.1 Tool Use 소개 (Introducing Tool Use)
 
 Claude는 학습 데이터에 기반한 방대한 지식을 갖추고 있지만, 기본적으로 **외부 세계에 접근할 수 없다**. 현재 시간, 실시간 날씨, 데이터베이스 조회 등은 모델 자체로는 수행할 수 없는 작업이다. **Tool Use** (도구 사용, Function Calling이라고도 함)는 이 한계를 극복하는 핵심 메커니즘이다.
@@ -242,6 +245,9 @@ flowchart LR
 
 Tool Use의 첫 번째 단계는 **실제로 실행될 Python 함수**를 작성하는 것이다. 이 함수들은 Claude가 호출을 요청했을 때 애플리케이션이 실행하는 코드다.
 
+![](01-Notes/assets/skilljar-s3/L03-tool-functions-00.png)
+*도구 함수 작성 — Tool Use 구현의 첫 번째 단계*
+
 *도구 함수는 일반 Python 함수이며, Claude가 직접 실행하지 않고 호출을 **요청**만 한다*
 
 #### 핵심 원칙: 도구 함수는 일반 Python 함수
@@ -280,6 +286,9 @@ print(get_current_datetime("%Y년 %m월 %d일"))
 print(get_current_datetime("%H:%M"))
 # 출력: "14:30"
 ```
+
+![](01-Notes/assets/skilljar-s3/L03-tool-functions-06.png)
+*`get_current_datetime` 함수 구현과 실행 결과*
 
 *위 코드의 실행 결과 — `get_current_datetime()`은 현재 날짜/시간을 지정된 포맷으로 반환한다*
 
@@ -408,6 +417,9 @@ get_current_datetime_schema = {
 }
 ```
 
+![](01-Notes/assets/skilljar-s3/L04-tool-schemas-02.png)
+*`get_current_datetime` 스키마 구조 — name, description, input_schema*
+
 *위 스키마는 `get_current_datetime` 함수의 name, description, input_schema를 정의한다*
 
 > [!finding] Description이 핵심이다
@@ -429,6 +441,9 @@ def get_current_datetime(date_format: str = "%Y-%m-%d %H:%M:%S") -> str:
 JSON 스키마만 반환해주세요.
 """
 ```
+
+![](01-Notes/assets/skilljar-s3/L04-tool-schemas-13.png)
+*Claude를 활용한 도구 스키마 자동 생성*
 
 *Claude에게 함수 코드를 보여주고 "Write a valid JSON schema spec for tool calling"이라고 요청하면 스키마를 자동 생성해준다*
 
@@ -465,6 +480,9 @@ get_current_datetime_tool: ToolParam = {
 > - `get_current_datetime_schema`: 날짜 형식 1개 파라미터
 > - `add_duration_to_datetime_schema`: 시작시간, 기간, 단위 3개 파라미터
 > - `set_reminder_schema`: 시간, 메시지 2개 파라미터
+
+![](01-Notes/assets/skilljar-s3/skilljar-s3-tool-schema.webp)
+*도구 스키마 정리 — name, description, input_schema의 핵심 역할*
 
 > [!ref] 소스
 > - Skilljar L04: Tool schemas (287753)
@@ -545,6 +563,9 @@ for block in response.content:
 | **name** | 호출할 도구 이름 (스키마의 name과 일치) | `"get_current_datetime"` |
 | **input** | Claude가 결정한 파라미터 (dict) | `{"date_format": "%H:%M"}` |
 
+![](01-Notes/assets/skilljar-s3/L05-handling-message-blocks-15.png)
+*ToolUseBlock 구조 상세 — id/name/input/type 필드*
+
 *ToolUseBlock에는 `id` (추적용), `name` (함수명), `input` (파라미터 딕셔너리), `type` ("tool_use")이 포함된다*
 
 #### 대화 히스토리에 전체 content 보존
@@ -565,6 +586,9 @@ messages.append({
     "content": response.content[0].text  # 도구 블록 유실!
 })
 ```
+
+![](01-Notes/assets/skilljar-s3/skilljar-s3-message-blocks.webp)
+*메시지 블록 처리 정리 — TextBlock과 ToolUseBlock의 멀티블록 구조*
 
 > [!ref] 소스
 > - Skilljar L05: Handling message blocks (287757)
@@ -605,6 +629,9 @@ tool_result_message = {
 ![](01-Notes/assets/skilljar-s3/L06-sending-tool-results-03.png)
 *tool_result 메시지 형식 — tool_use_id로 요청과 결과를 매칭*
 
+![](01-Notes/assets/skilljar-s3/L06-sending-tool-results-04.png)
+*tool_result 블록 구조 — role:"user" 메시지 내부의 content 블록 형식*
+
 #### 3가지 핵심 필드
 
 ```mermaid
@@ -624,6 +651,9 @@ graph LR
 | **tool_use_id** | Claude의 도구 호출 요청 ID와 **반드시 일치**해야 한다 | 필수 |
 | **content** | 도구 실행 결과를 **문자열**로 전달 | 필수 |
 | **is_error** | `true`이면 Claude가 에러를 인지하고 대응한다 | 선택 (기본: false) |
+
+![](01-Notes/assets/skilljar-s3/L06-sending-tool-results-05.png)
+*tool_use_id 매칭 — 요청과 결과를 연결하는 핵심 식별자*
 
 *`tool_use_id`는 요청과 결과를 연결하는 고유 식별자이다. 반드시 원래 ToolUseBlock의 id와 일치해야 한다*
 
@@ -678,7 +708,13 @@ messages.append({
 })
 ```
 
+![](01-Notes/assets/skilljar-s3/L06-sending-tool-results-07.png)
+*다중 도구 호출 — 각 호출에 대해 고유 ID로 매칭되는 tool_result 전송*
+
 *Claude가 2개 이상 도구를 동시에 호출하면, 각 ToolUseBlock에 고유 ID가 부여되며 모든 결과를 tool_result로 반환해야 한다*
+
+![](01-Notes/assets/skilljar-s3/L06-sending-tool-results-08.png)
+*tool_result 전송 전체 흐름 — 도구 실행 결과를 Claude로 되돌리는 사이클*
 
 > [!tip] 후속 요청에도 도구 스키마 포함
 > `tool_result`를 전송하는 후속 API 호출에도 **`tools` 파라미터에 도구 스키마를 포함**해야 한다. Claude가 결과를 보고 추가 도구 호출이 필요하다고 판단할 수 있기 때문이다.
@@ -779,6 +815,9 @@ def text_from_message(response):
     return "\n".join(texts)
 ```
 
+![](01-Notes/assets/skilljar-s3/L07-multi-turn-03.png)
+*리팩토링된 헬퍼 함수 구조*
+
 *리팩토링 포인트 — `chat()`은 tools 파라미터를 받고, `text_from_message()`는 TextBlock만 추출한다*
 
 > [!method] 리팩토링 원칙
@@ -786,6 +825,9 @@ def text_from_message(response):
 > 2. `add_assistant_message`는 `response.content` 전체를 보존
 > 3. `text_from_message`로 필요할 때만 텍스트를 추출
 > 4. 모든 API 호출에 `tools` 파라미터를 포함
+
+![](01-Notes/assets/skilljar-s3/L07-multi-turn-05.png)
+*멀티턴 대화 패턴 — stop_reason 기반 루프 흐름 요약*
 
 > [!ref] 소스
 > - Skilljar L07: Multi-turn conversations (287750)
@@ -924,6 +966,9 @@ def run_conversation(user_message):
             # 루프 계속 → 다시 Claude API 호출
 ```
 
+![](01-Notes/assets/skilljar-s3/L08-implementing-turns-05.png)
+*run_conversation 실행 흐름 — 자동 루프로 멀티턴 도구 호출 처리*
+
 *위 `run_conversation`은 `stop_reason != "tool_use"`가 될 때까지 자동으로 루프를 반복한다*
 
 #### 전체 실행 흐름 다이어그램
@@ -975,11 +1020,17 @@ result = run_conversation("30분 뒤에 회의 알림 설정해줘")
 🤖 Claude: 30분 뒤인 15:00에 회의 알림을 설정했습니다!
 ```
 
+![](01-Notes/assets/skilljar-s3/L08-implementing-turns-10.png)
+*리마인더 시스템 실행 결과 — 3개 도구를 순차 호출한 완전한 멀티턴 흐름*
+
 > [!finding] 핵심 설계 포인트
 > 1. **`stop_reason` 기반 루프**: `"tool_use"` → 도구 실행, `"end_turn"` → 종료
 > 2. **에러 처리**: `try/except`로 도구 실행 실패를 안전하게 처리하고 `is_error: true`로 Claude에 전달
 > 3. **확장성**: 새 도구 추가 시 `run_tool`에 라우팅만 추가하면 됨
 > 4. **자율성**: Claude가 어떤 도구를 어떤 순서로 호출할지 **스스로 판단** — 개발자가 순서를 하드코딩하지 않음
+
+![](01-Notes/assets/skilljar-s3/skilljar-s3-multi-turn.webp)
+*멀티턴 Tool Use 정리 — stop_reason 루프로 완전한 워크플로 구현*
 
 > [!ref] 소스
 > - Skilljar L08: Implementing multiple turns (287758)
@@ -1140,6 +1191,9 @@ def run_tool(tool_name, tool_input):
 
 > `**tool_input`으로 딕셔너리를 키워드 인자로 언패킹한다. Claude가 스키마에 정의된 파라미터 이름과 동일한 키를 보내므로, 이 방식이 안전하고 간결하다.
 
+![](01-Notes/assets/skilljar-s3/L09-multiple-tools-15.png)
+*run_tool 라우터 — 도구 이름에 따라 적절한 함수로 디스패치*
+
 *`run_tool`은 `**tool_input` 언패킹으로 각 도구 함수에 파라미터를 전달한다*
 
 #### 테스트: 복합 요청
@@ -1158,6 +1212,9 @@ Claude는 자동으로 다음 순서를 수행한다:
 1. `add_duration_to_datetime("2050-01-01", 177)` → **"2050-06-27"** 계산
 2. `set_reminder("Doctor's appointment", "2050-06-27")` → 리마인더 설정
 3. 최종 응답: "I've set a reminder for your doctor's appointment on June 27, 2050."
+
+![](01-Notes/assets/skilljar-s3/L09-multiple-tools-18.png)
+*복합 요청 처리 결과 — Claude가 2개 도구를 순차 호출하여 자율적으로 리마인더 설정*
 
 *복합 요청 처리 — Claude가 `add_duration_to_datetime` → `set_reminder`를 순차 호출하여 177일 후 리마인더를 자동 설정*
 
@@ -1181,6 +1238,12 @@ sequenceDiagram
 
 > [!finding] Claude의 자율적 도구 조합
 > 3가지 도구가 등록되면 Claude는 각 도구의 `description`을 읽고 **어떤 도구를 어떤 순서로 호출할지 스스로 판단**한다. 177일 계산이 먼저 필요하다는 것을 Claude가 알아서 판단한 것이다. 개발자가 호출 순서를 지정할 필요가 없다.
+
+![](01-Notes/assets/skilljar-s3/skilljar-s3-multiple-tools.webp)
+*다중 도구 등록 정리 — tools 배열, run_tool 라우터, Claude의 자율적 조합*
+
+![](01-Notes/assets/skilljar-s3/skilljar-s3-tool-choice.webp)
+*도구 선택 (Tool Choice) — Claude가 description을 읽고 적절한 도구를 선택하는 메커니즘*
 
 > [!ref] 소스
 > - Skilljar L09: Using multiple tools (287749)

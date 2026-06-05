@@ -145,6 +145,9 @@ This week is also training in understanding RAG as a **production system**. The 
 
 When you want Claude to answer questions about a large document, there are two paths: **stuff the entire document into the prompt**, or **extract only the relevant portions and pass them along**. **RAG (Retrieval Augmented Generation)** systematizes the latter approach — it splits documents into small chunks in advance, then selects only the chunks most relevant to the user's question and injects them into the prompt.
 
+![](01-Notes/assets/skilljar-s4/skilljar-s4-rag-concept.webp)
+*RAG concept at a glance --- summarizes the whole idea of retrieving external knowledge and injecting it into Claude's context*
+
 ![](01-Notes/assets/skilljar-s4/L01-01-problem.jpg)
 *The problem with large documents — you want to ask questions like "What risk factors does this company face?" about an 800-page financial document, but prompt length has limits*
 
@@ -255,6 +258,9 @@ RAG involves many technical decisions and more work than simply stuffing everyth
 ### 1.2 Text Chunking Strategies (L02)
 
 How you split documents is **one of the most important decisions** in a RAG pipeline. A poor chunking strategy injects irrelevant context into the prompt and ultimately leads Claude to produce a completely wrong answer.
+
+![](01-Notes/assets/skilljar-s4/skilljar-s4-chunking-strategies.webp)
+*Overview of chunking strategies --- side-by-side comparison of size-based, structure-based, semantic-based, and sentence-based approaches*
 
 ![](01-Notes/assets/skilljar-s4/L02-01-pipeline.jpg)
 *Where chunking sits in the RAG pipeline — the first preprocessing step after document input*
@@ -401,6 +407,9 @@ graph TD
 
 After splitting a document into chunks, the next step is **finding "the chunks most relevant to the user's question."** This is essentially a search problem — we must scan all chunks and pick out those connected to the question.
 
+![](01-Notes/assets/skilljar-s4/skilljar-s4-embeddings.webp)
+*Embeddings overview --- the core tool that turns text meaning into numeric vectors so semantic search becomes possible*
+
 ![](01-Notes/assets/skilljar-s4/L03-03-search-problem.jpg)
 *The search problem — among many chunks, we must select only those relevant to the user's question*
 
@@ -523,6 +532,9 @@ graph LR
 ### 1.4 The Complete RAG Flow (L04)
 
 The RAG basics, chunking, and embeddings we've learned so far — let's trace end-to-end how these pieces **come together as a single pipeline**. It consists of **6 total steps**.
+
+![](01-Notes/assets/skilljar-s4/skilljar-s4-full-rag-flow.webp)
+*End-to-end RAG pipeline summary --- the six stages of chunking, embedding, vector DB, query embedding, similarity search, and prompt injection on a single diagram*
 
 #### Step 1: Split Source Text into Chunks
 
@@ -846,6 +858,9 @@ graph LR
 ---
 
 ### 2.1 BM25 Lexical Search (L06)
+
+![](01-Notes/assets/skilljar-s4/skilljar-s4-bm25-search.webp)
+*BM25 lexical search overview --- a classical text-search algorithm that guarantees exact term matching*
 
 #### 2.1.1 Why Semantic Search Alone Is Not Enough
 
@@ -1179,6 +1194,9 @@ Examples of indexes you might add:
 - **Graph Index**: Based on knowledge graphs — injecting relationship-based reasoning into RAG.
 - **Specialized Domain Index**: A dedicated index tied to a domain-specific dictionary (e.g., statutory clauses, medical terminology, standard document numbers).
 - **Contextual Retrieval Index**: Anthropic's Contextual Retrieval and similar approaches that prepend a full-document summary to each chunk.
+
+![](01-Notes/assets/skilljar-s4/skilljar-s4-contextual-retrieval.webp)
+*Contextual Retrieval diagram --- Anthropic's technique of prepending a full-document summary to each chunk to boost retrieval accuracy*
 
 ```mermaid
 graph TD

@@ -214,6 +214,9 @@ graph LR
 ![](assets/skilljar-s6/L01-01-introducing-mcp.jpg)
 *MCP 의 기본 아키텍처 — MCP 클라이언트(당신의 서버)가 tools·prompts·resources 를 가진 MCP 서버에 연결한다*
 
+![](assets/skilljar-s6/L01-mcp-architecture.jpg)
+*MCP 전체 아키텍처 다이어그램 --- 호스트·클라이언트·서버 3 계층의 역할 분리와 데이터 흐름*
+
 #### MCP 이전: GitHub 챗봇 예제로 보는 통합 지옥
 
 L01 은 실제 시나리오로 개념을 설명한다. 사용자가 *"What open pull requests are there across all my repositories?"* 라고 물으면, Claude 는 GitHub 의 API 에 접근할 도구가 필요하다. **MCP 가 없다면** 당신이 GitHub 통합 도구를 **전부 직접 만들어야** 한다 — 지원하려는 GitHub 기능 하나하나마다 스키마와 함수를 작성해야 한다.
@@ -227,6 +230,9 @@ GitHub 는 **거대한 기능 집합** 을 가진다 — repositories, pull requ
 
 ![](assets/skilljar-s6/L01-03-introducing-mcp.jpg)
 *Tool Function Problem — 각 도구마다 schema 와 function 구현이 모두 필요하다*
+
+![](assets/skilljar-s6/L01-mcp-tool-problem.jpg)
+*도구 함수 문제의 본질 --- 통합 대상이 늘수록 schema·function·테스트·유지보수 비용이 곱셈으로 증가*
 
 각 도구는 **schema definition 과 function implementation 을 모두** 필요로 한다. 이는 개발자가 직접 작성·테스트·유지보수해야 할 코드가 방대하다는 뜻이다.
 
@@ -255,6 +261,9 @@ MCP 는 도구 정의와 실행의 부담을 **당신 서버에서 MCP 서버로
 
 ![](assets/skilljar-s6/L01-05-introducing-mcp.jpg)
 *MCP 서버는 외부 서비스의 데이터/기능을 재사용 가능한 컴포넌트로 패키징한다*
+
+![](assets/skilljar-s6/L01-mcp-solution.jpg)
+*MCP 의 해결 방식 한눈에 보기 --- 도구 정의·실행 부담을 당신의 서버에서 전용 MCP 서버로 이관*
 
 #### MCP 에 대한 흔한 질문
 
@@ -339,6 +348,9 @@ MCP 의 핵심 강점 중 하나는 **transport agnostic** 이라는 점 — 클
 ![](assets/skilljar-s6/L02-02-mcp-clients.jpg)
 *transport-agnostic — 네트워크 프로토콜을 통한 원격 연결도 가능*
 
+![](assets/skilljar-s6/L02-client-transport.jpg)
+*클라이언트 ↔ 서버 통신 트랜스포트 비교 --- stdio·HTTP·WebSocket 의 사용 시나리오와 장단점 요약*
+
 #### Message Types — 클라이언트·서버가 주고받는 메시지
 
 연결되면 클라이언트와 서버는 **MCP specification 에 정의된 특정 메시지 타입** 들을 교환한다. 주로 다루게 될 메시지 타입은 다음 두 쌍이다.
@@ -400,6 +412,9 @@ GitHub 가 repository 데이터를 반환하면, 그것이 MCP 서버 → `CallT
 *Step 8 — Claude 가 최종 답변 → 사용자*
 
 마지막으로 Claude 가 포맷된 답을 내놓고, 당신의 서버가 그것을 사용자에게 전달한다.
+
+![](assets/skilljar-s6/L02-complete-flow.jpg)
+*완전한 흐름 한 장 요약 --- 사용자 쿼리부터 최종 응답까지 8 단계 통신을 한눈에 정리*
 
 #### 전체 흐름의 Mermaid 도식
 
@@ -563,6 +578,9 @@ MCP 서버 구축은 **공식 Python SDK** 를 쓰면 훨씬 단순해진다. �
 ![](assets/skilljar-s6/L04-01-defining-tools.jpg)
 *Tool 정의의 구조 — 데코레이터 + 타입 힌트 + Pydantic Field*
 
+![](assets/skilljar-s6/L04-fastmcp-tools.jpg)
+*FastMCP 로 도구를 정의하는 전체 그림 --- 한 줄 초기화부터 데코레이터·타입 힌트·스키마 자동 생성까지*
+
 L04 의 예제는 **메모리 내 문서 관리 MCP 서버** 를 만든다. 두 도구를 제공한다: 문서 내용을 읽는 도구와 find-and-replace 로 문서를 업데이트하는 도구.
 
 #### MCP 서버 초기화 — FastMCP 한 줄
@@ -713,6 +731,9 @@ mcp dev mcp_server.py
 
 ![](assets/skilljar-s6/L05-01-server-inspector.jpg)
 *MCP Inspector 대시보드 초기 화면 — 포트 6277 로 기동*
+
+![](assets/skilljar-s6/L05-inspector-ui.jpg)
+*MCP Inspector UI 구성 요소 --- Tools·Resources·Prompts 탭과 좌측 Connect / 우측 결과 패널의 역할*
 
 > [!tip] 인터페이스는 진화 중
 > *"The MCP inspector is actively being developed, so the interface you see might look different from current screenshots. However, the core functionality for testing tools, resources, and prompts should remain similar."*
@@ -950,6 +971,9 @@ MCP 서버의 **Resources** 는 **클라이언트에게 데이터를 노출** �
 
 - **사용 가능한 모든 문서 목록 조회** (autocomplete 용)
 - **특정 문서의 내용 조회** (멘션되었을 때)
+
+![](assets/skilljar-s6/L07-resources-concept.jpg)
+*Resources 의 핵심 개념 --- HTTP GET 처럼 데이터를 노출하는 읽기 전용 채널, Tools 와 책임 분리*
 
 ![](assets/skilljar-s6/L07-01-mention-feature.jpg)
 *@멘션 기능 — @ 입력 시 문서 목록 드롭다운, 선택 시 내용 주입*
@@ -1232,6 +1256,9 @@ MCP 서버의 **Prompts** 는 **미리 만들어진 고품질 지시문** 을 �
 #### 왜 프롬프트인가?
 
 Claude 가 문서를 Markdown 으로 재포맷하게 하고 싶다고 하자. 사용자는 그냥 *"convert report.pdf to markdown"* 이라고 쳐도 동작하긴 한다. 하지만 **포맷·구조·출력 요구사항** 에 대한 구체적 지시가 포함된 **철저히 테스트된 프롬프트** 를 쓰면 훨씬 좋은 결과를 얻는다.
+
+![](assets/skilljar-s6/L09-prompts-concept.jpg)
+*Prompts 의 핵심 개념 --- 서버가 제공하는 검증된 템플릿이 사용자 즉흥 프롬프트보다 일관된 품질을 보장*
 
 ![](assets/skilljar-s6/L09-01-why-prompts.jpg)
 *왜 프롬프트인가 — 사용자 즉흥 프롬프트 vs 서버 제공 검증된 템플릿*

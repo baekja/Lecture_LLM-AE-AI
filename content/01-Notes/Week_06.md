@@ -216,6 +216,9 @@ Extended thinking 응답은 **보안을 위한 특수 서명 시스템(special s
 ![](assets/skilljar-s5/L01-03-thinking-response-06.jpg)
 *Signature 포함 thinking 블록 — 변조 방지 암호화 토큰*
 
+![](assets/skilljar-s5/L01-extended-thinking-response.jpg)
+*Extended Thinking 응답 종합 — ThinkingBlock + TextBlock 의 두 부분 구조와 signature 필드 시각화*
+
 signature 는 **thinking 텍스트가 수정되지 않았음을 보장하는 암호화 토큰(cryptographic token)** 이다. 개발자가 Claude 의 추론을 임의로 편집해 안전하지 않은 방향으로 유도하는 것을 막는다.
 
 #### Redacted Thinking — 비공개 추론 블록
@@ -224,6 +227,9 @@ signature 는 **thinking 텍스트가 수정되지 않았음을 보장하는 암
 
 ![](assets/skilljar-s5/L01-04-thinking-response-08.jpg)
 *Redacted thinking — Claude 내부 안전 시스템이 플래그한 추론을 암호화해 반환*
+
+![](assets/skilljar-s5/L01-extended-thinking-redacted.jpg)
+*Redacted thinking 블록의 데이터 구조 — `type: "redacted_thinking"` 과 암호화된 `data` 필드*
 
 이것은 Claude 의 사고 과정이 **내부 안전 시스템에 의해 플래그(flagged by internal safety systems)** 된 경우 발생한다. 암호화된 형태의 thinking 이 그대로 들어 있어, **다음 턴의 대화에서 완전한 메시지를 되돌려 보내도 문맥을 잃지 않는다**. 즉 redacted 블록도 **세션 컨텍스트 유지를 위해 반드시 보존**해야 한다.
 
@@ -425,6 +431,9 @@ What is the exact, verified number of marbles in this image?
 ![](assets/skilljar-s5/L02-06-image-best-practices-08.jpg)
 *Fire Risk Assessment — 위성 이미지 기반 주거지 위험도 자동 평가*
 
+![](assets/skilljar-s5/L02-fire-risk-assessment.jpg)
+*Fire Risk Assessment 5단계 워크플로 — residence identification → tree overhang → fire risk → defensible space → rating 1-4*
+
 L02 가 제시하는 실전 응용은 **주택 화재 보험을 위한 자동 위험도 평가** 다. 모든 부동산에 조사원을 보내는 대신, 위성 이미지 + Claude 분석으로 대체한다. 시스템이 살펴보는 요소:
 
 - **주거지 근처의 빽빽한 나무들** (Dense, close-packed trees near the residence)
@@ -487,6 +496,9 @@ graph TD
 L02 가 보여주는 5단계 메서드는 **도메인 불문의 템플릿** 이다 — "대상 식별 → 주요 특징 측정 → 위험/결함 평가 → 환경 맥락 → 수치 등급" 순서는 구조 균열 분석, BIM 도면 점검 등에 그대로 이식된다.
 
 #### Image + Text 블록 구조 요약
+
+![](assets/skilljar-s5/L02-image-support-structure.jpg)
+*Image Support 메시지 구조 — image block (base64/url) + text block 이 user 메시지 안에 나란히 배치*
 
 ```mermaid
 graph LR
@@ -585,6 +597,9 @@ flowchart LR
 ![](assets/skilljar-s5/L03-01-pdf-support-02.jpg)
 *Wikipedia Earth PDF 예제 — 한 문장 요약 성공*
 
+![](assets/skilljar-s5/L03-pdf-processing.jpg)
+*PDF Processing 흐름 — base64 인코딩 → document block → Claude 가 텍스트·이미지·표·구조를 통합 추출*
+
 위 스크린샷은 **Wikipedia Earth 기사 PDF** 를 단 한 문장으로 요약한 실제 출력이다. 이는 *"PDF 문서에서 어떤 종류의 정보든 추출할 수 있는 원스톱 솔루션(one-stop solution)"* 이 된다는 증명이다.
 
 #### PDF vs RAG 선택 기준
@@ -643,6 +658,9 @@ Claude 가 제공한 문서를 바탕으로 답변할 때, 사용자는 *"이거
 ![](assets/skilljar-s5/L04-01-citations-intro-00.jpg)
 *Citations 의 목적 — Claude 의 답변이 문서 어디서 왔는지 사용자에게 보여주는 투명성 기능*
 
+![](assets/skilljar-s5/L04-citations-concept.jpg)
+*Citations 개념도 — Claude 응답의 각 주장(claim)에 소스 문서의 원문 발췌가 자동 attach*
+
 Citation 없이 답변만 제공하면, 사용자는 **두 가지를 검증할 수 없다**.
 1. Claude 가 실제로 제공한 문서를 참조했는가?
 2. 해당 주장의 근거 문장이 문서 어디에 있는가?
@@ -688,6 +706,9 @@ Citations 가 켜지면, Claude 의 응답은 **단순 텍스트가 아닌 구�
 
 ![](assets/skilljar-s5/L04-03-citations-response-09.jpg)
 *Citation 필드 예시 — earth.pdf 의 특정 페이지 범위와 원문 발췌가 함께 반환*
+
+![](assets/skilljar-s5/L04-citations-structure.jpg)
+*Citation 응답 구조 — cited_text · document_index · document_title · start_page · end_page 5개 필드의 전체 데이터 구조*
 
 #### Citations 응답 흐름 다이어그램
 
@@ -786,6 +807,9 @@ Prompt caching 은 **이전 요청의 계산 작업을 재사용해** Claude 의
 ![](assets/skilljar-s5/L05-01-caching-intro-01.jpg)
 *Prompt caching 소개 — 현재 어떤 낭비가 일어나고 있는가*
 
+![](assets/skilljar-s5/L05-caching-concept.jpg)
+*Prompt Caching 개념 — 전처리 결과를 버리지 않고 cache 에 저장해 후속 요청에서 재사용*
+
 사용자가 Claude 에 메시지를 보내면, Claude 는 응답을 **바로** 생성하지 않는다. 먼저 입력에 대한 **엄청난 양의 전처리(tremendous amount of preprocessing work)** 를 수행한다.
 
 ![](assets/skilljar-s5/L05-02-caching-diagram-04.jpg)
@@ -824,6 +848,9 @@ Prompt caching 은 **이전 요청의 계산 작업을 재사용해** Claude 의
 
 ![](assets/skilljar-s5/L05-07-caching-costs-17.jpg)
 *Cache hit — 초기 write 이후 follow-up 요청은 read 로 처리*
+
+![](assets/skilljar-s5/L05-caching-workflow.jpg)
+*Caching Workflow 전체 — 최초 요청(WRITE) → 캐시 저장(1h TTL) → 후속 요청(HIT, 90% 할인)*
 
 #### 이득과 제약
 
@@ -922,6 +949,9 @@ shorthand form 에서는 `cache_control` 을 둘 자리가 없다. 그래서 **l
 
 ![](assets/skilljar-s5/L06-04-rules-breakpoints-08.jpg)
 *Breakpoint 전후 — 전은 캐시, 후는 일반 처리*
+
+![](assets/skilljar-s5/L06-cache-breakpoints.jpg)
+*Cache Breakpoints 종합 — 최대 4개 breakpoint 의 배치 전략과 tools/system/messages 처리 순서*
 
 breakpoint 를 배치한 순간, **그 지점까지의 모든 처리 작업** 이 캐시된다. breakpoint **이후** 콘텐츠는 평소대로 처리된다.
 
@@ -1161,6 +1191,9 @@ Files API 는 이미지나 PDF 를 **base64 로 매번 포함하는 대신**, �
 ![](assets/skilljar-s5/L08-02-code-exec-intro-02.jpg)
 *base64 inline vs Files API — 파일 재사용, 대용량 처리에 Files API 가 유리*
 
+![](assets/skilljar-s5/L08-files-api-concept.jpg)
+*Files API 개념 — 사전 업로드된 파일을 file_id 로 참조해 inline base64 보다 효율적인 multi-request 패턴*
+
 특히 **같은 파일을 여러 번 참조**해야 하거나, **모든 요청에 포함하기 부담스러운 큰 파일**을 다룰 때 유용하다.
 
 #### Code Execution — 서버 측 Python 실행
@@ -1185,6 +1218,9 @@ Code execution 은 **서버 기반 도구(server-based tool)** 로, 개발자가
 
 ![](assets/skilljar-s5/L08-04-code-exec-flow-06.jpg)
 *Files API × Code Execution — 업로드 → container_upload → 실행 → 다운로드*
+
+![](assets/skilljar-s5/L08-code-execution-flow.jpg)
+*Code Execution Flow — Claude 가 isolated Docker container 에서 Python 을 반복 실행하고 결과를 응답에 통합*
 
 전형적인 워크플로:
 1. **데이터 파일(CSV 등)을 Files API 로 업로드**
@@ -1803,6 +1839,31 @@ graph TD
 > 📂 `03-Exercises/Week_06/skilljar/IMCP_06_inspector.ipynb`
 > 📂 `03-Exercises/Week_06/skilljar/IMCP_07_client_impl.ipynb`
 > Anthropic Skilljar *"Introduction to MCP"* 코스 7개 레슨. **W07 선수학습(① 모드)** 으로 배포 — 다음 주 강의 전까지 완독 권장. IMCP 의 MCP 서버·클라이언트·Inspector 경험이 W07 FastMCP 실습의 이해도를 결정적으로 끌어올린다.
+
+#### IMCP 선수학습 미리보기 — 슬라이드 요약 (W07 forward reference)
+
+다음 6 장은 IMCP 트랙의 핵심 슬라이드 요약본이다. **W07 본강의의 forward reference** 로 미리 한 번 훑어 두면 다음 주 진입이 훨씬 수월하다.
+
+![](assets/skilljar-s5/skilljar-s5-mcp-intro.webp)
+*MCP 개요 — Model Context Protocol 의 목적과 위치 (W07 L01 preview)*
+
+![](assets/skilljar-s5/skilljar-s5-architecture.webp)
+*MCP 아키텍처 — Host · Client · Server 3계층 구조 (W07 L02 preview)*
+
+![](assets/skilljar-s5/skilljar-s5-tool-definition.webp)
+*MCP Tool 정의 — FastMCP `@mcp.tool()` 데코레이터로 함수 → tool 변환 (W07 L03~L04 preview)*
+
+![](assets/skilljar-s5/skilljar-s5-resources.webp)
+*MCP Resources — 변하지 않는 데이터를 resource 로 노출 (W06 caching 설계와 동일 사고)*
+
+![](assets/skilljar-s5/skilljar-s5-inspector.webp)
+*MCP Inspector — 개발 단계에서 MCP 서버를 시각적으로 테스트하는 도구 (W07 L06 preview)*
+
+![](assets/skilljar-s5/skilljar-s5-client-impl.webp)
+*MCP Client 구현 — Python 클라이언트가 MCP 서버에 연결해 tool/resource 를 호출하는 패턴 (W07 L07 preview)*
+
+> [!tip] W06 → W07 자연스러운 연결
+> 위 6 슬라이드는 W07 본강의 노트인 [[Week_07]] 에서 더 상세히 다룬다. 이번 주차에서는 **"미리보기 수준"** 으로만 익숙해지고, W06 의 Code Execution + Files API 개념이 W07 의 MCP Tools/Resources 와 어떻게 닮아 있는지 그 직관만 잡아 두면 충분하다.
 
 ### CC 스킬 종합 다이어그램
 

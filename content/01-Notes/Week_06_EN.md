@@ -216,6 +216,9 @@ Extended thinking responses include a **special signature system for security**.
 ![](assets/skilljar-s5/L01-03-thinking-response-06.jpg)
 *Signature-bearing thinking block — tamper-proof cryptographic token*
 
+![](assets/skilljar-s5/L01-extended-thinking-response.jpg)
+*Extended Thinking response overview — visualization of the two-part structure (ThinkingBlock + TextBlock) and signature field*
+
 The signature is a **cryptographic token that guarantees the thinking text was not modified**. It prevents developers from arbitrarily editing Claude's reasoning and steering it into unsafe directions.
 
 #### Redacted Thinking — Private Reasoning Blocks
@@ -224,6 +227,9 @@ Sometimes, instead of readable reasoning, a **redacted thinking block** is retur
 
 ![](assets/skilljar-s5/L01-04-thinking-response-08.jpg)
 *Redacted thinking — reasoning flagged by Claude's internal safety systems is returned encrypted*
+
+![](assets/skilljar-s5/L01-extended-thinking-redacted.jpg)
+*Redacted thinking block data structure — `type: "redacted_thinking"` with encrypted `data` field*
 
 This happens when Claude's thinking has been **flagged by internal safety systems**. It contains an encrypted form of the thinking, so that **passing the complete message back on the next turn preserves context without loss**. That is, redacted blocks **must also be preserved for session continuity**.
 
@@ -425,6 +431,9 @@ Include inside the message an **image with a known count** first, tell Claude *"
 ![](assets/skilljar-s5/L02-06-image-best-practices-08.jpg)
 *Fire Risk Assessment — automated residence risk evaluation based on satellite imagery*
 
+![](assets/skilljar-s5/L02-fire-risk-assessment.jpg)
+*Fire Risk Assessment 5-step workflow — residence identification → tree overhang → fire risk → defensible space → rating 1-4*
+
 L02's real-world application is **automated risk assessment for home fire insurance**. Instead of sending an inspector to every property, satellite imagery + Claude analysis is used. The system examines:
 
 - **Dense, close-packed trees near the residence**
@@ -487,6 +496,9 @@ graph TD
 The 5-step method L02 demonstrates is a **domain-agnostic template** — the order "target identification → measure key features → risk/defect evaluation → environmental context → numerical grade" transplants directly to structural crack analysis, BIM drawing inspection, and the like.
 
 #### Image + Text Block Structure Summary
+
+![](assets/skilljar-s5/L02-image-support-structure.jpg)
+*Image Support message structure — image block (base64/url) + text block placed side-by-side inside a user message*
 
 ```mermaid
 graph LR
@@ -585,6 +597,9 @@ Beyond plain text extraction — L03 specifies four capabilities.
 ![](assets/skilljar-s5/L03-01-pdf-support-02.jpg)
 *Wikipedia Earth PDF example — successful one-sentence summary*
 
+![](assets/skilljar-s5/L03-pdf-processing.jpg)
+*PDF Processing flow — base64 encoding → document block → Claude integrates text, images, tables, and structure extraction*
+
 The screenshot above is the actual output summarizing the **Wikipedia Earth article PDF** in a single sentence. This is proof that PDF becomes *"a one-stop solution that can extract any kind of information from the document."*
 
 #### PDF vs RAG — Choice Criteria
@@ -643,6 +658,9 @@ When Claude answers based on documents you provide, users may suspect *"is this 
 ![](assets/skilljar-s5/L04-01-citations-intro-00.jpg)
 *Citations purpose — a transparency feature that shows users where Claude's answer came from in the document*
 
+![](assets/skilljar-s5/L04-citations-concept.jpg)
+*Citations concept — every claim in Claude's response is auto-attached with the source document's original excerpt*
+
 Without citations, users **cannot verify two things**:
 1. Did Claude actually reference the provided document?
 2. Where in the document is the supporting sentence for that claim?
@@ -688,6 +706,9 @@ Each citation has 5 core fields.
 
 ![](assets/skilljar-s5/L04-03-citations-response-09.jpg)
 *Citation field example — returns specific page range and verbatim excerpt from earth.pdf*
+
+![](assets/skilljar-s5/L04-citations-structure.jpg)
+*Citation response structure — full data layout of the 5 fields: cited_text, document_index, document_title, start_page, end_page*
 
 #### Citations Response-Flow Diagram
 
@@ -786,6 +807,9 @@ Prompt caching is a feature that **reuses the computation of previous requests**
 ![](assets/skilljar-s5/L05-01-caching-intro-01.jpg)
 *Prompt caching intro — what waste is happening today*
 
+![](assets/skilljar-s5/L05-caching-concept.jpg)
+*Prompt Caching concept — store preprocessing results in cache instead of discarding, so follow-up requests can reuse them*
+
 When a user sends Claude a message, Claude does not generate a response **immediately**. First it performs a **tremendous amount of preprocessing work** on the input.
 
 ![](assets/skilljar-s5/L05-02-caching-diagram-04.jpg)
@@ -824,6 +848,9 @@ On the first request, Claude does its usual preprocessing, but **saves the resul
 
 ![](assets/skilljar-s5/L05-07-caching-costs-17.jpg)
 *Cache hit — after the initial write, follow-up requests are served as reads*
+
+![](assets/skilljar-s5/L05-caching-workflow.jpg)
+*Full Caching Workflow — first request (WRITE) → cache stored (1h TTL) → follow-up request (HIT, 90% discount)*
 
 #### Benefits and Constraints
 
@@ -922,6 +949,9 @@ Placing `{"type": "ephemeral"}` in the `cache_control` field is the standard. "E
 
 ![](assets/skilljar-s5/L06-04-rules-breakpoints-08.jpg)
 *Before and after the breakpoint — before is cached, after is processed normally*
+
+![](assets/skilljar-s5/L06-cache-breakpoints.jpg)
+*Cache Breakpoints overview — placement strategy for up to 4 breakpoints and the tools/system/messages processing order*
 
 The moment you place a breakpoint, **all processing work up to that point** is cached. Content **after** the breakpoint is processed as usual.
 
@@ -1161,6 +1191,9 @@ Flow:
 ![](assets/skilljar-s5/L08-02-code-exec-intro-02.jpg)
 *base64 inline vs Files API — Files API wins for file reuse and large-file handling*
 
+![](assets/skilljar-s5/L08-files-api-concept.jpg)
+*Files API concept — reference pre-uploaded files by file_id for an efficient multi-request pattern that beats inline base64*
+
 It is especially useful when you must **reference the same file repeatedly** or when handling **large files that are burdensome to include in every request**.
 
 #### Code Execution — Server-Side Python Execution
@@ -1185,6 +1218,9 @@ True power emerges when the two features are used **together**. Because the Dock
 
 ![](assets/skilljar-s5/L08-04-code-exec-flow-06.jpg)
 *Files API × Code Execution — upload → container_upload → execute → download*
+
+![](assets/skilljar-s5/L08-code-execution-flow.jpg)
+*Code Execution Flow — Claude iteratively runs Python in an isolated Docker container and integrates results into the response*
 
 A typical workflow:
 1. **Upload the data file (CSV, etc.) via Files API**
@@ -1803,6 +1839,31 @@ graph TD
 > 📂 `03-Exercises/Week_06/skilljar/IMCP_06_inspector.ipynb`
 > 📂 `03-Exercises/Week_06/skilljar/IMCP_07_client_impl.ipynb`
 > The 7 lessons of Anthropic Skilljar *"Introduction to MCP."* Distributed as **W07 pre-read (mode ①)** — recommended to complete before next week's lecture. Hands-on experience with IMCP's MCP server, client, and Inspector decisively elevates understanding of the FastMCP exercises in W07.
+
+#### IMCP Pre-Read Preview — Slide Summary (W07 Forward Reference)
+
+The 6 slides below are the core IMCP-track summary slides. As a **forward reference for the W07 main lecture**, skimming them once now makes entry into next week much smoother.
+
+![](assets/skilljar-s5/skilljar-s5-mcp-intro.webp)
+*MCP overview — purpose and positioning of the Model Context Protocol (W07 L01 preview)*
+
+![](assets/skilljar-s5/skilljar-s5-architecture.webp)
+*MCP architecture — the 3-tier Host · Client · Server structure (W07 L02 preview)*
+
+![](assets/skilljar-s5/skilljar-s5-tool-definition.webp)
+*MCP Tool definition — convert a function into a tool via FastMCP `@mcp.tool()` decorator (W07 L03~L04 preview)*
+
+![](assets/skilljar-s5/skilljar-s5-resources.webp)
+*MCP Resources — expose unchanging data as resources (the same mental model as W06 caching design)*
+
+![](assets/skilljar-s5/skilljar-s5-inspector.webp)
+*MCP Inspector — a tool for visually testing MCP servers during development (W07 L06 preview)*
+
+![](assets/skilljar-s5/skilljar-s5-client-impl.webp)
+*MCP Client implementation — pattern for a Python client connecting to an MCP server and invoking tools/resources (W07 L07 preview)*
+
+> [!tip] Natural W06 → W07 Bridge
+> The 6 slides above are covered in more detail in the W07 main note ([[Week_07]]). For this week, getting familiarized at the **"preview level"** is enough — focus on building the intuition that W06's Code Execution + Files API parallels W07's MCP Tools/Resources.
 
 ### CC Skill Integrated Diagram
 

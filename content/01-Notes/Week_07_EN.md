@@ -214,6 +214,9 @@ The key idea is **"shifting the burden of tool definitions and execution away fr
 ![](assets/skilljar-s6/L01-01-introducing-mcp.jpg)
 *The basic architecture of MCP — the MCP client (your server) connects to an MCP server that holds tools, prompts, and resources.*
 
+![](assets/skilljar-s6/L01-mcp-architecture.jpg)
+*The full MCP architecture diagram --- host, client, and server in a three-layer separation of responsibilities and data flow.*
+
 #### Before MCP: The GitHub Chatbot Example Shows Integration Hell
 
 L01 explains the concept through a concrete scenario. When a user asks *"What open pull requests are there across all my repositories?"*, Claude needs tools to reach GitHub's API. **Without MCP**, you must **build all of the GitHub integration tools yourself** — writing a schema and a function for every single GitHub capability you want to support.
@@ -227,6 +230,9 @@ GitHub has a **massive feature set** — repositories, pull requests, issues, pr
 
 ![](assets/skilljar-s6/L01-03-introducing-mcp.jpg)
 *The Tool Function Problem — each tool needs both a schema definition and a function implementation.*
+
+![](assets/skilljar-s6/L01-mcp-tool-problem.jpg)
+*The essence of the tool-function problem --- as the integration surface grows, schema, function, test, and maintenance costs multiply.*
 
 Each tool requires **both a schema definition and a function implementation**. That means a large body of code that developers must write, test, and maintain themselves.
 
@@ -255,6 +261,9 @@ MCP shifts the burden of tool definition and execution **from your server to the
 
 ![](assets/skilljar-s6/L01-05-introducing-mcp.jpg)
 *An MCP server packages the data and capabilities of an external service into reusable components.*
+
+![](assets/skilljar-s6/L01-mcp-solution.jpg)
+*MCP's solution at a glance --- shift the burden of tool definition and execution from your server to a dedicated MCP server.*
 
 #### Common Questions About MCP
 
@@ -339,6 +348,9 @@ But that isn't the whole story. MCP clients and servers can also connect via:
 ![](assets/skilljar-s6/L02-02-mcp-clients.jpg)
 *Transport-agnostic — remote connections over network protocols are also possible.*
 
+![](assets/skilljar-s6/L02-client-transport.jpg)
+*Client-to-server transport comparison --- stdio, HTTP, and WebSocket usage scenarios with their trade-offs summarized.*
+
 #### Message Types — What the Client and Server Exchange
 
 Once connected, the client and server exchange **specific message types defined by the MCP specification**. The two pairs of message types you will work with most often are the following.
@@ -400,6 +412,9 @@ Your server sends the tool result back to Claude as a **follow-up message**. Cla
 *Step 8 — Claude returns the final answer to the user.*
 
 Finally, Claude produces the formatted response, and your server relays it to the user.
+
+![](assets/skilljar-s6/L02-complete-flow.jpg)
+*The complete flow summarized in one image --- the entire 8-step communication path from user query to final response.*
 
 #### A Mermaid Diagram of the Full Flow
 
@@ -563,6 +578,9 @@ Building an MCP server becomes far simpler with the **official Python SDK**. Ins
 ![](assets/skilljar-s6/L04-01-defining-tools.jpg)
 *The structure of a tool definition — decorator + type hints + Pydantic Field.*
 
+![](assets/skilljar-s6/L04-fastmcp-tools.jpg)
+*Defining tools with FastMCP, end to end --- from one-line server initialization to decorators, type hints, and automatic schema generation.*
+
 The L04 example builds an **in-memory document-management MCP server**. It provides two tools: one to read a document's contents and one to update a document with find-and-replace.
 
 #### MCP Server Initialization — One Line of FastMCP
@@ -713,6 +731,9 @@ This command **launches a development server on port 6277** and gives you a loca
 
 ![](assets/skilljar-s6/L05-01-server-inspector.jpg)
 *The initial MCP Inspector dashboard — running on port 6277.*
+
+![](assets/skilljar-s6/L05-inspector-ui.jpg)
+*MCP Inspector UI components --- the Tools, Resources, and Prompts tabs alongside the left-hand Connect panel and right-hand result pane.*
 
 > [!tip] The interface is evolving
 > *"The MCP inspector is actively being developed, so the interface you see might look different from current screenshots. However, the core functionality for testing tools, resources, and prompts should remain similar."*
@@ -950,6 +971,9 @@ Suppose we want a **document mention feature** in which *"users type `@document_
 
 - **List all available documents** (for autocomplete)
 - **Fetch a specific document's contents** (when mentioned)
+
+![](assets/skilljar-s6/L07-resources-concept.jpg)
+*The core concept of Resources --- a read-only channel that exposes data like HTTP GET, with responsibilities clearly separated from Tools.*
 
 ![](assets/skilljar-s6/L07-01-mention-feature.jpg)
 *@mention feature — typing @ shows a document dropdown; selecting one injects the contents.*
@@ -1232,6 +1256,9 @@ sequenceDiagram
 #### Why Prompts?
 
 Say you want Claude to reformat a document into Markdown. The user could simply type *"convert report.pdf to markdown"* and get something that works. But using a **thoroughly tested prompt** with explicit instructions about **formatting, structure, and output requirements** produces much better results.
+
+![](assets/skilljar-s6/L09-prompts-concept.jpg)
+*The core concept of Prompts --- server-provided, validated templates guarantee more consistent quality than ad-hoc user prompts.*
 
 ![](assets/skilljar-s6/L09-01-why-prompts.jpg)
 *Why prompts — an ad-hoc user prompt vs. a server-provided, validated template.*

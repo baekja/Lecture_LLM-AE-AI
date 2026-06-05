@@ -167,6 +167,9 @@ graph LR
 
 Anthropic 은 Claude 모델을 개발자의 손에 쥐여주기 위해 여러 **제품(application)** 을 동시에 제공한다. 이번 모듈에서는 그중 **두 가지 강력한 앱** — **Claude Code** 와 **Computer Use** — 를 탐구한다. 이 둘은 그 자체로 유용한 도구일 뿐 아니라, **AI 에이전트의 동작 방식** 을 실증하는 완벽한 사례다. 이 두 제품이 **내부적으로 어떻게 작동하는지**를 이해하면, 이후 직접 에이전트를 만들 때 필요한 탄탄한 기반이 된다.
 
+![](assets/skilljar-s7/L01-anthropic-apps.jpg)
+*Anthropic 의 주요 앱 라인업 --- Claude.ai · Claude Code · Computer Use 가 동일한 모델 위에서 서로 다른 표면을 제공한다*
+
 ![](assets/skilljar-s7/L01-01-our-plan.jpg)
 *Our Plan — Claude Code → Computer Use → Agents 의 3단계 진행*
 
@@ -279,6 +282,9 @@ Claude Code 는 **커맨드 라인에서 바로 동작하는 터미널 기반 �
 *Claude Code — 터미널에서 자연어로 코딩 지시를 내리는 에이전트*
 
 #### Claude Code 가 할 수 있는 일
+
+![](assets/skilljar-s7/L02-cc-tools.jpg)
+*Claude Code 의 내장 도구 모음 --- 파일 조작 · 터미널 실행 · 웹 접근 · MCP 연동까지 한 화면에 정리*
 
 Claude Code는 개발 워크플로를 돕는 **포괄적인 도구 모음(comprehensive set of tools)** 과 함께 제공된다.
 
@@ -504,6 +510,9 @@ README.md 읽고 설치방향 실행.
 
 #### /init 명령 — 프로젝트 인덱싱
 
+![](assets/skilljar-s7/L03-cc-init.jpg)
+*`/init` 명령 실행 장면 --- 코드베이스를 스캔해 CLAUDE.md 초안을 자동 생성하는 첫 단계*
+
 프로젝트에서 Claude Code 로 작업을 시작할 때 **가장 먼저 해야 할 일** 은 `/init` 명령을 실행하는 것이다. 이 명령은 Claude 에게 **코드베이스 전체를 스캔** 하도록 지시하고, 프로젝트의 **구조(structure), 의존성(dependencies), 코딩 스타일(coding style), 아키텍처(architecture)** 를 이해하게 한다.
 
 ```bash
@@ -557,6 +566,9 @@ graph TD
 #### 공통 워크플로 — Context → Plan → Implement
 
 Claude 는 **효과 증폭기(effort multiplier)** 로 생각할 때 가장 잘 동작한다. **제공하는 컨텍스트와 구조가 많을수록, 결과가 더 좋아진다**. 가장 효과적인 워크플로는 다음과 같다.
+
+![](assets/skilljar-s7/L03-cc-workflow.jpg)
+*Claude Code 워크플로 흐름도 --- 컨텍스트 주입부터 구현까지 이어지는 단계별 협업 패턴*
 
 ![](assets/skilljar-s7/L03-03-workflow.jpg)
 *Common Workflow — Context → Plan → Implement 의 3단계*
@@ -755,6 +767,9 @@ Claude Code 에는 **MCP 클라이언트가 이미 내장(built right into it)**
 
 #### MCP 가 Claude Code 를 어떻게 확장하는가
 
+![](assets/skilljar-s7/L04-mcp-enhancement.jpg)
+*MCP 를 통한 Claude Code 능력 확장 --- 내장 도구만으로는 닿지 못하는 외부 시스템까지 컨텍스트를 넓혀준다*
+
 ![](assets/skilljar-s7/L04-01-mcp-extends.jpg)
 *MCP extends Claude Code — 내장 능력 + 외부 서버의 Tools · Prompts · Resources*
 
@@ -822,6 +837,9 @@ sequenceDiagram
 ```
 
 #### 인기 있는 MCP 통합들
+
+![](assets/skilljar-s7/L04-popular-mcp.jpg)
+*인기 MCP 통합 한눈에 보기 --- 개발 워크플로 전반에 걸쳐 자주 채택되는 서버들의 카탈로그*
 
 ![](assets/skilljar-s7/L04-04-popular-mcp.jpg)
 *인기 MCP 통합 — sentry-mcp · playwright-mcp · figma-context-mcp · mcp-atlassian · firecrawl-mcp-server · slack-mcp*

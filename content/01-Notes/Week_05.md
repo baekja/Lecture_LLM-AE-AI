@@ -145,6 +145,9 @@ graph TD
 
 대형 문서를 Claude에게 넘겨 질문에 답하도록 하려면, **문서 전체를 프롬프트에 밀어넣거나** 아니면 **관련 부분만 발췌해서 전달**하는 두 가지 길이 있다. **RAG(Retrieval Augmented Generation)** 는 후자의 방법을 체계화한 기법으로, 문서를 작은 청크(chunk)로 분할해 두고 사용자의 질문과 가장 관련된 청크만 선택해 프롬프트에 주입한다.
 
+![](01-Notes/assets/skilljar-s4/skilljar-s4-rag-concept.webp)
+*RAG 개념 한눈에 보기 --- 외부 지식을 검색해 Claude의 컨텍스트로 주입하는 전체 아이디어 요약*
+
 ![](01-Notes/assets/skilljar-s4/L01-01-problem.jpg)
 *대규모 문서의 문제 — 800페이지짜리 재무 문서에 대해 "이 회사가 직면한 리스크 요인은 무엇인가?"와 같은 질문을 던지고 싶지만, 프롬프트 길이에는 한계가 있다*
 
@@ -255,6 +258,9 @@ RAG는 기술적 의사결정이 많고 프롬프트에 전부 넣는 방식보�
 ### 1.2 텍스트 청킹 전략 (L02)
 
 문서를 어떻게 쪼개느냐는 RAG 파이프라인에서 **가장 중요한 의사결정 중 하나**다. 잘못된 청킹 전략은 관련 없는 컨텍스트를 프롬프트에 삽입하게 만들고, 결국 Claude가 완전히 잘못된 답을 내놓게 한다.
+
+![](01-Notes/assets/skilljar-s4/skilljar-s4-chunking-strategies.webp)
+*청킹 전략 종합 요약 --- 크기 기반·구조 기반·의미 기반·문장 기반 네 가지 접근의 비교*
 
 ![](01-Notes/assets/skilljar-s4/L02-01-pipeline.jpg)
 *RAG 파이프라인에서 청킹의 위치 — 문서 입력 후 가장 먼저 수행되는 전처리 단계*
@@ -401,6 +407,9 @@ graph TD
 
 문서를 청크로 나눈 다음 단계는 **"사용자의 질문과 가장 관련 있는 청크"를 찾는 것**이다. 이는 본질적으로 검색 문제 — 모든 청크를 훑어 질문과 연결된 것을 골라내야 한다.
 
+![](01-Notes/assets/skilljar-s4/skilljar-s4-embeddings.webp)
+*임베딩 개요 --- 텍스트의 의미를 숫자 벡터로 표현해 의미 기반 검색을 가능하게 만드는 핵심 도구*
+
 ![](01-Notes/assets/skilljar-s4/L03-03-search-problem.jpg)
 *검색 문제 — 수많은 청크 중 사용자 질문과 관련 있는 것만 선택해야 한다*
 
@@ -523,6 +532,9 @@ graph LR
 ### 1.4 전체 RAG 흐름 (L04)
 
 지금까지 배운 RAG 기본, 청킹, 임베딩 — 이 조각들이 **하나의 파이프라인으로 맞물리는 과정**을 end-to-end로 따라가 보자. 총 **6단계**로 구성된다.
+
+![](01-Notes/assets/skilljar-s4/skilljar-s4-full-rag-flow.webp)
+*전체 RAG 파이프라인 요약 --- 청킹 → 임베딩 → Vector DB → 질의 임베딩 → 유사도 검색 → 프롬프트 주입의 6단계 한 장 요약*
 
 #### 단계 1: 소스 텍스트를 청크로 분할
 
@@ -846,6 +858,9 @@ graph LR
 ---
 
 ### 2.1 BM25 어휘 검색 (L06)
+
+![](01-Notes/assets/skilljar-s4/skilljar-s4-bm25-search.webp)
+*BM25 어휘 검색 개요 --- 정확한 용어 일치를 보장하는 고전적 텍스트 검색 알고리즘 요약*
 
 #### 2.1.1 의미 검색만으로는 부족한 이유
 
@@ -1178,6 +1193,9 @@ Chapter 1 L05에서 남긴 미해결 과제가 있었다. 벡터 검색만 썼�
 - **Graph Index**: 지식 그래프 기반 — 관계 기반 추론을 RAG에 접목.
 - **Specialized Domain Index**: 특정 도메인 사전 (예: 법령 조문, 의학 용어 사전, 표준 문서 번호) 과 연결된 전용 인덱스.
 - **Contextual Retrieval Index**: 각 청크에 문서 전체 요약을 접두로 붙이는 Anthropic Contextual Retrieval 등.
+
+![](01-Notes/assets/skilljar-s4/skilljar-s4-contextual-retrieval.webp)
+*Contextual Retrieval 개념도 --- 각 청크 앞에 문서 전체 요약을 접두로 붙여 검색 정확도를 끌어올리는 Anthropic 의 기법*
 
 ```mermaid
 graph TD

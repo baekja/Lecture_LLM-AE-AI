@@ -94,11 +94,14 @@ This lecture note is based on the Anthropic official training platform Skilljar'
 ---
 ## [Chapter 1] Tool Use Basics & Workflow (Lessons 1-8)
 
+![](01-Notes/assets/skilljar-s3/skilljar-s3-tool-use-architecture.webp)
+*Tool Use overall architecture — Core concepts for Section 3 Chapter 1*
+
 ### 1.1 Introducing Tool Use
 
 Claude possesses vast knowledge based on its training data, but fundamentally **cannot access the external world**. Tasks such as checking the current time, real-time weather, or database queries cannot be performed by the model alone. **Tool Use** (also called Function Calling) is the key mechanism to overcome this limitation.
 
-![[skilljar-s3/L01-introducing-tool-use-05.png]]
+![](01-Notes/assets/skilljar-s3/L01-introducing-tool-use-05.png)
 *Tool Use concept — Claude accessing real-time information through external tools*
 
 #### What Is Tool Use?
@@ -108,7 +111,7 @@ Tool Use is a feature that gives Claude the **ability to call external functions
 - **Without Tool Use**: Claude can only provide general weather information based on its training data
 - **With Tool Use**: Claude calls a weather API tool to retrieve **real-time weather data** before responding
 
-![[skilljar-s3/L01-introducing-tool-use-07.png]]
+![](01-Notes/assets/skilljar-s3/L01-introducing-tool-use-07.png)
 *Weather example — Accessing real-time data through Tool Use*
 
 #### Tool Use 4-Step Flow
@@ -139,7 +142,7 @@ sequenceDiagram
 | **3. Data Retrieval** | Application executes the actual tool function and collects results | Application → External Tool |
 | **4. Final Response** | Claude generates the final natural language response using tool results | Claude → User |
 
-![[skilljar-s3/L01-introducing-tool-use-14.png]]
+![](01-Notes/assets/skilljar-s3/L01-introducing-tool-use-14.png)
 *Tool Use 4-step flow summary*
 
 > [!tip] Key Insight
@@ -158,7 +161,7 @@ sequenceDiagram
 
 The project we will build throughout this chapter is a **Reminder System**. When a user makes a natural language request like "Set a meeting reminder for 30 minutes from now," we build a system where Claude uses tools to automatically handle everything from checking the current time → calculating time → setting the reminder.
 
-![[skilljar-s3/L02-project-overview-00.png]]
+![](01-Notes/assets/skilljar-s3/L02-project-overview-00.png)
 *Reminder System project overview*
 
 #### 3 Challenges
@@ -227,7 +230,7 @@ flowchart LR
     style CLAUDE fill:#f3e5f5,stroke:#9c27b0
 ```
 
-![[skilljar-s3/L02-project-overview-17.png]]
+![](01-Notes/assets/skilljar-s3/L02-project-overview-17.png)
 *Complete flow of the Reminder System composed of 3 tools*
 
 > [!method] Tool Design Principle
@@ -242,7 +245,7 @@ flowchart LR
 
 The first step in Tool Use is **writing the actual Python functions** that will be executed. These functions are the code that the application runs when Claude requests a tool call.
 
-![[skilljar-s3/L03-tool-functions-00.png]]
+![](01-Notes/assets/skilljar-s3/L03-tool-functions-00.png)
 *Writing tool functions — The first step in Tool Use*
 
 #### Core Principle: Tool Functions Are Regular Python Functions
@@ -282,7 +285,7 @@ print(get_current_datetime("%H:%M"))
 # Output: "14:30"
 ```
 
-![[skilljar-s3/L03-tool-functions-06.png]]
+![](01-Notes/assets/skilljar-s3/L03-tool-functions-06.png)
 *get_current_datetime function implementation and execution results*
 
 #### Tool Function Writing Best Practices
@@ -348,7 +351,7 @@ def get_current_datetime(date_format: str = "%Y-%m-%d %H:%M:%S") -> str:
 
 Once you've written tool functions, you need to tell Claude **what this tool is and what parameters it accepts**. To do this, you define a tool schema in **JSON Schema** format.
 
-![[skilljar-s3/L04-tool-schemas-01.png]]
+![](01-Notes/assets/skilljar-s3/L04-tool-schemas-01.png)
 *Tool schema — A specification that tells Claude about a tool's existence and usage*
 
 #### 3 Core Elements of a Schema
@@ -400,7 +403,7 @@ get_current_datetime_schema = {
 }
 ```
 
-![[skilljar-s3/L04-tool-schemas-02.png]]
+![](01-Notes/assets/skilljar-s3/L04-tool-schemas-02.png)
 *get_current_datetime schema structure*
 
 > [!finding] Description Is the Key
@@ -423,7 +426,7 @@ Please return only the JSON schema.
 """
 ```
 
-![[skilljar-s3/L04-tool-schemas-13.png]]
+![](01-Notes/assets/skilljar-s3/L04-tool-schemas-13.png)
 *Auto-generating tool schemas using Claude*
 
 #### Using the `ToolParam` Type
@@ -459,6 +462,9 @@ get_current_datetime_tool: ToolParam = {
 > - `get_current_datetime_schema`: 1 parameter for date format
 > - `add_duration_to_datetime_schema`: 3 parameters for start time, duration, and unit
 > - `set_reminder_schema`: 2 parameters for time and message
+
+![](01-Notes/assets/skilljar-s3/skilljar-s3-tool-schema.webp)
+*Tool schema summary — Core roles of name, description, and input_schema*
 
 > [!ref] Source
 > - Skilljar L04: Tool schemas (287753)
@@ -504,7 +510,7 @@ graph TD
     style TUB fill:#fff3e0,stroke:#ff9800
 ```
 
-![[skilljar-s3/L05-handling-message-blocks-07.png]]
+![](01-Notes/assets/skilljar-s3/L05-handling-message-blocks-07.png)
 *Multi-block response — TextBlock and ToolUseBlock returned together*
 
 #### Iterating Through Blocks
@@ -539,7 +545,7 @@ for block in response.content:
 | **name** | Name of the tool to call (matches the schema's name) | `"get_current_datetime"` |
 | **input** | Parameters determined by Claude (dict) | `{"date_format": "%H:%M"}` |
 
-![[skilljar-s3/L05-handling-message-blocks-15.png]]
+![](01-Notes/assets/skilljar-s3/L05-handling-message-blocks-15.png)
 *ToolUseBlock structure detail*
 
 #### Preserving Entire content in Conversation History
@@ -560,6 +566,9 @@ messages.append({
     "content": response.content[0].text  # Tool block lost!
 })
 ```
+
+![](01-Notes/assets/skilljar-s3/skilljar-s3-message-blocks.webp)
+*Message block handling summary — Multi-block structure of TextBlock and ToolUseBlock*
 
 > [!ref] Source
 > - Skilljar L05: Handling message blocks (287757)
@@ -597,8 +606,11 @@ tool_result_message = {
 }
 ```
 
-![[skilljar-s3/L06-sending-tool-results-03.png]]
+![](01-Notes/assets/skilljar-s3/L06-sending-tool-results-03.png)
 *tool_result message format — Matching request and result via tool_use_id*
+
+![](01-Notes/assets/skilljar-s3/L06-sending-tool-results-04.png)
+*tool_result block structure — Content block format inside the role:"user" message*
 
 #### 3 Key Fields
 
@@ -620,7 +632,7 @@ graph LR
 | **content** | Tool execution result as a **string** | Required |
 | **is_error** | If `true`, Claude recognizes and responds to the error | Optional (default: false) |
 
-![[skilljar-s3/L06-sending-tool-results-05.png]]
+![](01-Notes/assets/skilljar-s3/L06-sending-tool-results-05.png)
 *tool_use_id matching — The link between request and result*
 
 #### Error Handling (`is_error`)
@@ -674,8 +686,11 @@ messages.append({
 })
 ```
 
-![[skilljar-s3/L06-sending-tool-results-07.png]]
+![](01-Notes/assets/skilljar-s3/L06-sending-tool-results-07.png)
 *Multiple tool calls — Each call gets a unique ID and all results must be returned*
+
+![](01-Notes/assets/skilljar-s3/L06-sending-tool-results-08.png)
+*tool_result complete flow — Returning tool execution results back to Claude*
 
 > [!tip] Include Tool Schemas in Follow-up Requests
 > Follow-up API calls that send `tool_result` must also **include tool schemas in the `tools` parameter**. This is because Claude may determine that additional tool calls are needed after seeing the results.
@@ -689,7 +704,7 @@ messages.append({
 
 In a real reminder system, it's not a single request-response but a **conversation spanning multiple turns**. Even a single request like "Set a meeting reminder for 30 minutes from now" requires Claude to make **3 tool calls** — check current time → calculate time → set reminder. Here we build the multi-turn pattern for this.
 
-![[skilljar-s3/L07-multi-turn-02.png]]
+![](01-Notes/assets/skilljar-s3/L07-multi-turn-02.png)
 *Multi-turn Tool Use — A single request leading to multiple tool calls*
 
 #### Multi-turn Tool Use Pattern
@@ -776,7 +791,7 @@ def text_from_message(response):
     return "\n".join(texts)
 ```
 
-![[skilljar-s3/L07-multi-turn-03.png]]
+![](01-Notes/assets/skilljar-s3/L07-multi-turn-03.png)
 *Refactored helper function structure*
 
 > [!method] Refactoring Principles
@@ -784,6 +799,9 @@ def text_from_message(response):
 > 2. `add_assistant_message` preserves `response.content` in its entirety
 > 3. `text_from_message` extracts text only when needed
 > 4. All API calls include the `tools` parameter
+
+![](01-Notes/assets/skilljar-s3/L07-multi-turn-05.png)
+*Multi-turn conversation pattern — stop_reason-based loop flow summary*
 
 > [!ref] Source
 > - Skilljar L07: Multi-turn conversations (287750)
@@ -922,7 +940,7 @@ def run_conversation(user_message):
             # Continue loop → Call Claude API again
 ```
 
-![[skilljar-s3/L08-implementing-turns-05.png]]
+![](01-Notes/assets/skilljar-s3/L08-implementing-turns-05.png)
 *run_conversation execution flow — Processing multi-turn tool calls with auto-loop*
 
 #### Complete Execution Flow Diagram
@@ -974,11 +992,17 @@ result = run_conversation("Set a meeting reminder for 30 minutes from now")
 🤖 Claude: I've set a meeting reminder for 15:00, 30 minutes from now!
 ```
 
+![](01-Notes/assets/skilljar-s3/L08-implementing-turns-10.png)
+*Reminder System execution result — Complete multi-turn flow calling 3 tools sequentially*
+
 > [!finding] Key Design Points
 > 1. **`stop_reason`-based loop**: `"tool_use"` → execute tool, `"end_turn"` → terminate
 > 2. **Error handling**: Safely handle tool execution failures with `try/except` and pass `is_error: true` to Claude
 > 3. **Extensibility**: Adding new tools only requires adding routing in `run_tool`
 > 4. **Autonomy**: Claude **decides on its own** which tools to call in which order — the developer does not hardcode the sequence
+
+![](01-Notes/assets/skilljar-s3/skilljar-s3-multi-turn.webp)
+*Multi-turn Tool Use summary — Complete workflow via stop_reason loop*
 
 > [!ref] Source
 > - Skilljar L08: Implementing multiple turns (287758)
@@ -1057,7 +1081,7 @@ graph TD
 
 Up until now, we created individual tools one at a time. Now we **register all 3 tools in the tools array** so that Claude can autonomously combine multiple tools in a single request.
 
-![[skilljar-s3/L09-multiple-tools-00.png]]
+![](01-Notes/assets/skilljar-s3/L09-multiple-tools-00.png)
 *Multiple tool registration — Registering all 3 tools in the Reminder System*
 
 #### The 3 Tools Created in Ch.1
@@ -1167,7 +1191,7 @@ def run_tool(tool_name, tool_input):
         return f"Unknown tool: {tool_name}"
 ```
 
-![[skilljar-s3/L09-multiple-tools-15.png]]
+![](01-Notes/assets/skilljar-s3/L09-multiple-tools-15.png)
 *run_tool router — Dispatching to the appropriate function based on tool name*
 
 #### Test: Compound Request
@@ -1187,7 +1211,7 @@ Claude automatically performs the following sequence:
 2. `set_reminder("Doctor's appointment", "2050-06-27")` → Sets reminder
 3. Final response: "I've set a reminder for your doctor's appointment on June 27, 2050."
 
-![[skilljar-s3/L09-multiple-tools-18.png]]
+![](01-Notes/assets/skilljar-s3/L09-multiple-tools-18.png)
 *Compound request processing result — Claude sequentially called 2 tools to calculate the date 177 days later and set a reminder*
 
 ```mermaid
@@ -1211,6 +1235,12 @@ sequenceDiagram
 > [!finding] Claude's Autonomous Tool Combination
 > When 3 tools are registered, Claude reads each tool's `description` and **decides on its own which tools to call in which order**. Claude figured out on its own that the 177-day calculation was needed first. The developer does not need to specify the call order.
 
+![](01-Notes/assets/skilljar-s3/skilljar-s3-multiple-tools.webp)
+*Multiple tool registration summary — tools array, run_tool router, Claude's autonomous combination*
+
+![](01-Notes/assets/skilljar-s3/skilljar-s3-tool-choice.webp)
+*Tool Choice — Mechanism by which Claude reads descriptions and selects appropriate tools*
+
 > [!ref] Source
 > - Skilljar L09: Using multiple tools (287749)
 > - GitHub: [06_chatbot_with_multiple_tools.ipynb](https://github.com/anthropics/courses/blob/master/tool_use/06_chatbot_with_multiple_tools.ipynb)
@@ -1221,7 +1251,7 @@ sequenceDiagram
 
 Unlike the **Client Tools** (user-defined tools) learned in Chapter 1, Claude also supports **Built-in Tools**. Built-in tools are a special form where Anthropic has pre-defined the schema, but **execution is handled by the developer's code**.
 
-![[skilljar-s3/L10-text-edit-00.png]]
+![](01-Notes/assets/skilljar-s3/L10-text-edit-00.png)
 *Text Edit Tool — One of Claude's built-in tools*
 
 #### Built-in Tools vs Client Tools
@@ -1268,7 +1298,7 @@ The text edit tool supports 6 commands for file manipulation:
 | **insert** | Insert lines | Insert new text after a specified line number |
 | **undo** | Undo | Revert the last edit |
 
-![[skilljar-s3/L10-text-edit-04.png]]
+![](01-Notes/assets/skilljar-s3/L10-text-edit-04.png)
 *The 6 capabilities of the text edit tool*
 
 #### Tool Registration Method
@@ -1361,7 +1391,7 @@ Claude automatically:
 2. Adds a docstring to the main function using the `replace` command
 3. Summarizes the changes and reports to the user
 
-![[skilljar-s3/L10-text-edit-12.png]]
+![](01-Notes/assets/skilljar-s3/L10-text-edit-12.png)
 *Text edit tool usage example — Complete process of opening, analyzing, and modifying a file*
 
 > [!finding] Advantages of Built-in Tools
@@ -1377,7 +1407,7 @@ Claude automatically:
 
 The web search tool is a **Server Tool**, different from Built-in Tools. Since it runs on Anthropic's servers, the developer does **not need to implement any functions at all**.
 
-![[skilljar-s3/L11-web-search-00.png]]
+![](01-Notes/assets/skilljar-s3/L11-web-search-00.png)
 *Web Search Tool — Claude accessing real-time web information*
 
 #### Server Tool Registration
@@ -1410,7 +1440,7 @@ response = client.messages.create(
 > [!tip] Console Setup Required
 > To use the web search tool, you must **enable** the web search feature in the **Settings** of the [Anthropic Console](https://console.anthropic.com/). If not enabled, API calls will result in errors.
 
-![[skilljar-s3/L11-web-search-07.png]]
+![](01-Notes/assets/skilljar-s3/L11-web-search-07.png)
 *Web search tool schema configuration — type, name, max_uses, allowed_domains*
 
 #### Response Structure
@@ -1451,7 +1481,7 @@ if hasattr(final_text_block, 'citations') and final_text_block.citations:
         print(f"  Title: {citation.title}")
 ```
 
-![[skilljar-s3/L11-web-search-13.png]]
+![](01-Notes/assets/skilljar-s3/L11-web-search-13.png)
 *Web search response structure — ServerToolUseBlock, WebSearchToolResultBlock, Citations*
 
 #### Domain Restriction
@@ -1498,7 +1528,7 @@ response = client.messages.create(
 )
 ```
 
-![[skilljar-s3/L11-web-search-17.png]]
+![](01-Notes/assets/skilljar-s3/L11-web-search-17.png)
 *Domain restriction example — Searching only trusted sources via allowed_domains*
 
 #### Comparison of 3 Tool Types

@@ -167,6 +167,9 @@ In the previous week [[Week_07]] we implemented the **internal structure of an M
 
 Anthropic offers several **applications** simultaneously to put Claude models into developers' hands. In this module we explore two of them — **Claude Code** and **Computer Use**. These two are not just useful tools in their own right; they are also perfect case studies that demonstrate **how AI agents work**. Understanding **how these two products operate internally** forms a solid foundation for building your own agents later.
 
+![](assets/skilljar-s7/L01-anthropic-apps.jpg)
+*Anthropic's main app lineup --- Claude.ai · Claude Code · Computer Use, each offering a different surface on top of the same model*
+
 ![](assets/skilljar-s7/L01-01-our-plan.jpg)
 *Our Plan — the three-stage progression Claude Code → Computer Use → Agents*
 
@@ -279,6 +282,9 @@ Claude Code is a **terminal-based coding assistant that runs right from your com
 *Claude Code — an agent that takes natural-language coding instructions inside the terminal*
 
 #### What Claude Code Can Do
+
+![](assets/skilljar-s7/L02-cc-tools.jpg)
+*Claude Code's built-in toolset --- file ops, terminal exec, web access, and MCP integration laid out on one screen*
 
 Claude Code comes with a **comprehensive set of tools** that support your development workflow.
 
@@ -498,6 +504,9 @@ The Skilljar lesson is arranged so that you actually experience **setup (/init)*
 
 #### The /init Command — Project Indexing
 
+![](assets/skilljar-s7/L03-cc-init.jpg)
+*Running `/init` --- the first step that scans the codebase and auto-drafts CLAUDE.md*
+
 **The first thing to do** when starting work on a project with Claude Code is run the `/init` command. This command tells Claude to **scan the entire codebase** so it understands the project's **structure, dependencies, coding style, and architecture**.
 
 ```bash
@@ -552,6 +561,9 @@ graph TD
 #### The Common Workflow — Context → Plan → Implement
 
 Claude works best when you think of it as an **effort multiplier**. **The more context and structure you provide, the better the result**. The most effective workflow is as follows.
+
+![](assets/skilljar-s7/L03-cc-workflow.jpg)
+*The Claude Code workflow diagram --- the staged collaboration pattern from context injection through implementation*
 
 ![](assets/skilljar-s7/L03-03-workflow.jpg)
 *Common Workflow — the three stages Context → Plan → Implement*
@@ -748,6 +760,9 @@ Claude Code has an **MCP client built right into it**. That means that **simply 
 
 #### How MCP Extends Claude Code
 
+![](assets/skilljar-s7/L04-mcp-enhancement.jpg)
+*Extending Claude Code with MCP --- reaching external systems that built-in tools alone cannot touch*
+
 ![](assets/skilljar-s7/L04-01-mcp-extends.jpg)
 *MCP extends Claude Code — built-in capabilities + external servers' Tools · Prompts · Resources*
 
@@ -815,6 +830,9 @@ sequenceDiagram
 ```
 
 #### Popular MCP Integrations
+
+![](assets/skilljar-s7/L04-popular-mcp.jpg)
+*A glance at popular MCP integrations --- a catalog of servers widely adopted across the modern dev workflow*
 
 ![](assets/skilljar-s7/L04-04-popular-mcp.jpg)
 *Popular MCP integrations — sentry-mcp · playwright-mcp · figma-context-mcp · mcp-atlassian · firecrawl-mcp-server · slack-mcp*

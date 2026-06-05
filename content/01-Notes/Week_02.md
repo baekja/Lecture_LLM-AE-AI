@@ -927,6 +927,9 @@ print(f"출력 토큰: {final_message.usage.output_tokens}")
 
 ## [Chapter 4] 출력 제어와 구조화된 데이터
 
+![](01-Notes/assets/skilljar-s1/skilljar-s1-02-01.webp)
+*Skilljar L12 --- Controlling Model Output 개요: 프리필링·정지 시퀀스로 출력 형식을 제어*
+
 ### 4.1 프리필링 (Prefilled Assistant Messages)
 
 프리필링은 `assistant` 메시지의 시작 부분을 개발자가 미리 제공하여, Claude가 **그 지점부터 이어서 작성**하도록 유도하는 기법이다.
@@ -997,6 +1000,9 @@ print(result)
 ---
 
 ### 4.3 구조화된 데이터 추출 — 프리필링 + 정지 시퀀스 조합
+
+![](01-Notes/assets/skilljar-s1/skilljar-s1-02-03.webp)
+*프리필 + 정지 시퀀스 조합 --- 순수 JSON 추출 흐름*
 
 Claude에게 JSON을 요청하면 설명 텍스트가 함께 출력되는 문제가 있다. **프리필 + 정지 시퀀스 콤보**로 순수한 데이터만 추출한다.
 

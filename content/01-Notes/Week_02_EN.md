@@ -926,6 +926,9 @@ print(f"Output tokens: {final_message.usage.output_tokens}")
 
 ## [Chapter 4] Output Control and Structured Data
 
+![](01-Notes/assets/skilljar-s1/skilljar-s1-02-01.webp)
+*Skilljar L12 --- Controlling Model Output overview: prefilling and stop sequences shape the output format*
+
 ### 4.1 Prefilling (Prefilled Assistant Messages)
 
 Prefilling is a technique where the developer pre-provides the beginning of an `assistant` message, guiding Claude to **continue writing from that point**.
@@ -996,6 +999,9 @@ print(result)
 ---
 
 ### 4.3 Structured Data Extraction — Combining Prefilling + Stop Sequences
+
+![](01-Notes/assets/skilljar-s1/skilljar-s1-02-03.webp)
+*Prefill + stop sequence combo --- the pure-JSON extraction flow*
 
 When asking Claude for JSON, explanatory text often comes along with it. The **prefill + stop sequence combo** extracts only the pure data.
 
